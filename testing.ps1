@@ -2899,7 +2899,7 @@ Function MicrosoftWindowsStore {
 
 # Disable Microsoft News and Interests
 Function DisableNewsInterests {
-    Set-ItemProperty -Path "HKCU:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" -Name "EnableFeeds" -Type DWord -Value 0
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Feeds" -Name "ShellFeedsTaskbarViewMode" -Type DWord -Value 2
     Write-Output "Disabled Microsoft News and Interests"
 }
 
