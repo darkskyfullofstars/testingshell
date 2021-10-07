@@ -22,7 +22,7 @@ $tweaks = @(
 
 
 	# UI
-
+	"DisableNews"
 
 	# Explorer
 
@@ -249,6 +249,15 @@ Function ChangeDefaultApps {
 	Import-Module BitsTransfer
 	Start-BitsTransfer -Source .\MyDefaultAppAssociations.xml -Destination $HOME\Desktop\MyDefaultAppAssociations.xml
 	dism /online /Import-DefaultAppAssociations:"%UserProfile%\Desktop\MyDefaultAppAssociations.xml"
+}
+
+# Stop and disable News and Interests
+Function DisableNews {
+	Write-Host "Disable News and Interests"
+    Set-ItemProperty -Path "HKCU:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" -Name "EnableFeeds" -Type DWord -Value 0
+
+    Write-Host "Disabling News and Interests Completed"
+
 }
 
 # Do not change Default Apps
