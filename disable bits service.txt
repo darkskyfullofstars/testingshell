@@ -1,0 +1,7 @@
+# Stop and disable Background Intelligent Transfer Service
+Function DisableBITS {
+	Write-Output "Disabling BITS.... aka windows feeding updates to other users from you"
+	Stop-Service "BITS" -WarningAction SilentlyContinue
+	Set-Service "BITS" -StartupType Disabled
+
+}

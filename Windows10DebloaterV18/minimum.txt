@@ -1,0 +1,151 @@
+<#third#>
+	"Install7Zip",
+	"InstallNotepadplusplus"
+
+<#windowsapps#>
+	"MicrosoftBingNews",
+	"MicrosoftGetHelp",
+	"MicrosoftGetstarted",
+	"MicrosoftMessaging",
+	"MicrosoftMicrosoft3DViewer",
+	"MicrosoftMicrosoftSolitaireCollection",
+	"MicrosoftNetworkSpeedTest",
+	"MicrosoftNews",
+	"MicrosoftOfficeLens",
+	"MicrosoftOfficeSway",
+	"MicrosoftOneConnect",
+	"MicrosoftPeople",
+	"MicrosoftPrint3D",
+	"MicrosoftSkypeApp",
+	"MicrosoftStorePurchaseApp",
+	"MicrosoftWhiteboard",
+	"MicrosoftWindowsAlarms",
+	"microsoftwindowscommunicationsapps",
+	"MicrosoftWindowsFeedbackHub",
+	"MicrosoftWindowsMaps",
+	"MicrosoftWindowsSoundRecorder",
+	"MicrosoftZuneMusic",
+	"MicrosoftZuneVideo",
+	"EclipseManager",
+	"ActiproSoftwareLLC",
+	"AdobeSystemsIncorporatedAdobePhotoshopExpress",
+	"Duolingo-LearnLanguagesforFree",
+	"PandoraMediaInc",
+	"CandyCrush",
+	"BubbleWitch3Saga",
+	"Wunderlist",
+	"Flipboard",
+	"Twitter",
+	"Facebook",
+	"Spotify",
+	"RoyalRevolt",
+	"Sway",
+	"SpeedTest",
+	"Dolby"
+
+<#privacy#>
+	"DisableTelemetry", 
+	"DisableWiFiSense", 
+	"DisableSmartScreen", 
+	"DisableWebSearch", 
+	"DisableAppSuggestions", 
+	"DisableActivityHistory", 
+	"DisableBackgroundApps",  
+	"DisableLocationTracking", 
+	"DisableMapUpdates", 
+	"DisableFeedback", 
+	"DisableTailoredExperiences", 
+	"DisableAdvertisingID", 
+	"DisableCortana", 
+	"DisableErrorReporting",  
+	"SetP2PUpdateLocal", 
+	"DisableDiagTrack", 
+	"DisableWAPPush"
+
+<#security#>
+	"SetUACLow",  
+	"DisableSMB1", 
+	"SetCurrentNetworkPrivate", 
+	"SetUnknownNetworksPrivate",  
+	"DisableNetDevicesAutoInst", 
+	"DisableCtrldFolderAccess",
+	"EnableFirewall",
+	"EnableDefender",
+	"EnableDefenderCloud",
+	"EnableF8BootMenu", 
+	"DisableMeltdownCompatFlag"
+
+<#service#>
+	"DisableUpdateMSRT", 
+	"DisableUpdateDriver",  
+	"DisableUpdateRestart", 
+	"DisableHomeGroups", 
+	"DisableSharedExperiences",  
+	"DisableRemoteAssistance", 
+	"EnableRemoteDesktop", 
+	"DisableAutoplay",  
+	"DisableAutorun",  
+	"DisableStorageSense", 
+	"DisableDefragmentation", 
+	"DisableSuperfetch", 
+	"EnableIndexing",
+	"SetBIOSTimeUTC", 
+	"DisableHibernation",
+	"EnableSleepButton", 
+	"DisableSleepTimeout"
+ 
+<#ui#>
+	"DisableActionCenter", 
+	"EnableLockScreen",
+	"EnableLockScreenRS1",	
+	"DisableStickyKeys", 
+	"ShowTaskManagerDetails",  
+	"ShowFileOperationsDetails", 
+	"DisableFileDeleteConfirm",
+	"HideTaskbarSearch",
+	"HideTaskView", 
+	"HideTaskbarPeopleIcon", 
+	"ShowTrayIcons",  
+	"DisableSearchAppInStore",  
+	"DisableNewAppPrompt",
+	"EnableNumlock",  
+	"EnableDarkMode",
+	"StopEdgePDF",
+	"DisableNewsInterests"
+
+<#explorer#>
+	"ShowKnownExtensions", 
+	"HideHiddenFiles",
+	"HideSyncNotifications", 
+	"HideRecentShortcuts", 
+	"SetExplorerThisPC",  
+	"HideThisPCFromDesktop",
+	"HideMusicFromThisPC", 
+	"HideMusicFromExplorer", 
+	"HideVideosFromThisPC",  
+	"HideVideosFromExplorer", 
+	"Hide3DObjectsFromThisPC", 
+	"Hide3DObjectsFromExplorer"
+
+<#application#>
+	"UninstallMsftBloat",
+	"UninstallThirdPartyBloat", 
+	"DisableAdobeFlash",  
+	"InstallMediaPlayer", 
+	"UninstallInternetExplorer", 
+	"UninstallWorkFolders",  
+	"InstallLinuxSubsystem", 
+	"SetPhotoViewerAssociation", 
+	"AddPhotoViewerOpenWith", 
+	"InstallPDFPrinter"
+<#server#>
+
+<#unpin#>
+
+<#other#>
+
+<#other2#>
+	"FTTRegistryTweaks",
+	"ChangeDefaultApps"
+
+<#end#>
