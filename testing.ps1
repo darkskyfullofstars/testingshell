@@ -48,6 +48,7 @@ $tweaks = @(
 	#"InstallSteam",
 	#"InstallEpicGames",
 	"InstallChocoGUI",
+	#"InstallGitKraken"
 	# "ChangeDefaultApps", # Removed due to issues with steam and resetting default apps
 
 	### Windows Apps
@@ -375,6 +376,11 @@ Function InstallEpicGames {
 
 Function InstallChocoGUI {
 	Show-Choco-Menu -Title "Do you want to install Chocolatey GUI" -ChocoInstall "chocolateygui"
+}
+
+
+Function InstallGitKraken {
+	Show-Choco-Menu -Title "Do you want to install Git Kraken" -ChocoInstall "gitkraken"
 }
 
 Function ChangeDefaultApps {
