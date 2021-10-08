@@ -8,7 +8,7 @@
 #
 #	Addition: One command to rule them all, One command to find it, and One command to Run it! 
 #
-#     > powershell -nop -c "iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/0lzi/win10script/master/win10debloat.ps1')"
+#     > powershell -nop -c "iex(New-Object Net.WebClient).DownloadString('https://git.io/JJ8R4')"
 #
 #	Chris Titus Tech Additions:
 #
@@ -22,30 +22,22 @@
 #	- Changed Default Apps to Notepad++, Brave, Irfanview, and more using XML Import feature
 #
 ##########
-$host.ui.RawUI.WindowTitle = "Win 10 Personal Debloat"
-cmd /c 'title [Win 10 Personal Debloat]'
-Write-Host 'Welcome to Win 10 Personal Debloat';
-Write-Host "Please DISABLE your ANTIVIRUS to prevent any issues and PRESS any KEY to Continue!" -ForegroundColor Red -BackgroundColor Black
-$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
-New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
-New-PSDrive -Name HKU -PSProvider Registry -Root HKEY_USERS | Out-Null
-cls
 # Default preset
 $tweaks = @(
 	### Require administrator privileges ###
 	"RequireAdmin",
-	#"CreateRestorePoint",
+	"CreateRestorePoint",
 	
-	### External Program Additions
-	"SecurityUpdatesOnly",
-	"InstallProgs", #REQUIRED FOR OTHER PROGRAM INSTALLS!
+	### Chris Titus Tech Additions
+	"TitusRegistryTweaks",
+	"InstallTitusProgs", #REQUIRED FOR OTHER PROGRAM INSTALLS!
 	"Install7Zip",
+	"InstallNotepadplusplus",
+	"InstallIrfanview",
 	"InstallVLC",
+	"InstallAdobe",
 	"InstallBrave",
-    "InstallOpenShell",
-    "InstallDiscord",
-    "InstallVSCode",
-	# "ChangeDefaultApps", # Removed due to issues with steam and resetting default apps
+	"ChangeDefaultApps",
 
 	### Windows Apps
 	"DebloatAll",
@@ -68,7 +60,6 @@ $tweaks = @(
 	"SetP2PUpdateLocal",          # "SetP2PUpdateInternet",
 	"DisableDiagTrack",             # "EnableDiagTrack",
 	"DisableWAPPush",               # "EnableWAPPush",
-    "DisableNewsFeed",
 
 	### Security Tweaks ###
 	"SetUACLow",                  # "SetUACHigh",
@@ -91,66 +82,10 @@ $tweaks = @(
 	#"EnableDotNetStrongCrypto",     # "DisableDotNetStrongCrypto",
 	"DisableMeltdownCompatFlag", # "EnableMeltdownCompatFlag"    
 
-    ### Useless Services ###
-    "DisableALG",  #Application Layer Gateway Service
-    "DisableAJRouter", #AllJoyn Router Service
-    "DisableXblAuthManager", #Xbox Live Auth Manager
-    "DisableXblGameSave", #Xbox Live Game Save
-    "DisableXboxNetApiSvc", #Xbox Live NetwoWindows Search
-    "DisableWSearch", #Windows Search
-    "Disablelfsvc", #Geolocation Service
-    "DisableRemoteRegistry", #Remote Registry
-    "DisableWpcMonSvc", #Parental Control
-    "DisableSEMgrSvc", #Payments and NFC/SE Manager
-    "DisableSCardSvr", #Smartcard
-    "DisableNetlogon", #Netlogon
-    "DisableCscService", #Offline Files
-    "Disableicssvc", #Windows Mobile Hotspot Service
-    "Disablewisvc", #Windows Insider Service
-    "DisableRetailDemo", #Retail Demo Service
-    "DisableWalletService", #WalletService
-    "DisableFax", #Fax
-    "DisableWbioSrvc", #Windows Biometric Service
-    "Disableiphlpsvc", #IP Helper
-    "Disablewcncsvc", #Windows Connect Now
-    "Disablefhsvc", #File History Service
-    "DisablePhoneSvc", #Phone Service
-    "Disableseclogon", #Secondary Logon
-    "DisableFrameServer", #Windows Camera Frame Server
-    "Disablestisvc", #Windows Image Acquisition
-    "DisablePcaSvc", #Program Compatibility Assistant Service
-    "DisableDPS", #Diagnostic Policy Service
-    "DisableMapsBroker", #Download Maps Manager
-    "Disablebthserv", #Bluetooth Support Service
-    "DisableBDESVC", #Bitlocker
-    "DisableBthAvctpSvc", #AVCTP Service
-    "DisableDiagTrack", #Connected User Experience and Telemetry
-    "DisableCertPropSvc", #Certificate Propagation
-    "DisableWdiServiceHost", #Diagnostic Service Host
-    "Disablelmhosts", #TCP/IP NetBIOS Helper
-    "DisableWdiSystemHost", #Diagnostic System Host
-    "DisableTrkWks", #Distributed Link Tracking Client
-    "DisableWerSvc", #Windows Error Reporting Service
-    "DisableTabletInputService", #Touch Keyboard and Handwriting Panel Service
-    "DisableEntAppSvc", #Enterprise App Management Service
-    "DisableSpooler", #Print Spooler
-    "DisableBcastDVRUserService", #GameDVR and Broadcast
-    "DisableWMPNetworkSvc", #Windows Media Player Network Sharing Service
-    "Disablediagnosticshub.standardcollector.service", #Microsoft Diagnostics Hub Standard Collector Service
-    "DisableDmEnrollmentSvc", #Device Management Enrollment Service
-    "DisablePNRPAutoReg", #PNRP Machine Name Publication Service
-    "Disablewlidsvc", #Microsoft Account Sign-in Assistant
-    "DisableAXInstSV", #ActiveX Installer
-    "Disabletzautoupdate", #Auto Time Zone Updater
-    "DisableSysMain", #Sysmain
-    "DisableSensorService", #Sensor Service
-    "DisableRemoteAccess", #Routing and Remote Service
-
-
 	### Service Tweaks ###
-	"EnableUpdateMSRT",
-	"EnableUpdateDriver",
-	"EnableUpdateRestart",
+	"DisableUpdateMSRT",          # "EnableUpdateMSRT",
+	"DisableUpdateDriver",        # "EnableUpdateDriver",
+	"DisableUpdateRestart",         # "EnableUpdateRestart",
 	"DisableHomeGroups",          # "EnableHomeGroups",
 	"DisableSharedExperiences",     # "EnableSharedExperiences",
 	"DisableRemoteAssistance",      # "EnableRemoteAssistance",
@@ -167,13 +102,8 @@ $tweaks = @(
 	"DisableSleepTimeout",        # "EnableSleepTimeout",
 	# "DisableFastStartup",         # "EnableFastStartup",
 
-
-    ### Windows Tweaks ###
-    "RemoveMeet",
-
-
 	### UI Tweaks ###
-	"EnableActionCenter",          # "DisableActionCenter",
+	"DisableActionCenter",          # "EnableActionCenter",
 	"EnableLockScreen",				# "DisableLockScreen",
 	"EnableLockScreenRS1",			# "DisableLockScreenRS1",
 	# "HideNetworkFromLockScreen",    # "ShowNetworkOnLockScreen",
@@ -200,7 +130,7 @@ $tweaks = @(
 
 	### Explorer UI Tweaks ###
 	"ShowKnownExtensions",          # "HideKnownExtensions",
-	"ShowHiddenFiles",              # "HideHiddenFiles",
+	"HideHiddenFiles",
 	"HideSyncNotifications"         # "ShowSyncNotifications",
 	"HideRecentShortcuts",          # "ShowRecentShortcuts",
 	"SetExplorerThisPC",            # "SetExplorerQuickAccess",
@@ -220,28 +150,26 @@ $tweaks = @(
 	"HideVideosFromExplorer",     # "ShowVideosInExplorer",
 	"Hide3DObjectsFromThisPC",      # "Show3DObjectsInThisPC",
 	"Hide3DObjectsFromExplorer",  # "Show3DObjectsInExplorer",
-	"EnableThumbnails",         # "DisableThumbnails",
-	"EnableThumbsDB",           # "DisableThumbsDB",
-    "EnableDarkMode",				# "DisableDarkMode",
+	# "DisableThumbnails",          # "EnableThumbnails",
+	# "DisableThumbsDB",              # "EnableThumbsDB",
 
 	### Application Tweaks ###
-    "DisableOneDrive",              # "EnableOneDrive",
-	"UninstallOneDrive",            # "InstallOneDrive",
+    # "EnableOneDrive",
 	"UninstallMsftBloat",           # "InstallMsftBloat",
 	"UninstallThirdPartyBloat",     # "InstallThirdPartyBloat",
-	 "UninstallWindowsStore",      # "InstallWindowsStore",
-     "DisableXboxFeatures",          # "EnableXboxFeatures",
+	# "UninstallWindowsStore",      # "InstallWindowsStore",
+	# "DisableXboxFeatures",          # "EnableXboxFeatures",
 	"DisableAdobeFlash",            # "EnableAdobeFlash",
 	"InstallMediaPlayer", 		# "UninstallMediaPlayer",
 	"UninstallInternetExplorer",  # "InstallInternetExplorer",
 	"UninstallWorkFolders",       # "InstallWorkFolders",
 	"InstallLinuxSubsystem",      # "UninstallLinuxSubsystem",
-	 "InstallHyperV",              # "UninstallHyperV",
+	# "InstallHyperV",              # "UninstallHyperV",
 	"SetPhotoViewerAssociation",    # "UnsetPhotoViewerAssociation",
 	"AddPhotoViewerOpenWith",       # "RemovePhotoViewerOpenWith",
 	"InstallPDFPrinter"		# "UninstallPDFPrinter",
-	 "UninstallXPSPrinter",          # "InstallXPSPrinter",
-	 "RemoveFaxPrinter",             # "AddFaxPrinter",
+	# "UninstallXPSPrinter",          # "InstallXPSPrinter",
+	# "RemoveFaxPrinter",             # "AddFaxPrinter",
 
 	### Server Specific Tweaks ###
 	# "HideServerManagerOnLogin",   # "ShowServerManagerOnLogin",
@@ -252,14 +180,14 @@ $tweaks = @(
 	# "EnableAudio",                # "DisableAudio",
 
 	### Unpinning ###
-	"UnpinStartMenuTiles"
-	#"UnpinTaskbarIcons"
+	#"UnpinStartMenuTiles",
+	#"UnpinTaskbarIcons",
 
 	### Auxiliary Functions ###
 )
 
 #########
-# Recommended Customizations
+# Recommended Titus Customizations
 #########
 
 function Show-Choco-Menu {
@@ -291,7 +219,7 @@ function Show-Choco-Menu {
  until ($selection -match "y" -or $selection -match "n" -or $selection -match "q")
 }
 
-Function SecurityUpdatesOnly {
+Function TitusRegistryTweaks {
 	Write-Output "Improving Windows Update to delay Feature updates and only install Security Updates"
 	### Fix Windows Update to delay feature updates and only update at certain times
 	$UpdatesPath = "HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings"
@@ -306,8 +234,7 @@ Function SecurityUpdatesOnly {
 	If (!(Get-ItemProperty $UpdatesPath  DeferQualityUpdatesPeriodInDays)) { New-ItemProperty -Path $UpdatesPath -Name "ActiveHoursStart" -Type DWord -Value 8 }
 	Set-ItemProperty -Path $UpdatesPath -Name "ActiveHoursStart" -Type DWord -Value 8
 }
-
-Function InstallProgs {
+Function InstallTitusProgs {
 	Write-Output "Installing Chocolatey"
 	Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 	choco install chocolatey-core.extension -y
@@ -318,6 +245,9 @@ Function InstallProgs {
 	./OOSU10.exe ooshutup10.cfg /quiet
 }
 
+Function InstallAdobe {
+	Show-Choco-Menu -Title "Do you want to install Adobe Acrobat Reader?" -ChocoInstall "adobereader"
+}
 
 Function InstallBrave {
 	do
@@ -345,20 +275,16 @@ Function Install7Zip {
 	Show-Choco-Menu -Title "Do you want to install 7-Zip?" -ChocoInstall "7zip"
 }
 
+Function InstallNotepadplusplus {
+	Show-Choco-Menu -Title "Do you want to install Notepad++?" -ChocoInstall "notepadplusplus"
+}
+
 Function InstallVLC {
 	Show-Choco-Menu -Title "Do you want to install VLC?" -ChocoInstall "vlc"
 }
 
-Function InstallOpenShell {
-	Show-Choco-Menu -Title "Do you want to install Open-Shell" -ChocoInstall "open-shell --pre"
-}
-
-Function InstallDiscord {
-	Show-Choco-Menu -Title "Do you want to install Discord" -ChocoInstall "discord"
-}
-
-Function InstallVSCode {
-	Show-Choco-Menu -Title "Do you want to install VS Code" -ChocoInstall "vscode"
+Function InstallIrfanview {
+	Show-Choco-Menu -Title "Do you want to install Irfanview?" -ChocoInstall "irfanview"
 }
 
 Function ChangeDefaultApps {
@@ -712,15 +638,6 @@ Function EnableWAPPush {
 	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\dmwappushservice" -Name "DelayedAutoStart" -Type DWord -Value 1
 }
 
-# Disable New Windows 10 21h1 News Feed
-Function DisableNewsFeed {
-    Write-Output "Disabling Windows 10 News and Interests Feed..."
-If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds")) {
-    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" -Force | Out-Null
-}
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" -Name "EnableFeeds" -Type DWord -Value 0
-Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Feeds" -Name "ShellFeedsTaskbarViewMode" -Type DWord -Value 2
-}
 
 
 ##########
@@ -1000,434 +917,6 @@ Function DisableMeltdownCompatFlag {
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\QualityCompat" -Name "cadca5fe-87d3-4b96-b7fb-a231484277cc" -ErrorAction SilentlyContinue
 }
 
-
-##########
-# Useless Services
-##########
-
-# Stop and disable Application Layer Gateway Service
-Function Disable{
-	Write-Output"Disabling... ApplicationLayerGatewayService"
-	Stop-Service"ALG"-WarningActionSilentlyContinue
-	Set-Service"ALG"-StartupTypeDisabled
-
-}
-
-# Stop and disable AllJoyn Router Service
-Function DisableAJRouter{
-	Write-Output"Disabling... AllJoyn Router Service"
-	Stop-Service"AJRouter"-WarningActionSilentlyContinue
-	Set-Service"AJRouter"-StartupTypeDisabled
-
-}
-
-# Stop and disable Xbox Live Auth Manager
-Function DisableXblAuthManager{
-	Write-Output"Disabling... Xbox Live Auth Manager"
-	Stop-Service"XblAuthManager"-WarningActionSilentlyContinue
-	Set-Service"XblAuthManager"-StartupTypeDisabled
-
-}
-
-# Stop and disable Xbox Live Game Save
-Function DisableXblGameSave{
-	Write-Output"Disabling... Xbox Live Game Save"
-	Stop-Service"XblGameSave"-WarningActionSilentlyContinue
-	Set-Service"XblGameSave"-StartupTypeDisabled
-
-}
-
-# Stop and disable Xbox Live NetwoWindows Search
-Function DisableXboxNetApiSvc{
-	Write-Output"Disabling... Xbox Live NetwoWindows Search"
-	Stop-Service"XboxNetApiSvc"-WarningActionSilentlyContinue
-	Set-Service"XboxNetApiSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Search
-Function DisableWSearch{
-	Write-Output"Disabling... Windows Search"
-	Stop-Service"WSearch"-WarningActionSilentlyContinue
-	Set-Service"WSearch"-StartupTypeDisabled
-
-}
-
-# Stop and disable Geolocation Service
-Function Disablefhsvc{
-	Write-Output"Disabling... Geolocation Service"
-	Stop-Service"fhsvc"-WarningActionSilentlyContinue
-	Set-Service"fhsvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Remote Registry
-Function DisableRemoteRegistry{
-	Write-Output"Disabling... Remote Registry"
-	Stop-Service"RemoteRegistry"-WarningActionSilentlyContinue
-	Set-Service"RemoteRegistry"-StartupTypeDisabled
-
-}
-
-# Stop and disable Parental Control
-Function DisableWpcMonSvc{
-	Write-Output"Disabling... Parental Control"
-	Stop-Service"WpcMonSvc"-WarningActionSilentlyContinue
-	Set-Service"WpcMonSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Payments and NFC/SE Manager
-Function DisableSEMgrSvc{
-	Write-Output"Disabling... Payments and NFC/SE Manager"
-	Stop-Service"SEMgrSvc"-WarningActionSilentlyContinue
-	Set-Service"SEMgrSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Smartcard
-Function DisableSCardSvr{
-	Write-Output"Disabling... Smartcard"
-	Stop-Service"SCardSvr"-WarningActionSilentlyContinue
-	Set-Service"SCardSvr"-StartupTypeDisabled
-
-}
-
-# Stop and disable Netlogon
-Function DisableNetlogon{
-	Write-Output"Disabling... Netlogon"
-	Stop-Service"Netlogon"-WarningActionSilentlyContinue
-	Set-Service"Netlogon"-StartupTypeDisabled
-
-}
-
-# Stop and disable Offline Files
-Function DisableCscService{
-	Write-Output"Disabling... Offline Files"
-	Stop-Service"CscService"-WarningActionSilentlyContinue
-	Set-Service"CscService"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Mobile Hotspot Service
-Function Disableicssvc{
-	Write-Output"Disabling... Windows Mobile Hotspot Service"
-	Stop-Service"icssvc"-WarningActionSilentlyContinue
-	Set-Service"icssvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Insider Service
-Function Disablewisvc{
-	Write-Output"Disabling... Windows Insider Service"
-	Stop-Service"wisvc"-WarningActionSilentlyContinue
-	Set-Service"wisvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Retail Demo Service
-Function DisableRetailDemo{
-	Write-Output"Disabling... Retail Demo Service"
-	Stop-Service"RetailDemo"-WarningActionSilentlyContinue
-	Set-Service"RetailDemo"-StartupTypeDisabled
-
-}
-
-# Stop and disable WalletService
-Function DisableWalletService{
-	Write-Output"Disabling... WalletService"
-	Stop-Service"WalletService"-WarningActionSilentlyContinue
-	Set-Service"WalletService"-StartupTypeDisabled
-
-}
-
-# Stop and disable Fax
-Function DisableFax{
-	Write-Output"Disabling... Fax"
-	Stop-Service"Fax"-WarningActionSilentlyContinue
-	Set-Service"Fax"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Biometric Service
-Function DisableWbioSrvc{
-	Write-Output"Disabling... Windows Biometric Service"
-	Stop-Service"WbioSrvc"-WarningActionSilentlyContinue
-	Set-Service"WbioSrvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable IP Helper
-Function Disableiphlpsvc{
-	Write-Output"Disabling... IP Helper"
-	Stop-Service"iphlpsvc"-WarningActionSilentlyContinue
-	Set-Service"iphlpsvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Connect Now
-Function Disablewcncsvc{
-	Write-Output"Disabling... Windows Connect Now"
-	Stop-Service"wcncsvc"-WarningActionSilentlyContinue
-	Set-Service"wcncsvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable File History Service
-Function Disablefhsvc{
-	Write-Output"Disabling... File History Service"
-	Stop-Service"fhsvc"-WarningActionSilentlyContinue
-	Set-Service"fhsvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Phone Service
-Function DisablePhoneSvc{
-	Write-Output"Disabling... Phone Service"
-	Stop-Service"PhoneSvc"-WarningActionSilentlyContinue
-	Set-Service"PhoneSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Secondary Logon
-Function Disableseclogon{
-	Write-Output"Disabling... Secondary Logon"
-	Stop-Service"seclogon"-WarningActionSilentlyContinue
-	Set-Service"seclogon"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Camera Frame Server
-Function DisableFrameServer{
-	Write-Output"Disabling... Windows Camera Frame Server"
-	Stop-Service"FrameServer"-WarningActionSilentlyContinue
-	Set-Service"FrameServer"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Image Acquisition
-Function Disablestisvc{
-	Write-Output"Disabling... Windows Image Acquisition"
-	Stop-Service"stisvc"-WarningActionSilentlyContinue
-	Set-Service"stisvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Program Compatibility Assistant Service
-Function DisablePcaSvc{
-	Write-Output"Disabling... Program Compatibility Assistant Service"
-	Stop-Service"PcaSvc"-WarningActionSilentlyContinue
-	Set-Service"PcaSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Diagnostic Policy Service
-Function DisableDPS{
-	Write-Output"Disabling... Diagnostic Policy Service"
-	Stop-Service"DPS"-WarningActionSilentlyContinue
-	Set-Service"DPS"-StartupTypeDisabled
-
-}
-
-# Stop and disable Download Maps Manager
-Function DisableMapsBroker{
-	Write-Output"Disabling... Download Maps Manager"
-	Stop-Service"MapsBroker"-WarningActionSilentlyContinue
-	Set-Service"MapsBroker"-StartupTypeDisabled
-
-}
-
-# Stop and disable Bluetooth Support Service
-Function Disablebthserv{
-	Write-Output"Disabling... Bluetooth Support Service"
-	Stop-Service"bthserv"-WarningActionSilentlyContinue
-	Set-Service"bthserv"-StartupTypeDisabled
-
-}
-
-# Stop and disable Bitlocker
-Function DisableBDESVC{
-	Write-Output"Disabling... Bitlocker"
-	Stop-Service"BDESVC"-WarningActionSilentlyContinue
-	Set-Service"BDESVC"-StartupTypeDisabled
-
-}
-
-# Stop and disable AVCTP Service
-Function DisableBthAvctpSvc{
-	Write-Output"Disabling... AVCTP Service"
-	Stop-Service"BthAvctpSvc"-WarningActionSilentlyContinue
-	Set-Service"BthAvctpSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Connected User Experience and Telemetry
-Function DisableDiagTrack{
-	Write-Output"Disabling... Connected User Experience and Telemetry"
-	Stop-Service"DiagTrack"-WarningActionSilentlyContinue
-	Set-Service"DiagTrack"-StartupTypeDisabled
-
-}
-
-# Stop and disable Certificate Propagation
-Function DisableCertPropSvc{
-	Write-Output"Disabling... Certificate Propagation"
-	Stop-Service"CertPropSvc"-WarningActionSilentlyContinue
-	Set-Service"CertPropSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Diagnostic Service Host
-Function DisableWdiServiceHost{
-	Write-Output"Disabling... Diagnostic Service Host"
-	Stop-Service"WdiServiceHost"-WarningActionSilentlyContinue
-	Set-Service"WdiServiceHost"-StartupTypeDisabled
-
-}
-
-# Stop and disable TCP/IP NetBIOS Helper
-Function Disablelmhosts{
-	Write-Output"Disabling... TCP/IP NetBIOS Helper"
-	Stop-Service"lmhosts"-WarningActionSilentlyContinue
-	Set-Service"lmhosts"-StartupTypeDisabled
-
-}
-
-# Stop and disable Diagnostic System Host
-Function DisableWdiSystemHost{
-	Write-Output"Disabling... Diagnostic System Host"
-	Stop-Service"WdiSystemHost"-WarningActionSilentlyContinue
-	Set-Service"WdiSystemHost"-StartupTypeDisabled
-
-}
-
-# Stop and disable Distributed Link Tracking Client
-Function DisableTrkWks{
-	Write-Output"Disabling... Distributed Link Tracking Client"
-	Stop-Service"TrkWks"-WarningActionSilentlyContinue
-	Set-Service"TrkWks"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Error Reporting Service
-Function DisableWerSvc{
-	Write-Output"Disabling... Windows Error Reporting Service"
-	Stop-Service"WerSvc"-WarningActionSilentlyContinue
-	Set-Service"WerSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Touch Keyboard and Handwriting Panel Service
-Function DisableTabletInputService{
-	Write-Output"Disabling... Touch Keyboard and Handwriting Panel Service"
-	Stop-Service"TabletInputService"-WarningActionSilentlyContinue
-	Set-Service"TabletInputService"-StartupTypeDisabled
-
-}
-
-# Stop and disable Enterprise App Management Service
-Function DisableEntAppSvc{
-	Write-Output"Disabling... Enterprise App Management Service"
-	Stop-Service"EntAppSvc"-WarningActionSilentlyContinue
-	Set-Service"EntAppSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Print Spooler
-Function DisableSpooler{
-	Write-Output"Disabling... Print Spooler"
-	Stop-Service"Spooler"-WarningActionSilentlyContinue
-	Set-Service"Spooler"-StartupTypeDisabled
-
-}
-
-# Stop and disable GameDVR and Broadcast
-Function DisableBcastDVRUserService{
-	Write-Output"Disabling... GameDVR and Broadcast"
-	Stop-Service"BcastDVRUserService"-WarningActionSilentlyContinue
-	Set-Service"BcastDVRUserService"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Media Player Network Sharing Service
-Function DisableWMPNetworkSvc{
-	Write-Output"Disabling... Windows Media Player Network Sharing Service"
-	Stop-Service"WMPNetworkSvc"-WarningActionSilentlyContinue
-	Set-Service"WMPNetworkSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Microsoft Diagnostics Hub Standard Collector Service
-Function Disablediagnosticshub.standardcollector.service{
-	Write-Output"Disabling... Microsoft Diagnostics Hub Standard Collector Service"
-	Stop-Service"diagnosticshub.standardcollector.service"-WarningActionSilentlyContinue
-	Set-Service"diagnosticshub.standardcollector.service"-StartupTypeDisabled
-
-}
-
-# Stop and disable Device Management Enrollment Service
-Function DisableDmEnrollmentSvc{
-	Write-Output"Disabling... Device Management Enrollment Service"
-	Stop-Service"DmEnrollmentSvc"-WarningActionSilentlyContinue
-	Set-Service"DmEnrollmentSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable PNRP Machine Name Publication Service
-Function DisablePNRPAutoReg{
-	Write-Output"Disabling... PNRP Machine Name Publication Service"
-	Stop-Service"PNRPAutoReg"-WarningActionSilentlyContinue
-	Set-Service"PNRPAutoReg"-StartupTypeDisabled
-
-}
-
-# Stop and disable Microsoft Account Sign-in Assistant
-Function Disablewlidsvc{
-	Write-Output"Disabling... Microsoft Account Sign-in Assistant"
-	Stop-Service"wlidsvc"-WarningActionSilentlyContinue
-	Set-Service"wlidsvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable ActiveX Installer
-Function DisableAXInstSV{
-	Write-Output"Disabling... ActiveX Installer"
-	Stop-Service"AXInstSV"-WarningActionSilentlyContinue
-	Set-Service"AXInstSV"-StartupTypeDisabled
-
-}
-
-# Stop and disable Auto Time Zone Updater
-Function Disabletzautoupdate{
-	Write-Output"Disabling... Auto Time Zone Updater"
-	Stop-Service"tzautoupdate"-WarningActionSilentlyContinue
-	Set-Service"tzautoupdate"-StartupTypeDisabled
-
-}
-
-# Stop and disable Sysmain
-Function DisableSysMain{
-	Write-Output"Disabling... Sysmain"
-	Stop-Service"SysMain"-WarningActionSilentlyContinue
-	Set-Service"SysMain"-StartupTypeDisabled
-
-}
-
-# Stop and disable Sensor Service
-Function DisableSensorService{
-	Write-Output"Disabling... Sensor Service"
-	Stop-Service"SensorService"-WarningActionSilentlyContinue
-	Set-Service"SensorService"-StartupTypeDisabled
-
-}
-
-# Stop and disable Routing and Remote Service
-Function DisableRemoteAccess{
-	Write-Output"Disabling... Routing and Remote Service"
-	Stop-Service"RemoteAccess"-WarningActionSilentlyContinue
-	Set-Service"RemoteAccess"-StartupTypeDisabled
-
-}
 
 
 ##########
@@ -1728,21 +1217,6 @@ Function EnableFastStartup {
 	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Power" -Name "HiberbootEnabled" -Type DWord -Value 1
 }
 
-##########
-# Windows Tweaks
-##########
-
-#Removing Microsoft MeetNow
-Function RemoveMeet {
-    Write-Output "Disabling Microsoft MeetNow..."
-$errpref = $ErrorActionPreference #save actual preference
-    $ErrorActionPreference = "silentlycontinue"
-Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "HideSCAMeetNow" -ErrorAction SilentlyContinue
-Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "HideSCAMeetNow" -ErrorAction SilentlyContinue
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "HideSCAMeetNow" -Type DWord -Value 1
-Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "HideSCAMeetNow" -Type DWord -Value 1
-$ErrorActionPreference = $errpref #restore previous preference
-}
 
 
 ##########

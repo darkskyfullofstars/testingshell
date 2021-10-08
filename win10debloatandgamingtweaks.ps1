@@ -1,30 +1,20 @@
 ##########
-# Tweaked Win10 Initial Setup Script
-# Primary Author: Disassembler <disassembler@dasm.cz>
-# Primary Author Source: https://github.com/Disassembler0/Win10-Initial-Setup-Script
-# Tweaked Source: https://gist.github.com/alirobe/7f3b34ad89a159e6daa1/
+# Master Branch : https://github.com/ChrisTitusTech/win10script
+# Current Author : Daddy Madu 
+# Current Author Source: https://github.com/DaddyMadu/Windows10GamingFocus
 #
 #    Note from author: Never run scripts without reading them & understanding what they do.
 #
 #	Addition: One command to rule them all, One command to find it, and One command to Run it! 
 #
-#     > powershell -nop -c "iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/0lzi/win10script/master/win10debloat.ps1')"
+#     > powershell -nop -c "iex(New-Object Net.WebClient).DownloadString('http://tweaks.daddymadu.gg')"
 #
-#	Chris Titus Tech Additions:
-#
-#	- Dark Mode
-#	- One Command to launch and run
-#	- Chocolatey Install
-#	- O&O Shutup10 CFG and Run
-#	- Added Install Programs
-#	- Added Debloat Microsoft Store Apps
-#	- Added Confirm Menu for Adobe and Brave Browser
-#	- Changed Default Apps to Notepad++, Brave, Irfanview, and more using XML Import feature
+#     Changelogs Moved to ReadMe File for better mangement. 
 #
 ##########
-$host.ui.RawUI.WindowTitle = "Win 10 Personal Debloat"
-cmd /c 'title [Win 10 Personal Debloat]'
-Write-Host 'Welcome to Win 10 Personal Debloat';
+$host.ui.RawUI.WindowTitle = "DaddyMadu Ultimate Windows 10 Debloater and Gaming Focus Tweaker"
+cmd /c 'title [DaddyMadu Ultimate Windows 10 Debloater and Gaming Focus Tweaker]'
+Write-Host 'Welcome to DaddyMadu Ultimate Windows 10 Debloater and Gaming Focus Tweaker';
 Write-Host "Please DISABLE your ANTIVIRUS to prevent any issues and PRESS any KEY to Continue!" -ForegroundColor Red -BackgroundColor Black
 $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
 New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
@@ -34,18 +24,31 @@ cls
 $tweaks = @(
 	### Require administrator privileges ###
 	"RequireAdmin",
-	#"CreateRestorePoint",
+	"CreateRestorePoint",
 	
-	### External Program Additions
-	"SecurityUpdatesOnly",
-	"InstallProgs", #REQUIRED FOR OTHER PROGRAM INSTALLS!
+	### Chris Titus Tech Additions
+	"SlowUpdatesTweaks",
+	"Write-ColorOutput", #Utilizing Colors for better warrning messages!
+	"InstallTitusProgs", #REQUIRED FOR OTHER PROGRAM INSTALLS!
+	"InstallMVC", #DaddyMadu install Microsoft Visualstudio required for HPET service!
 	"Install7Zip",
-	"InstallVLC",
-	"InstallBrave",
-    "InstallOpenShell",
-    "InstallDiscord",
-    "InstallVSCode",
+	#"InstallNotepadplusplus",
+	#"InstallIrfanview",
+	#"InstallVLC",
+	#"InstallSumatra",
+	#"InstallChrome",
+	"InstallChocoUpdates",
+	"EnableUlimatePower",    # DaddyMadu don't change order it will break other functions! just disable if you want with #
 	# "ChangeDefaultApps", # Removed due to issues with steam and resetting default apps
+	
+	### DaddyMadu Windows Defender Settings! Don't Change Order Just Disable with # If You Don't want it ###
+	"MSIMode",                       #Enable Or Disable MSI Mode For Supported Cards, WARRNING ENABLING MSI MODE MIGHT CRUSH YOUR SYSTEM! IF IT HAPPENS PLEASE RESTORE LAST WORKING SYSTEM RESTORE POINT AND DON'T ENABLE MSI MODE ON THIS SYSTEM AGAIN!
+	"DisableNagle",
+	"askDefender",
+	"DorEOneDrive",                  #Option to Install Or Uninstall Microsoft One Drive!
+	"askXBOX",
+	#"askMSPPS",                      #Option to enable or disable Microsoft Software Protection Platform Service” Causing High CPU Usage
+	#"askMSWSAPPX",                   #Option to enable or disable Wsappx to Fix 100% Disk Usage in Windows 10 in older systems
 
 	### Windows Apps
 	"DebloatAll",
@@ -57,7 +60,7 @@ $tweaks = @(
 	"DisableWebSearch",             # "EnableWebSearch",
 	"DisableAppSuggestions",        # "EnableAppSuggestions",
 	"DisableActivityHistory",       # "EnableActivityHistory",
-	"DisableBackgroundApps",        # "EnableBackgroundApps",
+	"EnableBackgroundApps",           #"DisableBackgroundApps",
 	"DisableLocationTracking",      # "EnableLocationTracking",
 	"DisableMapUpdates",            # "EnableMapUpdates",
 	"DisableFeedback",              # "EnableFeedback",
@@ -68,7 +71,7 @@ $tweaks = @(
 	"SetP2PUpdateLocal",          # "SetP2PUpdateInternet",
 	"DisableDiagTrack",             # "EnableDiagTrack",
 	"DisableWAPPush",               # "EnableWAPPush",
-    "DisableNewsFeed",
+	"DisableNewsFeed",
 
 	### Security Tweaks ###
 	"SetUACLow",                  # "SetUACHigh",
@@ -80,10 +83,6 @@ $tweaks = @(
 	"SetCurrentNetworkPrivate",     # "SetCurrentNetworkPublic",
 	"SetUnknownNetworksPrivate",  # "SetUnknownNetworksPublic",
 	"DisableNetDevicesAutoInst",  # "EnableNetDevicesAutoInst",
-	"DisableCtrldFolderAccess",	# "EnableCtrldFolderAccess",
-	"EnableFirewall",
-	"EnableDefender",
-	"EnableDefenderCloud",
 	"EnableF8BootMenu",             # "DisableF8BootMenu",
 	#"SetDEPOptOut",                 # "SetDEPOptIn",
 	# "EnableCIMemoryIntegrity",    # "DisableCIMemoryIntegrity",
@@ -91,66 +90,10 @@ $tweaks = @(
 	#"EnableDotNetStrongCrypto",     # "DisableDotNetStrongCrypto",
 	"DisableMeltdownCompatFlag", # "EnableMeltdownCompatFlag"    
 
-    ### Useless Services ###
-    "DisableALG",  #Application Layer Gateway Service
-    "DisableAJRouter", #AllJoyn Router Service
-    "DisableXblAuthManager", #Xbox Live Auth Manager
-    "DisableXblGameSave", #Xbox Live Game Save
-    "DisableXboxNetApiSvc", #Xbox Live NetwoWindows Search
-    "DisableWSearch", #Windows Search
-    "Disablelfsvc", #Geolocation Service
-    "DisableRemoteRegistry", #Remote Registry
-    "DisableWpcMonSvc", #Parental Control
-    "DisableSEMgrSvc", #Payments and NFC/SE Manager
-    "DisableSCardSvr", #Smartcard
-    "DisableNetlogon", #Netlogon
-    "DisableCscService", #Offline Files
-    "Disableicssvc", #Windows Mobile Hotspot Service
-    "Disablewisvc", #Windows Insider Service
-    "DisableRetailDemo", #Retail Demo Service
-    "DisableWalletService", #WalletService
-    "DisableFax", #Fax
-    "DisableWbioSrvc", #Windows Biometric Service
-    "Disableiphlpsvc", #IP Helper
-    "Disablewcncsvc", #Windows Connect Now
-    "Disablefhsvc", #File History Service
-    "DisablePhoneSvc", #Phone Service
-    "Disableseclogon", #Secondary Logon
-    "DisableFrameServer", #Windows Camera Frame Server
-    "Disablestisvc", #Windows Image Acquisition
-    "DisablePcaSvc", #Program Compatibility Assistant Service
-    "DisableDPS", #Diagnostic Policy Service
-    "DisableMapsBroker", #Download Maps Manager
-    "Disablebthserv", #Bluetooth Support Service
-    "DisableBDESVC", #Bitlocker
-    "DisableBthAvctpSvc", #AVCTP Service
-    "DisableDiagTrack", #Connected User Experience and Telemetry
-    "DisableCertPropSvc", #Certificate Propagation
-    "DisableWdiServiceHost", #Diagnostic Service Host
-    "Disablelmhosts", #TCP/IP NetBIOS Helper
-    "DisableWdiSystemHost", #Diagnostic System Host
-    "DisableTrkWks", #Distributed Link Tracking Client
-    "DisableWerSvc", #Windows Error Reporting Service
-    "DisableTabletInputService", #Touch Keyboard and Handwriting Panel Service
-    "DisableEntAppSvc", #Enterprise App Management Service
-    "DisableSpooler", #Print Spooler
-    "DisableBcastDVRUserService", #GameDVR and Broadcast
-    "DisableWMPNetworkSvc", #Windows Media Player Network Sharing Service
-    "Disablediagnosticshub.standardcollector.service", #Microsoft Diagnostics Hub Standard Collector Service
-    "DisableDmEnrollmentSvc", #Device Management Enrollment Service
-    "DisablePNRPAutoReg", #PNRP Machine Name Publication Service
-    "Disablewlidsvc", #Microsoft Account Sign-in Assistant
-    "DisableAXInstSV", #ActiveX Installer
-    "Disabletzautoupdate", #Auto Time Zone Updater
-    "DisableSysMain", #Sysmain
-    "DisableSensorService", #Sensor Service
-    "DisableRemoteAccess", #Routing and Remote Service
-
-
 	### Service Tweaks ###
-	"EnableUpdateMSRT",
-	"EnableUpdateDriver",
-	"EnableUpdateRestart",
+	"EnableUpdateMSRT",          # "EnableUpdateMSRT",    #"DisableUpdateMSRT",
+	"EnableUpdateDriver",        # "EnableUpdateDriver",  #"DisableUpdateDriver",
+	"DisableUpdateRestart",         # "EnableUpdateRestart",
 	"DisableHomeGroups",          # "EnableHomeGroups",
 	"DisableSharedExperiences",     # "EnableSharedExperiences",
 	"DisableRemoteAssistance",      # "EnableRemoteAssistance",
@@ -161,17 +104,33 @@ $tweaks = @(
 	"DisableDefragmentation",     # "EnableDefragmentation",
 	"DisableSuperfetch",          # "EnableSuperfetch",
 	"EnableIndexing",
-	"SetBIOSTimeUTC",             # "SetBIOSTimeLocal",
-	"DisableHibernation",		# "EnableHibernation",          # 
+	"SetBIOSTimeUTC",         #"SetBIOSTimeUTC", #"SetBIOSTimeLocal",
+	"DisableHibernation",		# "EnableHibernation",
 	"EnableSleepButton",		# "DisableSleepButton",         
 	"DisableSleepTimeout",        # "EnableSleepTimeout",
-	# "DisableFastStartup",         # "EnableFastStartup",
+	"DisableFastStartup",         # "EnableFastStartup",
+	"DISGaming",
 
 
     ### Windows Tweaks ###
-    "RemoveMeet",
-
-
+	"PowerThrottlingOff",
+	"Win32PrioritySeparation",
+	"DisableAERO",
+	"BSODdetails",
+	"Disablelivetiles",
+	"wallpaperquality",
+	"DisableShistory",
+	"Disableshortcutword",
+	"DisableMouseKKS",
+	"DisableTransparency",
+	"TurnOffSafeSearch",
+	"DisableCloudSearch",
+	"DisableDeviceHistory",
+	"DisableRemoteAssistance",
+	"DisableSearchHistroy",
+	"RemoveMeet",
+	
+	
 	### UI Tweaks ###
 	"EnableActionCenter",          # "DisableActionCenter",
 	"EnableLockScreen",				# "DisableLockScreen",
@@ -188,11 +147,11 @@ $tweaks = @(
 	# "ShowSmallTaskbarIcons",        # "ShowLargeTaskbarIcons",
 	# "SetTaskbarCombineWhenFull",    # "SetTaskbarCombineNever",     # "SetTaskbarCombineAlways",
 	"HideTaskbarPeopleIcon",        # "ShowTaskbarPeopleIcon",
-	"ShowTrayIcons",                # "HideTrayIcons",
+	#"HideTrayIcons",                #"ShowTrayIcons",
 	"DisableSearchAppInStore",      # "EnableSearchAppInStore",
 	"DisableNewAppPrompt",          # "EnableNewAppPrompt",
 	# "SetControlPanelSmallIcons",  # "SetControlPanelLargeIcons",  # "SetControlPanelCategories",
-	# "SetVisualFXPerformance",     # "SetVisualFXAppearance",
+	"SetVisualFXPerformance",     # "SetVisualFXAppearance",
 	# "AddENKeyboard",              # "RemoveENKeyboard",
 	"EnableNumlock",             	# "DisableNumlock",
 	"EnableDarkMode",				# "DisableDarkMode",
@@ -200,66 +159,78 @@ $tweaks = @(
 
 	### Explorer UI Tweaks ###
 	"ShowKnownExtensions",          # "HideKnownExtensions",
-	"ShowHiddenFiles",              # "HideHiddenFiles",
+	"HideHiddenFiles",
 	"HideSyncNotifications"         # "ShowSyncNotifications",
 	"HideRecentShortcuts",          # "ShowRecentShortcuts",
 	"SetExplorerThisPC",            # "SetExplorerQuickAccess",
-	"HideThisPCFromDesktop",	# "ShowThisPCOnDesktop",
-	# "ShowUserFolderOnDesktop",    # "HideUserFolderFromDesktop",
+	"ShowThisPCOnDesktop",          # "HideThisPCFromDesktop",
+	"ShowUserFolderOnDesktop",    # "HideUserFolderFromDesktop",
 	# "HideDesktopFromThisPC",        # "ShowDesktopInThisPC",
 	# "HideDesktopFromExplorer",    # "ShowDesktopInExplorer",
 	# "HideDocumentsFromThisPC",      # "ShowDocumentsInThisPC",
 	# "HideDocumentsFromExplorer",  # "ShowDocumentsInExplorer",
 	# "HideDownloadsFromThisPC",      # "ShowDownloadsInThisPC",
 	# "HideDownloadsFromExplorer",  # "ShowDownloadsInExplorer",
-	"HideMusicFromThisPC",          # "ShowMusicInThisPC",
-	"HideMusicFromExplorer",      # "ShowMusicInExplorer",
+	#"ShowMusicInThisPC",          #"HideMusicFromThisPC",
+	#"ShowMusicInExplorer",       #"HideMusicFromExplorer",
 	# "HidePicturesFromThisPC",       # "ShowPicturesInThisPC",
 	# "HidePicturesFromExplorer",   # "ShowPicturesInExplorer",
-	"HideVideosFromThisPC",         # "ShowVideosInThisPC",
-	"HideVideosFromExplorer",     # "ShowVideosInExplorer",
+	#"ShowVideosInThisPC",         #"HideVideosFromThisPC",
+	#"ShowVideosInExplorer",        #"HideVideosFromExplorer",
 	"Hide3DObjectsFromThisPC",      # "Show3DObjectsInThisPC",
 	"Hide3DObjectsFromExplorer",  # "Show3DObjectsInExplorer",
-	"EnableThumbnails",         # "DisableThumbnails",
-	"EnableThumbsDB",           # "DisableThumbsDB",
-    "EnableDarkMode",				# "DisableDarkMode",
+	"EnableThumbnails",          # "EnableThumbnails", # "DisableThumbnails",
+	"EnableThumbsDB",              # "EnableThumbsDB", # "DisableThumbsDB", 
 
 	### Application Tweaks ###
-    "DisableOneDrive",              # "EnableOneDrive",
-	"UninstallOneDrive",            # "InstallOneDrive",
-	"UninstallMsftBloat",           # "InstallMsftBloat",
-	"UninstallThirdPartyBloat",     # "InstallThirdPartyBloat",
-	 "UninstallWindowsStore",      # "InstallWindowsStore",
-     "DisableXboxFeatures",          # "EnableXboxFeatures",
 	"DisableAdobeFlash",            # "EnableAdobeFlash",
-	"InstallMediaPlayer", 		# "UninstallMediaPlayer",
+	#"UninstallMediaPlayer",         #"InstallMediaPlayer",
 	"UninstallInternetExplorer",  # "InstallInternetExplorer",
 	"UninstallWorkFolders",       # "InstallWorkFolders",
-	"InstallLinuxSubsystem",      # "UninstallLinuxSubsystem",
-	 "InstallHyperV",              # "UninstallHyperV",
+	"UninstallLinuxSubsystem",      # "UninstallLinuxSubsystem",     #"InstallLinuxSubsystem",
+	# "InstallHyperV",              # "UninstallHyperV",
 	"SetPhotoViewerAssociation",    # "UnsetPhotoViewerAssociation",
 	"AddPhotoViewerOpenWith",       # "RemovePhotoViewerOpenWith",
-	"InstallPDFPrinter"		# "UninstallPDFPrinter",
-	 "UninstallXPSPrinter",          # "InstallXPSPrinter",
-	 "RemoveFaxPrinter",             # "AddFaxPrinter",
-
-	### Server Specific Tweaks ###
-	# "HideServerManagerOnLogin",   # "ShowServerManagerOnLogin",
-	# "DisableShutdownTracker",     # "EnableShutdownTracker",
-	# "DisablePasswordPolicy",      # "EnablePasswordPolicy",
-	# "DisableCtrlAltDelLogin",     # "EnableCtrlAltDelLogin",
-	# "DisableIEEnhancedSecurity",  # "EnableIEEnhancedSecurity",
-	# "EnableAudio",                # "DisableAudio",
+	"InstallPDFPrinter",		# "UninstallPDFPrinter",
+	# "UninstallXPSPrinter",          # "InstallXPSPrinter",
+	# "RemoveFaxPrinter",             # "AddFaxPrinter",
+	"SVCHostTweak",
 
 	### Unpinning ###
-	"UnpinStartMenuTiles"
-	#"UnpinTaskbarIcons"
+	"UnpinStartMenuTiles",
 
+        ### DaddyMadu Quality Of Life Tweaks ###
+	"QOL",
+	
+        ### DaddyMadu Gaming Tweaks ###
+	"FullscreenOptimizationFIX",
+	"GameOptimizationFIX",
+	"ApplyPCOptimizations",
+	"RawMouseInput",
+	"DetectnApplyMouseFIX",
+	"DisableHPET",
+	"EnableGameMode",
+	"EnableHAGS",
+	"DisableCoreParking",
+	"DisableDMA",
+	"DisablePKM",
+	"DisallowDIP",
+	"UseBigM",
+	"ForceContiguousM",
+	"DecreaseMKBuffer",
+	"StophighDPC",
+	"NvidiaTweaks",
+	"AMDGPUTweaks",
+	"NetworkOptimizations",
+	"RemoveEdit3D",
+	"FixURLext",  # fix issue with games shortcut that created by games lunchers turned white!
+	"UltimateCleaner",
+	"Finished"
 	### Auxiliary Functions ###
 )
 
 #########
-# Recommended Customizations
+# Pre Customizations
 #########
 
 function Show-Choco-Menu {
@@ -275,7 +246,7 @@ function Show-Choco-Menu {
    
  do
  {
-    Clear-Host
+    cls
     Write-Host "================ $Title ================"
     Write-Host "Y: Press 'Y' to do this."
     Write-Host "2: Press 'N' to skip this."
@@ -291,80 +262,205 @@ function Show-Choco-Menu {
  until ($selection -match "y" -or $selection -match "n" -or $selection -match "q")
 }
 
-Function SecurityUpdatesOnly {
+Function SlowUpdatesTweaks {
 	Write-Output "Improving Windows Update to delay Feature updates and only install Security Updates"
 	### Fix Windows Update to delay feature updates and only update at certain times
-	$UpdatesPath = "HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings"
-	If (!(Get-ItemProperty $UpdatesPath  BranchReadinessLevel)) { New-ItemProperty -Path $UpdatesPath -Name "BranchReadinessLevel" -Type DWord -Value 20 }
-	Set-ItemProperty -Path $UpdatesPath -Name "BranchReadinessLevel" -Type DWord -Value 20
-	If (!(Get-ItemProperty $UpdatesPath  DeferFeatureUpdatesPeriodInDays)) { New-ItemProperty -Path $UpdatesPath -Name "DeferFeatureUpdatesPeriodInDays" -Type DWord -Value 365	}
-	Set-ItemProperty -Path $UpdatesPath -Name "DeferFeatureUpdatesPeriodInDays" -Type DWord -Value 365
-	If (!(Get-ItemProperty $UpdatesPath  DeferQualityUpdatesPeriodInDays)) { New-ItemProperty -Path $UpdatesPath -Name "DeferQualityUpdatesPeriodInDays" -Type DWord -Value 4 }
-	Set-ItemProperty -Path $UpdatesPath -Name "DeferQualityUpdatesPeriodInDays" -Type DWord -Value 4
-	If (!(Get-ItemProperty $UpdatesPath  ActiveHoursEnd)) { New-ItemProperty -Path $UpdatesPath -Name "ActiveHoursEnd" -Type DWord -Value 2	}
-	Set-ItemProperty -Path $UpdatesPath -Name "ActiveHoursEnd" -Type DWord -Value 2
-	If (!(Get-ItemProperty $UpdatesPath  DeferQualityUpdatesPeriodInDays)) { New-ItemProperty -Path $UpdatesPath -Name "ActiveHoursStart" -Type DWord -Value 8 }
-	Set-ItemProperty -Path $UpdatesPath -Name "ActiveHoursStart" -Type DWord -Value 8
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -Name "BranchReadinessLevel" -Type DWord -Value 16 -ErrorAction SilentlyContinue | Out-Null
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings" -Name "BranchReadinessLevel" -Type DWord -Value 16 -ErrorAction SilentlyContinue | Out-Null
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -Name "DeferFeatureUpdates" -Type DWord -Value 1 -ErrorAction SilentlyContinue | Out-Null
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings" -Name "DeferFeatureUpdates" -Type DWord -Value 1 -ErrorAction SilentlyContinue | Out-Null
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -Name "DeferQualityUpdates" -Type DWord -Value 1 -ErrorAction SilentlyContinue | Out-Null
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings" -Name "DeferQualityUpdates" -Type DWord -Value 1 -ErrorAction SilentlyContinue | Out-Null
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -Name "DeferFeatureUpdatesPeriodInDays" -Type DWord -Value 45d -ErrorAction SilentlyContinue | Out-Null
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings" -Name "DeferFeatureUpdatesPeriodInDays" -Type DWord -Value 45d -ErrorAction SilentlyContinue | Out-Null
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -Name "DeferQualityUpdatesPeriodInDays" -Type DWord -Value 7d -ErrorAction SilentlyContinue | Out-Null
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings" -Name "DeferQualityUpdatesPeriodInDays" -Type DWord -Value 7d -ErrorAction SilentlyContinue | Out-Null
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -Name "PauseFeatureUpdatesStartTime" -Type String -Value "" -ErrorAction SilentlyContinue | Out-Null
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings" -Name "PauseFeatureUpdatesStartTime" -Type String -Value "" -ErrorAction SilentlyContinue | Out-Null
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -Name "PauseQualityUpdatesStartTime" -Type String -Value "" -ErrorAction SilentlyContinue | Out-Null
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings" -Name "PauseQualityUpdatesStartTime" -Type String -Value "" -ErrorAction SilentlyContinue | Out-Null
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -Name "ActiveHoursEnd" -Type DWord -Value 2 -ErrorAction SilentlyContinue | Out-Null
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings" -Name "ActiveHoursEnd" -Type DWord -Value 2 -ErrorAction SilentlyContinue | Out-Null
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -Name "ActiveHoursStart" -Type DWord -Value 8 -ErrorAction SilentlyContinue | Out-Null
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings" -Name "ActiveHoursStart" -Type DWord -Value 8 -ErrorAction SilentlyContinue | Out-Null
 }
 
-Function InstallProgs {
+#Utilizing Clolors For Better Warning Messages!
+function Write-ColorOutput
+{
+    [CmdletBinding()]
+    Param(
+         [Parameter(Mandatory=$False,Position=1,ValueFromPipeline=$True,ValueFromPipelinebyPropertyName=$True)][Object] $Object,
+         [Parameter(Mandatory=$False,Position=2,ValueFromPipeline=$True,ValueFromPipelinebyPropertyName=$True)][ConsoleColor] $ForegroundColor,
+         [Parameter(Mandatory=$False,Position=3,ValueFromPipeline=$True,ValueFromPipelinebyPropertyName=$True)][ConsoleColor] $BackgroundColor,
+         [Switch]$NoNewline
+    )    
+
+    # Save previous colors
+    $previousForegroundColor = $host.UI.RawUI.ForegroundColor
+    $previousBackgroundColor = $host.UI.RawUI.BackgroundColor
+
+    # Set BackgroundColor if available
+    if($BackgroundColor -ne $null)
+    { 
+       $host.UI.RawUI.BackgroundColor = $BackgroundColor
+    }
+
+    # Set $ForegroundColor if available
+    if($ForegroundColor -ne $null)
+    {
+        $host.UI.RawUI.ForegroundColor = $ForegroundColor
+    }
+
+    # Always write (if we want just a NewLine)
+    if($Object -eq $null)
+    {
+        $Object = ""
+    }
+
+    if($NoNewline)
+    {
+        [Console]::Write($Object)
+    }
+    else
+    {
+        Write-Output $Object
+    }
+
+    # Restore previous colors
+    $host.UI.RawUI.ForegroundColor = $previousForegroundColor
+    $host.UI.RawUI.BackgroundColor = $previousBackgroundColor
+}
+
+Function InstallTitusProgs {
 	Write-Output "Installing Chocolatey"
 	Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 	choco install chocolatey-core.extension -y
 	Write-Output "Running O&O Shutup with Recommended Settings"
 	Import-Module BitsTransfer
-	Start-BitsTransfer -Source "https://raw.githubusercontent.com/ChrisTitusTech/win10script/master/ooshutup10.cfg" -Destination ooshutup10.cfg
+	Start-BitsTransfer -Source "https://raw.githubusercontent.com/DaddyMadu/Windows10GamingFocus/master/ooshutup10.cfg" -Destination ooshutup10.cfg
 	Start-BitsTransfer -Source "https://dl5.oo-software.com/files/ooshutup10/OOSU10.exe" -Destination OOSU10.exe
 	./OOSU10.exe ooshutup10.cfg /quiet
+	Start-Sleep -Second 10
+	remove-item ooshutup10.cfg -force -Recurse -ErrorAction SilentlyContinue
+	remove-item OOSU10.exe -force -Recurse -ErrorAction SilentlyContinue
 }
 
+# Install the latest Microsoft Visual C++ 2010-2019 Redistributable Packages and Silverlight
+Function InstallMVC {
+	choco install -y vcredist2010 | Out-Null
+}
 
-Function InstallBrave {
-	do
- {
-    Clear-Host
-    Write-Host "================ Do You Want to Install Brave Browser? ================"
-    Write-Host "Y: Press 'Y' to do this."
-    Write-Host "2: Press 'N' to skip this."
-	Write-Host "Q: Press 'Q' to stop the entire script."
-    $selection = Read-Host "Please make a selection"
-    switch ($selection)
-    {
-    'y' { 
-		Invoke-WebRequest -Uri "https://laptop-updates.brave.com/download/CHR253" -OutFile $env:USERPROFILE\Downloads\brave.exe
-		~/Downloads/brave.exe
-	}
-    'n' { Break }
-    'q' { Exit  }
-    }
- }
- until ($selection -match "y" -or $selection -match "n" -or $selection -match "q")
-	
+Function InstallSumatra {
+	Show-Choco-Menu -Title "Do you want to install lightweight Sumatra PDF Reader?" -ChocoInstall "sumatrapdf"
+}
+
+Function InstallChrome {
+	Show-Choco-Menu -Title "Do you want to install Google Chrome Browser?" -ChocoInstall "googlechrome"
 }
 Function Install7Zip {
-	Show-Choco-Menu -Title "Do you want to install 7-Zip?" -ChocoInstall "7zip"
+	Choco Install 7zip -y
+}
+
+Function InstallNotepadplusplus {
+	Show-Choco-Menu -Title "Do you want to install Notepad++?" -ChocoInstall "notepadplusplus"
 }
 
 Function InstallVLC {
 	Show-Choco-Menu -Title "Do you want to install VLC?" -ChocoInstall "vlc"
 }
 
-Function InstallOpenShell {
-	Show-Choco-Menu -Title "Do you want to install Open-Shell" -ChocoInstall "open-shell --pre"
+Function InstallIrfanview {
+	Show-Choco-Menu -Title "Do you want to install IrfanView PhotoViewer?" -ChocoInstall "irfanview"
 }
 
-Function InstallDiscord {
-	Show-Choco-Menu -Title "Do you want to install Discord" -ChocoInstall "discord"
-}
-
-Function InstallVSCode {
-	Show-Choco-Menu -Title "Do you want to install VS Code" -ChocoInstall "vscode"
+Function InstallChocoUpdates {
+        cls
+	choco upgrade all -y
 }
 
 Function ChangeDefaultApps {
 	Write-Output "Setting Default Programs - Notepad++ Brave VLC IrFanView"
-	Start-BitsTransfer -Source "https://raw.githubusercontent.com/ChrisTitusTech/win10script/master/MyDefaultAppAssociations.xml" -Destination $HOME\Desktop\MyDefaultAppAssociations.xml
+	Start-BitsTransfer -Source "https://raw.githubusercontent.com/DaddyMadu/Windows10GamingFocus/master/MyDefaultAppAssociations.xml" -Destination $HOME\Desktop\MyDefaultAppAssociations.xml
 	dism /online /Import-DefaultAppAssociations:"%UserProfile%\Desktop\MyDefaultAppAssociations.xml"
+}
+
+
+#Apply PC Optimizations
+Function ApplyPCOptimizations {
+        Write-Output "Applying PC Optimizations..."
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" -Name "SystemResponsiveness" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" -Name "NetworkThrottlingIndex" -Type DWord -Value 4294967295
+ }
+
+#Enable or Disable and remove xbox related apps
+Function askXBOX {
+	do
+ {
+    cls
+    Write-Host "================ Do You Want To Disable XBOX features and all related APPS? ================"
+	Write-ColorOutput "WARRNING: REMOVING XBOX APPS will make Win+G do nothing!" Red
+    Write-Host "Y: Press 'Y' to Disable XBOX features."
+    Write-Host "N: Press 'N' to Enable XBOX features."
+    Write-Host "Q: Press 'Q' to Skip this."
+    $selection = Read-Host "Please make a selection"
+    switch ($selection)
+    {
+    'y' { 
+	$errpref = $ErrorActionPreference #save actual preference
+        $ErrorActionPreference = "silentlycontinue"
+        Write-Output "Disabling Xbox features..."
+	Get-AppxPackage "Microsoft.XboxApp" | Remove-AppxPackage
+	Get-AppxPackage "Microsoft.XboxIdentityProvider" | Remove-AppxPackage -ErrorAction SilentlyContinue
+	Get-AppxPackage "Microsoft.XboxSpeechToTextOverlay" | Remove-AppxPackage
+	Get-AppxPackage "Microsoft.XboxGameOverlay" | Remove-AppxPackage
+	Get-AppxPackage "Microsoft.Xbox.TCUI" | Remove-AppxPackage
+	Set-ItemProperty -Path "HKCU:\System\GameConfigStore" -Name "GameDVR_Enabled" -Type DWord -Value 0
+	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR")) {
+		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR" | Out-Null
+	}
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR" -Name "AllowGameDVR" -Type DWord -Value 0
+        $ErrorActionPreference = $errpref #restore previous preference
+	cls
+	}
+    'n' {
+        $errpref = $ErrorActionPreference #save actual preference
+        $ErrorActionPreference = "silentlycontinue"
+        Write-Output "Enabling Xbox features..."
+	Get-AppxPackage -AllUsers "Microsoft.XboxApp" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
+	Get-AppxPackage -AllUsers "Microsoft.XboxIdentityProvider" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
+	Get-AppxPackage -AllUsers "Microsoft.XboxSpeechToTextOverlay" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
+	Get-AppxPackage -AllUsers "Microsoft.XboxGameOverlay" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
+	Get-AppxPackage -AllUsers "Microsoft.Xbox.TCUI" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
+	Set-ItemProperty -Path "HKCU:\System\GameConfigStore" -Name "GameDVR_Enabled" -Type DWord -Value 1
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR" -Name "AllowGameDVR" -ErrorAction SilentlyContinue
+        $ErrorActionPreference = $errpref #restore previous preference
+	cls
+		}
+    'q' { }
+    }
+ }
+ until ($selection -match "y" -or $selection -match "n" -or $selection -match "q")
+	
+}
+
+#Enable Or Disable MSI Mode For Supported Cards, WARRNING ENABLING MSI MODE MIGHT CRUSH YOUR SYSTEM! IF IT HAPPENS PLEASE RESTORE LAST WORKING SYSTEM RESTORE POINT AND DON'T ENABLE MSI MODE ON THIS SYSTEM AGAIN!
+Function MSIMode {
+$errpref = $ErrorActionPreference #save actual preference
+$ErrorActionPreference = "silentlycontinue"
+$GPUIDS = @(
+(wmic path win32_VideoController get PNPDeviceID | Select-Object -Skip 2 | Format-List | Out-String).Trim()
+    )
+    foreach ($GPUID in $GPUIDS) {
+$CheckDeviceDes = (Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Enum\$GPUID").DeviceDesc
+    } if(($CheckDeviceDes -like "*GTX*") -or ($CheckDeviceDes -like "*RTX*") -or ($CheckDeviceDes -like "*AMD*")) {
+  'GTX/RTX/AMD Compatible Card Found! Enabling MSI Mode...'
+  New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Enum\$GPUID\Device Parameters\Interrupt Management\MessageSignaledInterruptProperties\" -Force | Out-Null
+  Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Enum\$GPUID\Device Parameters\Interrupt Management\MessageSignaledInterruptProperties\" -Name "MSISupported" -Type DWord -Value 1
+} else {
+  'No GTX/RTX/AMD Compatible Card Found! Skiping...'
+}
+$ErrorActionPreference = $errpref #restore previous preference	
 }
 
 ##########
@@ -377,6 +473,8 @@ Function ChangeDefaultApps {
 # In such case, enable telemetry, run Windows update and then disable telemetry again. See also https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/57
 Function DisableTelemetry {
 	Write-Output "Disabling Telemetry..."
+	$errpref = $ErrorActionPreference #save actual preference
+        $ErrorActionPreference = "silentlycontinue"
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 0
@@ -386,11 +484,14 @@ Function DisableTelemetry {
 	Disable-ScheduledTask -TaskName "Microsoft\Windows\Customer Experience Improvement Program\Consolidator" | Out-Null
 	Disable-ScheduledTask -TaskName "Microsoft\Windows\Customer Experience Improvement Program\UsbCeip" | Out-Null
 	Disable-ScheduledTask -TaskName "Microsoft\Windows\DiskDiagnostic\Microsoft-Windows-DiskDiagnosticDataCollector" | Out-Null
+	$ErrorActionPreference = $errpref #restore previous preference
 }
 
 # Enable Telemetry
 Function EnableTelemetry {
 	Write-Output "Enabling Telemetry..."
+	$errpref = $ErrorActionPreference #save actual preference
+        $ErrorActionPreference = "silentlycontinue"
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 3
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 3
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -ErrorAction SilentlyContinue
@@ -400,6 +501,7 @@ Function EnableTelemetry {
 	Enable-ScheduledTask -TaskName "Microsoft\Windows\Customer Experience Improvement Program\Consolidator" | Out-Null
 	Enable-ScheduledTask -TaskName "Microsoft\Windows\Customer Experience Improvement Program\UsbCeip" | Out-Null
 	Enable-ScheduledTask -TaskName "Microsoft\Windows\DiskDiagnostic\Microsoft-Windows-DiskDiagnosticDataCollector" | Out-Null
+	$ErrorActionPreference = $errpref #restore previous preference
 }
 
 # Disable Wi-Fi Sense
@@ -542,6 +644,7 @@ Function DisableLocationTracking {
 	}
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location" -Name "Value" -Type String -Value "Deny"
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Sensor\Overrides\{BFA794E4-F964-4FDB-90F6-51056BFE4B44}" -Name "SensorPermissionState" -Type DWord -Value 0
+	New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\lfsvc\Service\Configuration" -Force | Out-Null
 	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\lfsvc\Service\Configuration" -Name "Status" -Type DWord -Value 0
 }
 
@@ -658,6 +761,7 @@ Function EnableCortana {
 Function DisableErrorReporting {
 	Write-Output "Disabling Error reporting..."
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\Windows Error Reporting" -Name "Disabled" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\Windows Error Reporting" -Name "Disabled" -Type DWord -Value 1
 	Disable-ScheduledTask -TaskName "Microsoft\Windows\Windows Error Reporting\QueueReporting" | Out-Null
 }
 
@@ -671,10 +775,14 @@ Function EnableErrorReporting {
 # Restrict Windows Update P2P only to local network - Needed only for 1507 as local P2P is the default since 1511
 Function SetP2PUpdateLocal {
 	Write-Output "Restricting Windows Update P2P only to local network..."
+	$errpref = $ErrorActionPreference #save actual preference
+        $ErrorActionPreference = "silentlycontinue"
 	If (!(Test-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\DeliveryOptimization\Config")) {
 		New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\DeliveryOptimization\Config" | Out-Null
 	}
-	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\DeliveryOptimization\Config" -Name "DODownloadMode" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\DeliveryOptimization\Config" -Name "DODownloadMode" -Type DWord -Value 1 | Out-Null -ErrorAction SilentlyContinue
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\DeliveryOptimization" -Name "DODownloadMode" -Type DWord -Value 1 -Force | Out-Null
+	$ErrorActionPreference = $errpref #restore previous preference
 }
 
 # Unrestrict Windows Update P2P
@@ -714,14 +822,13 @@ Function EnableWAPPush {
 
 # Disable New Windows 10 21h1 News Feed
 Function DisableNewsFeed {
-    Write-Output "Disabling Windows 10 News and Interests Feed..."
-If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds")) {
-    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" -Force | Out-Null
-}
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" -Name "EnableFeeds" -Type DWord -Value 0
-Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Feeds" -Name "ShellFeedsTaskbarViewMode" -Type DWord -Value 2
-}
-
+        Write-Output "Disabling Windows 10 News and Interests Feed..."
+	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds")) {
+		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" -Force | Out-Null
+	}
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" -Name "EnableFeeds" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Feeds" -Name "ShellFeedsTaskbarViewMode" -Type DWord -Value 2
+	}
 
 ##########
 # Security Tweaks
@@ -847,36 +954,25 @@ Function EnableNetDevicesAutoInst {
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\NcdAutoSetup\Private" -Name "AutoSetup" -ErrorAction SilentlyContinue
 }
 
-# Enable Controlled Folder Access (Defender Exploit Guard feature) - Applicable to 1709 or newer, requires Windows Defender to be enabled
-Function EnableCtrldFolderAccess {
-	Write-Output "Enabling Controlled Folder Access..."
-	Set-MpPreference -EnableControlledFolderAccess Enabled
-}
-
-# Disable Controlled Folder Access (Defender Exploit Guard feature) - Applicable to 1709 or newer, requires Windows Defender to be enabled
-Function DisableCtrldFolderAccess {
-	Write-Output "Disabling Controlled Folder Access..."
-	Set-MpPreference -EnableControlledFolderAccess Disabled
-}
-
-# Disable Firewall
-Function DisableFirewall {
-	Write-Output "Disabling Firewall..."
-	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\StandardProfile")) {
+#Ask User If He Want to Enable Or Disable Windows Defender
+Function askDefender {
+	
+	do
+ {
+    cls
+    Write-Host "================ Do you want to Disable Microsoft Windows Defender? ================"
+    Write-Host "Y: Press 'Y' to Disable Microsoft Windows Defender."
+    Write-Host "N: Press 'N' to Enable Microsoft Windows Defender."
+	Write-Host "Q: Press 'Q' to Skip this."
+    $selection = Read-Host "Please make a selection"
+    switch ($selection)
+    {
+    'y' { 
+	Write-Output "Disabling Microsoft Windows Defender and related Processes..."
+        If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\StandardProfile")) {
 		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\StandardProfile" -Force | Out-Null
 	}
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\StandardProfile" -Name "EnableFirewall" -Type DWord -Value 0
-}
-
-# Enable Firewall
-Function EnableFirewall {
-	Write-Output "Enabling Firewall..."
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\StandardProfile" -Name "EnableFirewall" -ErrorAction SilentlyContinue
-}
-
-# Disable Windows Defender
-Function DisableDefender {
-	Write-Output "Disabling Windows Defender..."
 	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender")) {
 		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Force | Out-Null
 	}
@@ -886,58 +982,145 @@ Function DisableDefender {
 	} ElseIf ([System.Environment]::OSVersion.Version.Build -ge 15063) {
 		Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" -Name "SecurityHealth" -ErrorAction SilentlyContinue
 	}
-}
-
-# Enable Windows Defender
-Function EnableDefender {
-	Write-Output "Enabling Windows Defender..."
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name "DisableAntiSpyware" -ErrorAction SilentlyContinue
-	If ([System.Environment]::OSVersion.Version.Build -eq 14393) {
-		Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" -Name "WindowsDefender" -Type ExpandString -Value "`"%ProgramFiles%\Windows Defender\MSASCuiL.exe`""
-	} ElseIf ([System.Environment]::OSVersion.Version.Build -ge 15063) {
-		Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" -Name "SecurityHealth" -Type ExpandString -Value "`"%ProgramFiles%\Windows Defender\MSASCuiL.exe`""
-	}
-}
-
-# Disable Windows Defender Cloud
-Function DisableDefenderCloud {
-	Write-Output "Disabling Windows Defender Cloud..."
 	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet")) {
 		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" -Force | Out-Null
 	}
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" -Name "SpynetReporting" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" -Name "SubmitSamplesConsent" -Type DWord -Value 2
-}
-
-# Enable Windows Defender Cloud
-Function EnableDefenderCloud {
-	Write-Output "Enabling Windows Defender Cloud..."
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name "PUAProtection" -ErrorAction SilentlyContinue
+	Set-MpPreference -EnableControlledFolderAccess Disabled -ErrorAction SilentlyContinue
+	Disable-ScheduledTask -TaskName "\Microsoft\Windows\Windows Defender\Windows Defender Cache Maintenance" | Out-Null
+    Disable-ScheduledTask -TaskName "\Microsoft\Windows\Windows Defender\Windows Defender Cleanup" | Out-Null
+    Disable-ScheduledTask -TaskName "\Microsoft\Windows\Windows Defender\Windows Defender Scheduled Scan" | Out-Null
+    Disable-ScheduledTask -TaskName "\Microsoft\Windows\Windows Defender\Windows Defender Verification" | Out-Null
+    cls
+	}
+    'n' {
+        Write-Output "Enabling Microsoft Windows Defender and related Processes..."
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\StandardProfile" -Name "EnableFirewall" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name "DisableAntiSpyware" -ErrorAction SilentlyContinue
+	If ([System.Environment]::OSVersion.Version.Build -eq 14393) {
+		Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" -Name "WindowsDefender" -Type ExpandString -Value "`"%ProgramFiles%\Windows Defender\MSASCuiL.exe`""
+	} ElseIf ([System.Environment]::OSVersion.Version.Build -ge 15063) {
+		Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" -Name "SecurityHealth" -Type ExpandString -Value "%windir%\system32\SecurityHealthSystray.exe"
+	}
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" -Name "SpynetReporting" -ErrorAction SilentlyContinue
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" -Name "SubmitSamplesConsent" -ErrorAction SilentlyContinue
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name "PUAProtection" -Type DWord -Value 1
+	Enable-ScheduledTask -TaskName "\Microsoft\Windows\Windows Defender\Windows Defender Cache Maintenance" | Out-Null
+    Enable-ScheduledTask -TaskName "\Microsoft\Windows\Windows Defender\Windows Defender Cleanup" | Out-Null
+    Enable-ScheduledTask -TaskName "\Microsoft\Windows\Windows Defender\Windows Defender Scheduled Scan" | Out-Null
+    Enable-ScheduledTask -TaskName "\Microsoft\Windows\Windows Defender\Windows Defender Verification" | Out-Null
+	Set-MpPreference -EnableControlledFolderAccess Disabled -ErrorAction SilentlyContinue
+	cls
+		}
+    'q' {  }
+    }
+ }
+ until ($selection -match "y" -or $selection -match "n" -or $selection -match "q")
+	
+}
+
+#Ask User If He Want to Enable Or Disable Microsoft Software Protection Platform Service
+Function askMSPPS {
+	
+	do
+ {
+    cls
+    Write-Host "================ Do you have High CPU Usage from Microsoft Software Protection Platform Service? ================"
+	Write-ColorOutput "Warrning: Windows Default is ENABLED, if you Disabled it, Windows 10/Office will show not activated state but you can use it as normal" Red
+    Write-Host "Y: Press 'Y' to Disable this."
+    Write-Host "N: Press 'N' to Enable this."
+	Write-Host "Q: Press 'Q' to stop the entire script."
+    $selection = Read-Host "Please make a selection"
+    switch ($selection)
+    {
+    'y' { 
+	    Write-Output "Disabling Microsoft Software Protection Platform Service and related Processes..."
+		Disable-ScheduledTask -TaskName "\Microsoft\Windows\SoftwareProtectionPlatform\SvcRestartTask" | Out-Null
+		Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\sppsvc" -Name "Start" -Type DWord -Value 4 -ErrorAction SilentlyContinue
+		cls
+	}
+    'n' {
+        Write-Output "Enabling Microsoft Software Protection Platform Service and related Processes..."
+	    Enable-ScheduledTask -TaskName "\Microsoft\Windows\SoftwareProtectionPlatform\SvcRestartTask" | Out-Null
+		Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\sppsvc" -Name "Start" -Type DWord -Value 2 -ErrorAction SilentlyContinue
+		cls
+		}
+    'q' { Exit  }
+    }
+ }
+ until ($selection -match "y" -or $selection -match "n" -or $selection -match "q")
+	
+}
+
+#Ask User If He Want to Enable Or Disable Microsoft Store and WSAPPX Service
+Function askMSWSAPPX {
+	
+	do
+ {
+    cls
+    Write-Host "================ Do you want to disable Microsoft Store and Disable WSAPPX Service? ================"
+	Write-ColorOutput "Warrning: Windows Default is ENABLED, if you Disabled it and wanted to enable it again and restore Microsoft Store Please run the script twise and choose N" Red
+    Write-Host "Y: Press 'Y' to Disable this."
+    Write-Host "N: Press 'N' to Enable this."
+	Write-Host "Q: Press 'Q' to stop the entire script."
+    $selection = Read-Host "Please make a selection"
+    switch ($selection)
+    {
+    'y' { 
+	    Write-Output "Disabling Microsoft Store and WSAPPX Service..."
+	        $errpref = $ErrorActionPreference #save actual preference
+                $ErrorActionPreference = "silentlycontinue"
+		Get-AppxPackage "Microsoft.DesktopAppInstaller" | Remove-AppxPackage -ErrorAction SilentlyContinue
+		Get-AppxPackage "Microsoft.WindowsStore" | Remove-AppxPackage -ErrorAction SilentlyContinue
+		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsStore" -Force | Out-Null
+		Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsStore" -Name "DisableStoreApps" -Type DWord -Value 1 -ErrorAction SilentlyContinue
+		Set-ItemProperty -Path "HKLM:\SYSTEM\ControlSet001\Services\AppXSvc" -Name "Start" -Type DWord -Value 4 -ErrorAction SilentlyContinue
+		$ErrorActionPreference = $errpref #restore previous preference
+		cls
+	}
+    'n' {
+        Write-Output "Enabling Microsoft Store and WSAPPX Service..."
+		$errpref = $ErrorActionPreference #save actual preference
+                $ErrorActionPreference = "silentlycontinue"
+		Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsStore" -Name "DisableStoreApps" -ErrorAction SilentlyContinue
+		Remove-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsStore" -Force | Out-Null
+		Set-ItemProperty -Path "HKLM:\SYSTEM\ControlSet001\Services\AppXSvc" -Name "Start" -Type DWord -Value 3 -ErrorAction SilentlyContinue
+		Get-AppxPackage -AllUsers "Microsoft.DesktopAppInstaller" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"} -ErrorAction SilentlyContinue
+		Get-AppxPackage -AllUsers "Microsoft.WindowsStore" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"} -ErrorAction SilentlyContinue
+		$ErrorActionPreference = $errpref #restore previous preference
+		cls
+		}
+    'q' { Exit  }
+    }
+ }
+ until ($selection -match "y" -or $selection -match "n" -or $selection -match "q")
+	
 }
 
 # Enable F8 boot menu options
 Function EnableF8BootMenu {
 	Write-Output "Enabling F8 boot menu options..."
-	bcdedit /set `{current`} bootmenupolicy Legacy | Out-Null
+	bcdedit /set bootmenupolicy Legacy | Out-Null
 }
 
 # Disable F8 boot menu options
 Function DisableF8BootMenu {
 	Write-Output "Disabling F8 boot menu options..."
-	bcdedit /set `{current`} bootmenupolicy Standard | Out-Null
+	bcdedit /set bootmenupolicy Standard | Out-Null
 }
 
 # Set Data Execution Prevention (DEP) policy to OptOut
 Function SetDEPOptOut {
 	Write-Output "Setting Data Execution Prevention (DEP) policy to OptOut..."
-	bcdedit /set `{current`} nx OptOut | Out-Null
+	bcdedit /set nx OptOut | Out-Null
 }
 
 # Set Data Execution Prevention (DEP) policy to OptIn
 Function SetDEPOptIn {
 	Write-Output "Setting Data Execution Prevention (DEP) policy to OptIn..."
-	bcdedit /set `{current`} nx OptIn | Out-Null
+	bcdedit /set nx OptIn | Out-Null
 }
 
 # Enable Core Isolation Memory Integrity - Part of Windows Defender System Guard virtualization-based security - Supported from 1803
@@ -1001,438 +1184,29 @@ Function DisableMeltdownCompatFlag {
 }
 
 
-##########
-# Useless Services
-##########
-
-# Stop and disable Application Layer Gateway Service
-Function Disable{
-	Write-Output"Disabling... ApplicationLayerGatewayService"
-	Stop-Service"ALG"-WarningActionSilentlyContinue
-	Set-Service"ALG"-StartupTypeDisabled
-
-}
-
-# Stop and disable AllJoyn Router Service
-Function DisableAJRouter{
-	Write-Output"Disabling... AllJoyn Router Service"
-	Stop-Service"AJRouter"-WarningActionSilentlyContinue
-	Set-Service"AJRouter"-StartupTypeDisabled
-
-}
-
-# Stop and disable Xbox Live Auth Manager
-Function DisableXblAuthManager{
-	Write-Output"Disabling... Xbox Live Auth Manager"
-	Stop-Service"XblAuthManager"-WarningActionSilentlyContinue
-	Set-Service"XblAuthManager"-StartupTypeDisabled
-
-}
-
-# Stop and disable Xbox Live Game Save
-Function DisableXblGameSave{
-	Write-Output"Disabling... Xbox Live Game Save"
-	Stop-Service"XblGameSave"-WarningActionSilentlyContinue
-	Set-Service"XblGameSave"-StartupTypeDisabled
-
-}
-
-# Stop and disable Xbox Live NetwoWindows Search
-Function DisableXboxNetApiSvc{
-	Write-Output"Disabling... Xbox Live NetwoWindows Search"
-	Stop-Service"XboxNetApiSvc"-WarningActionSilentlyContinue
-	Set-Service"XboxNetApiSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Search
-Function DisableWSearch{
-	Write-Output"Disabling... Windows Search"
-	Stop-Service"WSearch"-WarningActionSilentlyContinue
-	Set-Service"WSearch"-StartupTypeDisabled
-
-}
-
-# Stop and disable Geolocation Service
-Function Disablefhsvc{
-	Write-Output"Disabling... Geolocation Service"
-	Stop-Service"fhsvc"-WarningActionSilentlyContinue
-	Set-Service"fhsvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Remote Registry
-Function DisableRemoteRegistry{
-	Write-Output"Disabling... Remote Registry"
-	Stop-Service"RemoteRegistry"-WarningActionSilentlyContinue
-	Set-Service"RemoteRegistry"-StartupTypeDisabled
-
-}
-
-# Stop and disable Parental Control
-Function DisableWpcMonSvc{
-	Write-Output"Disabling... Parental Control"
-	Stop-Service"WpcMonSvc"-WarningActionSilentlyContinue
-	Set-Service"WpcMonSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Payments and NFC/SE Manager
-Function DisableSEMgrSvc{
-	Write-Output"Disabling... Payments and NFC/SE Manager"
-	Stop-Service"SEMgrSvc"-WarningActionSilentlyContinue
-	Set-Service"SEMgrSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Smartcard
-Function DisableSCardSvr{
-	Write-Output"Disabling... Smartcard"
-	Stop-Service"SCardSvr"-WarningActionSilentlyContinue
-	Set-Service"SCardSvr"-StartupTypeDisabled
-
-}
-
-# Stop and disable Netlogon
-Function DisableNetlogon{
-	Write-Output"Disabling... Netlogon"
-	Stop-Service"Netlogon"-WarningActionSilentlyContinue
-	Set-Service"Netlogon"-StartupTypeDisabled
-
-}
-
-# Stop and disable Offline Files
-Function DisableCscService{
-	Write-Output"Disabling... Offline Files"
-	Stop-Service"CscService"-WarningActionSilentlyContinue
-	Set-Service"CscService"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Mobile Hotspot Service
-Function Disableicssvc{
-	Write-Output"Disabling... Windows Mobile Hotspot Service"
-	Stop-Service"icssvc"-WarningActionSilentlyContinue
-	Set-Service"icssvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Insider Service
-Function Disablewisvc{
-	Write-Output"Disabling... Windows Insider Service"
-	Stop-Service"wisvc"-WarningActionSilentlyContinue
-	Set-Service"wisvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Retail Demo Service
-Function DisableRetailDemo{
-	Write-Output"Disabling... Retail Demo Service"
-	Stop-Service"RetailDemo"-WarningActionSilentlyContinue
-	Set-Service"RetailDemo"-StartupTypeDisabled
-
-}
-
-# Stop and disable WalletService
-Function DisableWalletService{
-	Write-Output"Disabling... WalletService"
-	Stop-Service"WalletService"-WarningActionSilentlyContinue
-	Set-Service"WalletService"-StartupTypeDisabled
-
-}
-
-# Stop and disable Fax
-Function DisableFax{
-	Write-Output"Disabling... Fax"
-	Stop-Service"Fax"-WarningActionSilentlyContinue
-	Set-Service"Fax"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Biometric Service
-Function DisableWbioSrvc{
-	Write-Output"Disabling... Windows Biometric Service"
-	Stop-Service"WbioSrvc"-WarningActionSilentlyContinue
-	Set-Service"WbioSrvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable IP Helper
-Function Disableiphlpsvc{
-	Write-Output"Disabling... IP Helper"
-	Stop-Service"iphlpsvc"-WarningActionSilentlyContinue
-	Set-Service"iphlpsvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Connect Now
-Function Disablewcncsvc{
-	Write-Output"Disabling... Windows Connect Now"
-	Stop-Service"wcncsvc"-WarningActionSilentlyContinue
-	Set-Service"wcncsvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable File History Service
-Function Disablefhsvc{
-	Write-Output"Disabling... File History Service"
-	Stop-Service"fhsvc"-WarningActionSilentlyContinue
-	Set-Service"fhsvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Phone Service
-Function DisablePhoneSvc{
-	Write-Output"Disabling... Phone Service"
-	Stop-Service"PhoneSvc"-WarningActionSilentlyContinue
-	Set-Service"PhoneSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Secondary Logon
-Function Disableseclogon{
-	Write-Output"Disabling... Secondary Logon"
-	Stop-Service"seclogon"-WarningActionSilentlyContinue
-	Set-Service"seclogon"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Camera Frame Server
-Function DisableFrameServer{
-	Write-Output"Disabling... Windows Camera Frame Server"
-	Stop-Service"FrameServer"-WarningActionSilentlyContinue
-	Set-Service"FrameServer"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Image Acquisition
-Function Disablestisvc{
-	Write-Output"Disabling... Windows Image Acquisition"
-	Stop-Service"stisvc"-WarningActionSilentlyContinue
-	Set-Service"stisvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Program Compatibility Assistant Service
-Function DisablePcaSvc{
-	Write-Output"Disabling... Program Compatibility Assistant Service"
-	Stop-Service"PcaSvc"-WarningActionSilentlyContinue
-	Set-Service"PcaSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Diagnostic Policy Service
-Function DisableDPS{
-	Write-Output"Disabling... Diagnostic Policy Service"
-	Stop-Service"DPS"-WarningActionSilentlyContinue
-	Set-Service"DPS"-StartupTypeDisabled
-
-}
-
-# Stop and disable Download Maps Manager
-Function DisableMapsBroker{
-	Write-Output"Disabling... Download Maps Manager"
-	Stop-Service"MapsBroker"-WarningActionSilentlyContinue
-	Set-Service"MapsBroker"-StartupTypeDisabled
-
-}
-
-# Stop and disable Bluetooth Support Service
-Function Disablebthserv{
-	Write-Output"Disabling... Bluetooth Support Service"
-	Stop-Service"bthserv"-WarningActionSilentlyContinue
-	Set-Service"bthserv"-StartupTypeDisabled
-
-}
-
-# Stop and disable Bitlocker
-Function DisableBDESVC{
-	Write-Output"Disabling... Bitlocker"
-	Stop-Service"BDESVC"-WarningActionSilentlyContinue
-	Set-Service"BDESVC"-StartupTypeDisabled
-
-}
-
-# Stop and disable AVCTP Service
-Function DisableBthAvctpSvc{
-	Write-Output"Disabling... AVCTP Service"
-	Stop-Service"BthAvctpSvc"-WarningActionSilentlyContinue
-	Set-Service"BthAvctpSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Connected User Experience and Telemetry
-Function DisableDiagTrack{
-	Write-Output"Disabling... Connected User Experience and Telemetry"
-	Stop-Service"DiagTrack"-WarningActionSilentlyContinue
-	Set-Service"DiagTrack"-StartupTypeDisabled
-
-}
-
-# Stop and disable Certificate Propagation
-Function DisableCertPropSvc{
-	Write-Output"Disabling... Certificate Propagation"
-	Stop-Service"CertPropSvc"-WarningActionSilentlyContinue
-	Set-Service"CertPropSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Diagnostic Service Host
-Function DisableWdiServiceHost{
-	Write-Output"Disabling... Diagnostic Service Host"
-	Stop-Service"WdiServiceHost"-WarningActionSilentlyContinue
-	Set-Service"WdiServiceHost"-StartupTypeDisabled
-
-}
-
-# Stop and disable TCP/IP NetBIOS Helper
-Function Disablelmhosts{
-	Write-Output"Disabling... TCP/IP NetBIOS Helper"
-	Stop-Service"lmhosts"-WarningActionSilentlyContinue
-	Set-Service"lmhosts"-StartupTypeDisabled
-
-}
-
-# Stop and disable Diagnostic System Host
-Function DisableWdiSystemHost{
-	Write-Output"Disabling... Diagnostic System Host"
-	Stop-Service"WdiSystemHost"-WarningActionSilentlyContinue
-	Set-Service"WdiSystemHost"-StartupTypeDisabled
-
-}
-
-# Stop and disable Distributed Link Tracking Client
-Function DisableTrkWks{
-	Write-Output"Disabling... Distributed Link Tracking Client"
-	Stop-Service"TrkWks"-WarningActionSilentlyContinue
-	Set-Service"TrkWks"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Error Reporting Service
-Function DisableWerSvc{
-	Write-Output"Disabling... Windows Error Reporting Service"
-	Stop-Service"WerSvc"-WarningActionSilentlyContinue
-	Set-Service"WerSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Touch Keyboard and Handwriting Panel Service
-Function DisableTabletInputService{
-	Write-Output"Disabling... Touch Keyboard and Handwriting Panel Service"
-	Stop-Service"TabletInputService"-WarningActionSilentlyContinue
-	Set-Service"TabletInputService"-StartupTypeDisabled
-
-}
-
-# Stop and disable Enterprise App Management Service
-Function DisableEntAppSvc{
-	Write-Output"Disabling... Enterprise App Management Service"
-	Stop-Service"EntAppSvc"-WarningActionSilentlyContinue
-	Set-Service"EntAppSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Print Spooler
-Function DisableSpooler{
-	Write-Output"Disabling... Print Spooler"
-	Stop-Service"Spooler"-WarningActionSilentlyContinue
-	Set-Service"Spooler"-StartupTypeDisabled
-
-}
-
-# Stop and disable GameDVR and Broadcast
-Function DisableBcastDVRUserService{
-	Write-Output"Disabling... GameDVR and Broadcast"
-	Stop-Service"BcastDVRUserService"-WarningActionSilentlyContinue
-	Set-Service"BcastDVRUserService"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Media Player Network Sharing Service
-Function DisableWMPNetworkSvc{
-	Write-Output"Disabling... Windows Media Player Network Sharing Service"
-	Stop-Service"WMPNetworkSvc"-WarningActionSilentlyContinue
-	Set-Service"WMPNetworkSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Microsoft Diagnostics Hub Standard Collector Service
-Function Disablediagnosticshub.standardcollector.service{
-	Write-Output"Disabling... Microsoft Diagnostics Hub Standard Collector Service"
-	Stop-Service"diagnosticshub.standardcollector.service"-WarningActionSilentlyContinue
-	Set-Service"diagnosticshub.standardcollector.service"-StartupTypeDisabled
-
-}
-
-# Stop and disable Device Management Enrollment Service
-Function DisableDmEnrollmentSvc{
-	Write-Output"Disabling... Device Management Enrollment Service"
-	Stop-Service"DmEnrollmentSvc"-WarningActionSilentlyContinue
-	Set-Service"DmEnrollmentSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable PNRP Machine Name Publication Service
-Function DisablePNRPAutoReg{
-	Write-Output"Disabling... PNRP Machine Name Publication Service"
-	Stop-Service"PNRPAutoReg"-WarningActionSilentlyContinue
-	Set-Service"PNRPAutoReg"-StartupTypeDisabled
-
-}
-
-# Stop and disable Microsoft Account Sign-in Assistant
-Function Disablewlidsvc{
-	Write-Output"Disabling... Microsoft Account Sign-in Assistant"
-	Stop-Service"wlidsvc"-WarningActionSilentlyContinue
-	Set-Service"wlidsvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable ActiveX Installer
-Function DisableAXInstSV{
-	Write-Output"Disabling... ActiveX Installer"
-	Stop-Service"AXInstSV"-WarningActionSilentlyContinue
-	Set-Service"AXInstSV"-StartupTypeDisabled
-
-}
-
-# Stop and disable Auto Time Zone Updater
-Function Disabletzautoupdate{
-	Write-Output"Disabling... Auto Time Zone Updater"
-	Stop-Service"tzautoupdate"-WarningActionSilentlyContinue
-	Set-Service"tzautoupdate"-StartupTypeDisabled
-
-}
-
-# Stop and disable Sysmain
-Function DisableSysMain{
-	Write-Output"Disabling... Sysmain"
-	Stop-Service"SysMain"-WarningActionSilentlyContinue
-	Set-Service"SysMain"-StartupTypeDisabled
-
-}
-
-# Stop and disable Sensor Service
-Function DisableSensorService{
-	Write-Output"Disabling... Sensor Service"
-	Stop-Service"SensorService"-WarningActionSilentlyContinue
-	Set-Service"SensorService"-StartupTypeDisabled
-
-}
-
-# Stop and disable Routing and Remote Service
-Function DisableRemoteAccess{
-	Write-Output"Disabling... Routing and Remote Service"
-	Stop-Service"RemoteAccess"-WarningActionSilentlyContinue
-	Set-Service"RemoteAccess"-StartupTypeDisabled
-
-}
-
 
 ##########
 # Service Tweaks
 ##########
+#Disabling Un nessessary Services For Gaming
+Function DISGaming {
+	Write-Output "Stopping and disabling Un nessessary Services For Gaming..."
+	$errpref = $ErrorActionPreference #save actual preference
+    $ErrorActionPreference = "silentlycontinue"
+	Stop-Service "wisvc" -WarningAction SilentlyContinue
+	Set-Service "wisvc" -StartupType Disabled
+	Stop-Service "MapsBroker" -WarningAction SilentlyContinue
+	Set-Service "MapsBroker" -StartupType Disabled
+	Stop-Service "UmRdpService" -WarningAction SilentlyContinue
+	Set-Service "UmRdpService" -StartupType Disabled
+	Stop-Service "TrkWks" -WarningAction SilentlyContinue
+	Set-Service "TrkWks" -StartupType Disabled
+	Stop-Service "TermService" -WarningAction SilentlyContinue
+	Set-Service "TermService" -StartupType Disabled
+	Stop-Service "PcaSvc" -WarningAction SilentlyContinue
+	Set-Service "PcaSvc" -StartupType Disabled
+	$ErrorActionPreference = $errpref #restore previous preference
+}
 
 # Disable offering of Malicious Software Removal Tool through Windows Update
 Function DisableUpdateMSRT {
@@ -1501,18 +1275,24 @@ Function EnableUpdateRestart {
 # Stop and disable Home Groups services - Not applicable to 1803 and newer or Server
 Function DisableHomeGroups {
 	Write-Output "Stopping and disabling Home Groups services..."
+	$errpref = $ErrorActionPreference #save actual preference
+        $ErrorActionPreference = "silentlycontinue"
 	Stop-Service "HomeGroupListener" -WarningAction SilentlyContinue
 	Set-Service "HomeGroupListener" -StartupType Disabled
 	Stop-Service "HomeGroupProvider" -WarningAction SilentlyContinue
 	Set-Service "HomeGroupProvider" -StartupType Disabled
+	$ErrorActionPreference = $errpref #restore previous preference
 }
 
 # Enable and start Home Groups services - Not applicable to 1803 and newer or Server
 Function EnableHomeGroups {
 	Write-Output "Starting and enabling Home Groups services..."
+	$errpref = $ErrorActionPreference #save actual preference
+        $ErrorActionPreference = "silentlycontinue"
 	Set-Service "HomeGroupListener" -StartupType Manual
 	Set-Service "HomeGroupProvider" -StartupType Manual
 	Start-Service "HomeGroupProvider" -WarningAction SilentlyContinue
+		$ErrorActionPreference = $errpref #restore previous preference
 }
 
 # Disable Shared Experiences - Not applicable to Server
@@ -1544,9 +1324,12 @@ Function EnableRemoteAssistance {
 # Enable Remote Desktop w/o Network Level Authentication
 Function EnableRemoteDesktop {
 	Write-Output "Enabling Remote Desktop w/o Network Level Authentication..."
+	$errpref = $ErrorActionPreference #save actual preference
+        $ErrorActionPreference = "silentlycontinue"
 	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" -Name "UserAuthentication" -Type DWord -Value 0
-	Enable-NetFirewallRule -Name "RemoteDesktop*"
+	Enable-NetFirewallRule -Name "RemoteDesktop*" | Out-Null
+	$ErrorActionPreference = $errpref #restore previous preference
 }
 
 # Disable Remote Desktop
@@ -1644,16 +1427,38 @@ Function EnableIndexing {
 	Start-Service "WSearch" -WarningAction SilentlyContinue
 }
 
-# Set BIOS time to UTC
+# Set BIOS time to UTC #sc.exe config w32time start= delayed-auto#
 Function SetBIOSTimeUTC {
 	Write-Output "Setting BIOS time to UTC..."
 	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\TimeZoneInformation" -Name "RealTimeIsUniversal" -Type DWord -Value 1
+	Push-Location
+        Set-Location HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\DateTime\Servers
+        Set-ItemProperty . 0 "time.google.com"
+        Set-ItemProperty . "(Default)" "0"
+        Set-Location HKLM:\SYSTEM\CurrentControlSet\services\W32Time\Parameters
+        Set-ItemProperty . NtpServer "time.google.com"
+        Pop-Location
+        Stop-Service w32time
+	sc.exe config w32time start= auto
+        Start-Service w32time
+	W32tm /resync /force /nowait
 }
 
 # Set BIOS time to local time
 Function SetBIOSTimeLocal {
 	Write-Output "Setting BIOS time to Local time..."
 	Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\TimeZoneInformation" -Name "RealTimeIsUniversal" -ErrorAction SilentlyContinue
+	Push-Location
+        Set-Location HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\DateTime\Servers
+        Set-ItemProperty . 0 "time.google.com"
+        Set-ItemProperty . "(Default)" "0"
+        Set-Location HKLM:\SYSTEM\CurrentControlSet\services\W32Time\Parameters
+        Set-ItemProperty . NtpServer "time.google.com"
+        Pop-Location
+        Stop-Service w32time
+	sc.exe config w32time start= auto
+        Start-Service w32time
+	W32tm /resync /force /nowait
 }
 
 # Enable Hibernation - Do not use on Server with automatically started Hyper-V hvboot service as it may lead to BSODs (Win10 with Hyper-V is fine)
@@ -1728,23 +1533,117 @@ Function EnableFastStartup {
 	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Power" -Name "HiberbootEnabled" -Type DWord -Value 1
 }
 
+
 ##########
 # Windows Tweaks
 ##########
+#Disabling power throttling.
+Function PowerThrottlingOff {
+	Write-Output "Disabling power throttling..."
+	New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Power\PowerThrottling" -Force | Out-Null
+	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Power\PowerThrottling" -Name "PowerThrottlingOff" -Type DWord -Value 1
+}
+
+#Setting Processor scheduling.
+Function Win32PrioritySeparation {
+	Write-Output "Setting Processor scheduling..."
+	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\PriorityControl" -Name "Win32PrioritySeparation" -Type DWord -Value 0x00000026
+}
+
+#Disabling aero shake.
+Function DisableAERO {
+	Write-Output "Disabling aero shake..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "DisallowShaking" -Type DWord -Value 0
+}
+
+#Show BSOD details instead of the sad smiley.
+Function BSODdetails {
+	Write-Output "Show BSOD details instead of the sad smiley..."
+	Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\CrashControl" -Name "DisplayParameters" -Type DWord -Value 1
+}
+
+#Disabling live tiles.
+Function Disablelivetiles {
+	Write-Output "Disabling live tiles..."
+	New-Item -Path "HKCU:\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\PushNotifications" -ErrorAction SilentlyContinue | Out-Null
+	Set-ItemProperty -Path "HKCU:\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\PushNotifications" -Name "NoTileApplicationNotification" -Type DWord -Value 1
+}
+
+#Setting Wallpaper Quality to 100%.
+Function wallpaperquality {
+	Write-Output "Setting Wallpaper Quality to 100%..."
+	Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "JPEGImportQuality" -Type DWord -Value 100
+}
+
+#Disabling search history.
+Function DisableShistory {
+	Write-Output "Disabling search history..."
+	New-Item -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -ErrorAction SilentlyContinue | Out-Null
+	Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Name "DisableSearchBoxSuggestions" -Type DWord -Value 1
+}
+
+#Disabling "- Shortcut" Word.
+Function Disableshortcutword {
+	Write-Output "Disabling - Shortcut Word..."
+	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" -Name "link" -Type Binary -Value ([byte[]](0,0,0,0))
+}
+
+#Disabling Mouse Keys Keyboard Shortcut.
+Function DisableMouseKKS {
+	Write-Output "Disabling Mouse Keys Keyboard Shortcut..."
+	Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\MouseKeys" -Name "Flags" -Type String -Value "186"
+	Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\MouseKeys" -Name "MaximumSpeed" -Type String -Value "40"
+	Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\MouseKeys" -Name "TimeToMaximumSpeed" -Type String -Value "3000"
+}
+
+#Disabling Windows Transparency.
+Function DisableTransparency {
+	Write-Output "Disabling Windows Transparency..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "EnableTransparency" -Type DWord -Value 0
+}
+
+#Turning Off Safe Search.
+Function TurnOffSafeSearch {
+	Write-Output "Turning Off Safe Search..."
+	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\SearchSettings" -Name "SafeSearchMode" -Type DWord -Value 0
+}
+
+#Disabling Cloud Search.
+Function DisableCloudSearch {
+	Write-Output "Disabling Cloud Search..."
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name "AllowCloudSearch" -Type DWord -Value 0
+}
+
+#Disabling Device History.
+Function DisableDeviceHistory {
+	Write-Output "Disabling Device History..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name "DeviceHistoryEnabled" -Type DWord -Value 0
+}
+
+#Disabling Windows Remote Assistance.
+Function DisableRemoteAssistance {
+	Write-Output "Disabling Windows Remote Assistance..."
+	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Remote Assistance" -Name "fAllowFullControl" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Remote Assistance" -Name "fAllowToGetHelp" -Type DWord -Value 0
+}
+
+#Disabling Search Histroy.
+Function DisableSearchHistroy {
+	Write-Output "Disabling Search Histroy..."
+	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\SearchSettings" -Name "IsDeviceSearchHistoryEnabled" -Type DWord -Value 0
+}
 
 #Removing Microsoft MeetNow
 Function RemoveMeet {
-    Write-Output "Disabling Microsoft MeetNow..."
-$errpref = $ErrorActionPreference #save actual preference
-    $ErrorActionPreference = "silentlycontinue"
-Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "HideSCAMeetNow" -ErrorAction SilentlyContinue
-Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "HideSCAMeetNow" -ErrorAction SilentlyContinue
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "HideSCAMeetNow" -Type DWord -Value 1
-Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "HideSCAMeetNow" -Type DWord -Value 1
-$ErrorActionPreference = $errpref #restore previous preference
+        Write-Output "Disabling Microsoft MeetNow..."
+	$errpref = $ErrorActionPreference #save actual preference
+        $ErrorActionPreference = "silentlycontinue"
+	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "HideSCAMeetNow" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "HideSCAMeetNow" -ErrorAction SilentlyContinue
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "HideSCAMeetNow" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "HideSCAMeetNow" -Type DWord -Value 1
+	$ErrorActionPreference = $errpref #restore previous preference
 }
-
-
 ##########
 # UI Tweaks
 ##########
@@ -2040,14 +1939,15 @@ Function SetControlPanelCategories {
 Function SetVisualFXPerformance {
 	Write-Output "Adjusting visual effects for performance..."
 	Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "DragFullWindows" -Type String -Value 0
-	Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "MenuShowDelay" -Type String -Value 0
+	Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "MenuShowDelay" -Type String -Value 200
 	Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "UserPreferencesMask" -Type Binary -Value ([byte[]](144,18,3,128,16,0,0,0))
 	Set-ItemProperty -Path "HKCU:\Control Panel\Desktop\WindowMetrics" -Name "MinAnimate" -Type String -Value 0
 	Set-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name "KeyboardDelay" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ListviewAlphaSelect" -Type DWord -Value 0
-	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ListviewShadow" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ListviewShadow" -Type DWord -Value 1
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarAnimations" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" -Name "VisualFXSetting" -Type DWord -Value 3
+	Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "FontSmoothing" -Type String -Value 2
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\DWM" -Name "EnableAeroPeek" -Type DWord -Value 0
 }
 
@@ -2055,7 +1955,7 @@ Function SetVisualFXPerformance {
 Function SetVisualFXAppearance {
 	Write-Output "Adjusting visual effects for appearance..."
 	Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "DragFullWindows" -Type String -Value 1
-	Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "MenuShowDelay" -Type String -Value 400
+	Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "MenuShowDelay" -Type String -Value 200
 	Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "UserPreferencesMask" -Type Binary -Value ([byte[]](158,30,7,128,18,0,0,0))
 	Set-ItemProperty -Path "HKCU:\Control Panel\Desktop\WindowMetrics" -Name "MinAnimate" -Type String -Value 1
 	Set-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name "KeyboardDelay" -Type DWord -Value 1
@@ -2319,12 +2219,15 @@ Function HideMusicFromThisPC {
 # Show Music icon in This PC
 Function ShowMusicInThisPC {
 	Write-Output "Showing Music icon in This PC..."
+	$errpref = $ErrorActionPreference #save actual preference
+        $ErrorActionPreference = "silentlycontinue"
 	If (!(Test-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{3dfdf296-dbec-4fb4-81d1-6a3438bcf4de}")) {
 		New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{3dfdf296-dbec-4fb4-81d1-6a3438bcf4de}" | Out-Null
 	}
 	If (!(Test-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{1CF1260C-4DD0-4ebb-811F-33C572699FDE}")) {
 		New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{1CF1260C-4DD0-4ebb-811F-33C572699FDE}" | Out-Null
 	}
+        $ErrorActionPreference = $errpref #restore previous preference
 }
 
 # Hide Music icon from Explorer namespace - Hides the icon also from personal folders and open/save dialogs
@@ -2337,8 +2240,11 @@ Function HideMusicFromExplorer {
 # Show Music icon in Explorer namespace
 Function ShowMusicInExplorer {
 	Write-Output "Showing Music icon in Explorer namespace..."
+	$errpref = $ErrorActionPreference #save actual preference
+        $ErrorActionPreference = "silentlycontinue"
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{a0c69a99-21c8-4671-8703-7934162fcf1d}\PropertyBag" -Name "ThisPCPolicy" -Type String -Value "Show"
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{a0c69a99-21c8-4671-8703-7934162fcf1d}\PropertyBag" -Name "ThisPCPolicy" -Type String -Value "Show"
+	$ErrorActionPreference = $errpref #restore previous preference
 }
 
 # Hide Pictures icon from This PC - The icon remains in personal folders and open/save dialogs
@@ -2401,8 +2307,11 @@ Function HideVideosFromExplorer {
 # Show Videos icon in Explorer namespace
 Function ShowVideosInExplorer {
 	Write-Output "Showing Videos icon in Explorer namespace..."
+	$errpref = $ErrorActionPreference #save actual preference
+        $ErrorActionPreference = "silentlycontinue"
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{35286a68-3c57-41a1-bbb1-0eae73d76c95}\PropertyBag" -Name "ThisPCPolicy" -Type String -Value "Show"
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{35286a68-3c57-41a1-bbb1-0eae73d76c95}\PropertyBag" -Name "ThisPCPolicy" -Type String -Value "Show"
+	$ErrorActionPreference = $errpref #restore previous preference
 }
 
 # Hide 3D Objects icon from This PC - The icon remains in personal folders and open/save dialogs
@@ -2422,6 +2331,8 @@ Function Show3DObjectsInThisPC {
 # Hide 3D Objects icon from Explorer namespace - Hides the icon also from personal folders and open/save dialogs
 Function Hide3DObjectsFromExplorer {
 	Write-Output "Hiding 3D Objects icon from Explorer namespace..."
+	$errpref = $ErrorActionPreference #save actual preference
+        $ErrorActionPreference = "silentlycontinue"
 	If (!(Test-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag")) {
 		New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Force | Out-Null
 	}
@@ -2430,13 +2341,17 @@ Function Hide3DObjectsFromExplorer {
 		New-Item -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Force | Out-Null
 	}
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Name "ThisPCPolicy" -Type String -Value "Hide"
+	$ErrorActionPreference = $errpref #restore previous preference
 }
 
 # Show 3D Objects icon in Explorer namespace
 Function Show3DObjectsInExplorer {
 	Write-Output "Showing 3D Objects icon in Explorer namespace..."
+	Write-Output "Hiding 3D Objects icon from Explorer namespace..."
+	$errpref = $ErrorActionPreference #save actual preference
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Name "ThisPCPolicy" -ErrorAction SilentlyContinue
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Name "ThisPCPolicy" -ErrorAction SilentlyContinue
+	$ErrorActionPreference = $errpref #restore previous preference
 }
 
 # Disable thumbnails, show only file extension icons
@@ -2470,25 +2385,29 @@ Function EnableThumbsDB {
 ##########
 # Application Tweaks
 ##########
-
-# Disable OneDrive
-Function DisableOneDrive {
-	Write-Output "Disabling OneDrive..."
+# Option To Uninstall Or install OneDrive 
+Function DorEOneDrive {
+	
+	do
+ {
+    cls
+    Write-Host "================ Do you want to Disable Microsoft OneDrive? ================"
+    Write-Host "Y: Press 'Y' to Disable OneDrive."
+    Write-Host "N: Press 'N' to Enable OneDrive."
+	Write-Host "Q: Press 'Q' to Skip this."
+    $selection = Read-Host "Please make a selection"
+    switch ($selection)
+    {
+    'y' { 
+	Write-Output "Disabling Microsoft OneDrive and related Processes..."
+        # Disable OneDrive
+	$errpref = $ErrorActionPreference #save actual preference
+        $ErrorActionPreference = "silentlycontinue"
 	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive")) {
 		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" | Out-Null
 	}
-	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC" -Type DWord -Value 1
-}
-
-# Enable OneDrive
-Function EnableOneDrive {
-	Write-Output "Enabling OneDrive..."
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC" -ErrorAction SilentlyContinue
-}
-
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC" -Type DWord -Value 1 -ErrorAction SilentlyContinue
 # Uninstall OneDrive - Not applicable to Server
-Function UninstallOneDrive {
-	Write-Output "Uninstalling OneDrive..."
 	Stop-Process -Name "OneDrive" -ErrorAction SilentlyContinue
 	Start-Sleep -s 2
 	$onedrive = "$env:SYSTEMROOT\SysWOW64\OneDriveSetup.exe"
@@ -2508,211 +2427,35 @@ Function UninstallOneDrive {
 	}
 	Remove-Item -Path "HKCR:\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" -Recurse -ErrorAction SilentlyContinue
 	Remove-Item -Path "HKCR:\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" -Recurse -ErrorAction SilentlyContinue
-}
-
-# Install OneDrive - Not applicable to Server
-Function InstallOneDrive {
-	Write-Output "Installing OneDrive..."
+	reg load "hku\Default" "C:\Users\Default\NTUSER.DAT"
+        reg delete "HKEY_USERS\Default\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "OneDriveSetup" /f
+        reg unload "hku\Default"
+	Remove-Item -Force -ErrorAction SilentlyContinue "$env:userprofile\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\OneDrive.lnk"
+	Get-ScheduledTask -TaskPath '\' -TaskName 'OneDrive*' -ea SilentlyContinue | Unregister-ScheduledTask -Confirm:$false
+	$ErrorActionPreference = $errpref #restore previous preference
+	cls
+	}
+    'n' {
+        Write-Output "Enabling Microsoft OneDrive and related Processes..."
+	# Enable OneDrive
+	$errpref = $ErrorActionPreference #save actual preference
+        $ErrorActionPreference = "silentlycontinue"
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC" -ErrorAction SilentlyContinue
+	
+    # Install OneDrive - Not applicable to Server
 	$onedrive = "$env:SYSTEMROOT\SysWOW64\OneDriveSetup.exe"
 	If (!(Test-Path $onedrive)) {
 		$onedrive = "$env:SYSTEMROOT\System32\OneDriveSetup.exe"
 	}
 	Start-Process $onedrive -NoNewWindow
-}
-
-# Uninstall default Microsoft applications
-Function UninstallMsftBloat {
-	Write-Output "Uninstalling default Microsoft applications..."
-	Get-AppxPackage "Microsoft.3DBuilder" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.AppConnector" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.BingFinance" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.BingNews" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.BingSports" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.BingTranslator" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.BingWeather" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.CommsPhone" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.ConnectivityStore" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.GetHelp" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.Getstarted" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.Messaging" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.Microsoft3DViewer" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.MicrosoftPowerBIForWindows" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.MicrosoftSolitaireCollection" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.MicrosoftStickyNotes" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.NetworkSpeedTest" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.Office.OneNote" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.Office.Sway" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.OneConnect" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.People" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.Print3D" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.RemoteDesktop" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.Wallet" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.WindowsAlarms" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.WindowsCamera" | Remove-AppxPackage
-	Get-AppxPackage "microsoft.windowscommunicationsapps" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.WindowsFeedbackHub" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.WindowsMaps" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.WindowsPhone" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.Windows.Photos" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.WindowsSoundRecorder" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.ZuneMusic" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.ZuneVideo" | Remove-AppxPackage
-}
-
-# Install default Microsoft applications
-Function InstallMsftBloat {
-	Write-Output "Installing default Microsoft applications..."
-	Get-AppxPackage -AllUsers "Microsoft.3DBuilder" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.AppConnector" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.BingFinance" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.BingNews" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.BingSports" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.BingTranslator" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.BingWeather" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.CommsPhone" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.ConnectivityStore" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.GetHelp" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.Getstarted" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.Messaging" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.Microsoft3DViewer" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.MicrosoftPowerBIForWindows" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.MicrosoftSolitaireCollection" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.MicrosoftStickyNotes" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.MinecraftUWP" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.MSPaint" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.NetworkSpeedTest" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.Office.Sway" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.OneConnect" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.People" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.Print3D" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.RemoteDesktop" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.SkypeApp" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.Wallet" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.WindowsAlarms" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.WindowsCamera" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.windowscommunicationsapps" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.WindowsFeedbackHub" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.WindowsMaps" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.WindowsPhone" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.Windows.Photos" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.WindowsSoundRecorder" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.ZuneMusic" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.ZuneVideo" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-}
-# In case you have removed them for good, you can try to restore the files using installation medium as follows
-# New-Item C:\Mnt -Type Directory | Out-Null
-# dism /Mount-Image /ImageFile:D:\sources\install.wim /index:1 /ReadOnly /MountDir:C:\Mnt
-# robocopy /S /SEC /R:0 "C:\Mnt\Program Files\WindowsApps" "C:\Program Files\WindowsApps"
-# dism /Unmount-Image /Discard /MountDir:C:\Mnt
-# Remove-Item -Path C:\Mnt -Recurse
-
-# Uninstall default third party applications
-function UninstallThirdPartyBloat {
-	Write-Output "Uninstalling default third party applications..."
-	Get-AppxPackage "2414FC7A.Viber" | Remove-AppxPackage
-	Get-AppxPackage "41038Axilesoft.ACGMediaPlayer" | Remove-AppxPackage
-	Get-AppxPackage "46928bounde.EclipseManager" | Remove-AppxPackage
-	Get-AppxPackage "4DF9E0F8.Netflix" | Remove-AppxPackage
-	Get-AppxPackage "64885BlueEdge.OneCalendar" | Remove-AppxPackage
-	Get-AppxPackage "7EE7776C.LinkedInforWindows" | Remove-AppxPackage
-	Get-AppxPackage "828B5831.HiddenCityMysteryofShadows" | Remove-AppxPackage
-	Get-AppxPackage "89006A2E.AutodeskSketchBook" | Remove-AppxPackage
-	Get-AppxPackage "9E2F88E3.Twitter" | Remove-AppxPackage
-	Get-AppxPackage "A278AB0D.DisneyMagicKingdoms" | Remove-AppxPackage
-	Get-AppxPackage "A278AB0D.MarchofEmpires" | Remove-AppxPackage
-	Get-AppxPackage "ActiproSoftwareLLC.562882FEEB491" | Remove-AppxPackage
-	Get-AppxPackage "AdobeSystemsIncorporated.AdobePhotoshopExpress" | Remove-AppxPackage
-	Get-AppxPackage "CAF9E577.Plex" | Remove-AppxPackage
-	Get-AppxPackage "D52A8D61.FarmVille2CountryEscape" | Remove-AppxPackage
-	Get-AppxPackage "D5EA27B7.Duolingo-LearnLanguagesforFree" | Remove-AppxPackage
-	Get-AppxPackage "DB6EA5DB.CyberLinkMediaSuiteEssentials" | Remove-AppxPackage
-	Get-AppxPackage "DolbyLaboratories.DolbyAccess" | Remove-AppxPackage
-	Get-AppxPackage "Drawboard.DrawboardPDF" | Remove-AppxPackage
-	Get-AppxPackage "Facebook.Facebook" | Remove-AppxPackage
-	Get-AppxPackage "flaregamesGmbH.RoyalRevolt2" | Remove-AppxPackage
-	Get-AppxPackage "GAMELOFTSA.Asphalt8Airborne" | Remove-AppxPackage
-	Get-AppxPackage "KeeperSecurityInc.Keeper" | Remove-AppxPackage
-	Get-AppxPackage "king.com.BubbleWitch3Saga" | Remove-AppxPackage
-	Get-AppxPackage "king.com.CandyCrushSodaSaga" | Remove-AppxPackage
-	Get-AppxPackage "PandoraMediaInc.29680B314EFC2" | Remove-AppxPackage
-	Get-AppxPackage "SpotifyAB.SpotifyMusic" | Remove-AppxPackage
-	Get-AppxPackage "WinZipComputing.WinZipUniversal" | Remove-AppxPackage
-	Get-AppxPackage "XINGAG.XING" | Remove-AppxPackage
-}
-
-# Install default third party applications
-Function InstallThirdPartyBloat {
-	Write-Output "Installing default third party applications..."
-	Get-AppxPackage -AllUsers "2414FC7A.Viber" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "41038Axilesoft.ACGMediaPlayer" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "46928bounde.EclipseManager" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "4DF9E0F8.Netflix" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "64885BlueEdge.OneCalendar" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "7EE7776C.LinkedInforWindows" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "828B5831.HiddenCityMysteryofShadows" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "89006A2E.AutodeskSketchBook" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "9E2F88E3.Twitter" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "A278AB0D.DisneyMagicKingdoms" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "A278AB0D.MarchofEmpires" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "ActiproSoftwareLLC.562882FEEB491" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "AdobeSystemsIncorporated.AdobePhotoshopExpress" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "CAF9E577.Plex" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "D52A8D61.FarmVille2CountryEscape" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "D5EA27B7.Duolingo-LearnLanguagesforFree" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "DB6EA5DB.CyberLinkMediaSuiteEssentials" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "DolbyLaboratories.DolbyAccess" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Drawboard.DrawboardPDF" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Facebook.Facebook" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "flaregamesGmbH.RoyalRevolt2" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "GAMELOFTSA.Asphalt8Airborne" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "KeeperSecurityInc.Keeper" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "king.com.BubbleWitch3Saga" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "king.com.CandyCrushSodaSaga" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "PandoraMediaInc.29680B314EFC2" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "SpotifyAB.SpotifyMusic" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "WinZipComputing.WinZipUniversal" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "XINGAG.XING" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-}
-
-# Uninstall Windows Store
-Function UninstallWindowsStore {
-	Write-Output "Uninstalling Windows Store..."
-	Get-AppxPackage "Microsoft.DesktopAppInstaller" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.WindowsStore" | Remove-AppxPackage
-}
-
-# Install Windows Store
-Function InstallWindowsStore {
-	Write-Output "Installing Windows Store..."
-	Get-AppxPackage -AllUsers "Microsoft.DesktopAppInstaller" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.WindowsStore" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-}
-
-# Disable Xbox features
-Function DisableXboxFeatures {
-	Write-Output "Disabling Xbox features..."
-	Get-AppxPackage "Microsoft.XboxApp" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.XboxIdentityProvider" | Remove-AppxPackage -ErrorAction SilentlyContinue
-	Get-AppxPackage "Microsoft.XboxSpeechToTextOverlay" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.XboxGameOverlay" | Remove-AppxPackage
-	Get-AppxPackage "Microsoft.Xbox.TCUI" | Remove-AppxPackage
-	Set-ItemProperty -Path "HKCU:\System\GameConfigStore" -Name "GameDVR_Enabled" -Type DWord -Value 0
-	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR")) {
-		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR" | Out-Null
-	}
-	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR" -Name "AllowGameDVR" -Type DWord -Value 0
-}
-
-# Enable Xbox features
-Function EnableXboxFeatures {
-	Write-Output "Enabling Xbox features..."
-	Get-AppxPackage -AllUsers "Microsoft.XboxApp" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.XboxIdentityProvider" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.XboxSpeechToTextOverlay" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.XboxGameOverlay" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -AllUsers "Microsoft.Xbox.TCUI" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Set-ItemProperty -Path "HKCU:\System\GameConfigStore" -Name "GameDVR_Enabled" -Type DWord -Value 1
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR" -Name "AllowGameDVR" -ErrorAction SilentlyContinue
+	$ErrorActionPreference = $errpref #restore previous preference
+	cls
+		}
+    'q' {  }
+    }
+ }
+ until ($selection -match "y" -or $selection -match "n" -or $selection -match "q")
+	
 }
 
 # Disable built-in Adobe Flash in IE and Edge
@@ -2785,11 +2528,14 @@ Function InstallLinuxSubsystem {
 # Uninstall Linux Subsystem - Applicable to 1607 or newer
 Function UninstallLinuxSubsystem {
 	Write-Output "Uninstalling Linux Subsystem..."
+	$errpref = $ErrorActionPreference #save actual preference
+        $ErrorActionPreference = "silentlycontinue"
 	If ([System.Environment]::OSVersion.Version.Build -eq 14393) {
 		Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" -Name "AllowDevelopmentWithoutDevLicense" -Type DWord -Value 0
 		Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" -Name "AllowAllTrustedApps" -Type DWord -Value 0
 	}
 	Disable-WindowsOptionalFeature -Online -FeatureName "Microsoft-Windows-Subsystem-Linux" -NoRestart -WarningAction SilentlyContinue | Out-Null
+	$ErrorActionPreference = $errpref #restore previous preference
 }
 
 # Install Hyper-V - Not applicable to Home
@@ -2899,103 +2645,11 @@ Function AddFaxPrinter {
 	Add-Printer -Name "Fax" -DriverName "Microsoft Shared Fax Driver" -PortName "SHRFAX:" -ErrorAction SilentlyContinue
 }
 
-
-
-##########
-# Server specific Tweaks
-##########
-
-# Hide Server Manager after login
-Function HideServerManagerOnLogin {
-	Write-Output "Hiding Server Manager after login..."
-	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Server\ServerManager")) {
-		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Server\ServerManager" -Force | Out-Null
+# Add SVCHost Tweak
+Function SVCHostTweak {
+        Write-Output "Adding SVCHost Tweak..."
+        Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control" -Name "SvcHostSplitThresholdInKB" -Type DWord -Value 4194304
 	}
-	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Server\ServerManager" -Name "DoNotOpenAtLogon" -Type DWord -Value 1
-}
-
-# Hide Server Manager after login
-Function ShowServerManagerOnLogin {
-	Write-Output "Showing Server Manager after login..."
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Server\ServerManager" -Name "DoNotOpenAtLogon" -ErrorAction SilentlyContinue
-}
-
-# Disable Shutdown Event Tracker
-Function DisableShutdownTracker {
-	Write-Output "Disabling Shutdown Event Tracker..."
-	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Reliability")) {
-		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Reliability" -Force | Out-Null
-	}
-	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Reliability" -Name "ShutdownReasonOn" -Type DWord -Value 0
-}
-
-# Enable Shutdown Event Tracker
-Function EnableShutdownTracker {
-	Write-Output "Enabling Shutdown Event Tracker..."
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Reliability" -Name "ShutdownReasonOn" -ErrorAction SilentlyContinue
-}
-
-# Disable password complexity and maximum age requirements
-Function DisablePasswordPolicy {
-	Write-Output "Disabling password complexity and maximum age requirements..."
-	$tmpfile = New-TemporaryFile
-	secedit /export /cfg $tmpfile /quiet
-	(Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
-	secedit /configure /db "$env:SYSTEMROOT\security\database\local.sdb" /cfg $tmpfile /areas SECURITYPOLICY | Out-Null
-	Remove-Item -Path $tmpfile
-}
-
-# Enable password complexity and maximum age requirements
-Function EnablePasswordPolicy {
-	Write-Output "Enabling password complexity and maximum age requirements..."
-	$tmpfile = New-TemporaryFile
-	secedit /export /cfg $tmpfile /quiet
-	(Get-Content $tmpfile).Replace("PasswordComplexity = 0", "PasswordComplexity = 1").Replace("MaximumPasswordAge = -1", "MaximumPasswordAge = 42") | Out-File $tmpfile
-	secedit /configure /db "$env:SYSTEMROOT\security\database\local.sdb" /cfg $tmpfile /areas SECURITYPOLICY | Out-Null
-	Remove-Item -Path $tmpfile
-}
-
-# Disable Ctrl+Alt+Del requirement before login
-Function DisableCtrlAltDelLogin {
-	Write-Output "Disabling Ctrl+Alt+Del requirement before login..."
-	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "DisableCAD" -Type DWord -Value 1
-}
-
-# Enable Ctrl+Alt+Del requirement before login
-Function EnableCtrlAltDelLogin {
-	Write-Output "Enabling Ctrl+Alt+Del requirement before login..."
-	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "DisableCAD" -Type DWord -Value 0
-}
-
-# Disable Internet Explorer Enhanced Security Configuration (IE ESC)
-Function DisableIEEnhancedSecurity {
-	Write-Output "Disabling Internet Explorer Enhanced Security Configuration (IE ESC)..."
-	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}" -Name "IsInstalled" -Type DWord -Value 0
-	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A8-37EF-4b3f-8CFC-4F3A74704073}" -Name "IsInstalled" -Type DWord -Value 0
-}
-
-# Enable Internet Explorer Enhanced Security Configuration (IE ESC)
-Function EnableIEEnhancedSecurity {
-	Write-Output "Enabling Internet Explorer Enhanced Security Configuration (IE ESC)..."
-	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}" -Name "IsInstalled" -Type DWord -Value 1
-	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A8-37EF-4b3f-8CFC-4F3A74704073}" -Name "IsInstalled" -Type DWord -Value 1
-}
-
-# Enable Audio
-Function EnableAudio {
-	Write-Output "Enabling Audio..."
-	Set-Service "Audiosrv" -StartupType Automatic
-	Start-Service "Audiosrv" -WarningAction SilentlyContinue
-}
-
-# Disable Audio
-Function DisableAudio {
-	Write-Output "Disabling Audio..."
-	Stop-Service "Audiosrv" -WarningAction SilentlyContinue
-	Set-Service "Audiosrv" -StartupType Manual
-}
-
-
 
 ##########
 # Unpinning
@@ -3004,27 +2658,730 @@ Function DisableAudio {
 # Unpin all Start Menu tiles - Note: This function has no counterpart. You have to pin the tiles back manually.
 Function UnpinStartMenuTiles {
 	Write-Output "Unpinning all Start Menu tiles..."
-	If ([System.Environment]::OSVersion.Version.Build -ge 15063 -And [System.Environment]::OSVersion.Version.Build -le 16299) {
-		Get-ChildItem -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount" -Include "*.group" -Recurse | ForEach-Object {
-			$data = (Get-ItemProperty -Path "$($_.PsPath)\Current" -Name "Data").Data -Join ","
-			$data = $data.Substring(0, $data.IndexOf(",0,202,30") + 9) + ",0,202,80,0,0"
-			Set-ItemProperty -Path "$($_.PsPath)\Current" -Name "Data" -Type Binary -Value $data.Split(",")
-		}
-	} ElseIf ([System.Environment]::OSVersion.Version.Build -eq 17133) {
-		$key = Get-ChildItem -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount" -Recurse | Where-Object { $_ -like "*start.tilegrid`$windows.data.curatedtilecollection.tilecollection\Current" }
-		$data = (Get-ItemProperty -Path $key.PSPath -Name "Data").Data[0..25] + ([byte[]](202,50,0,226,44,1,1,0,0))
-		Set-ItemProperty -Path $key.PSPath -Name "Data" -Type Binary -Value $data
-	}
+	$errpref = $ErrorActionPreference #save actual preference
+        $ErrorActionPreference = "silentlycontinue"
+	Invoke-WebRequest -Uri "https://git.io/JL54C" -OutFile "$env:UserProfile\StartLayout.xml" -ErrorAction SilentlyContinue
+	Import-StartLayout -layoutpath "$env:UserProfile\StartLayout.xml" -MountPath "$env:SystemDrive\"
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer" -Name "LockedStartLayout" -Type DWord -Value 1 | Out-Null -ErrorAction SilentlyContinue
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer" -Name "StartLayoutFile" -Type ExpandString -Value "%USERPROFILE%\StartLayout.xml" | Out-Null -ErrorAction SilentlyContinue
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "NoStartMenuMorePrograms" -Type DWord -Value 0 | Out-Null -ErrorAction SilentlyContinue
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "NoStartMenuMorePrograms" -Type DWord -Value 0 | Out-Null -ErrorAction SilentlyContinue
+        Start-Sleep -s 3
+        $wshell = New-Object -ComObject wscript.shell; $wshell.SendKeys('^{ESCAPE}')
+        Start-Sleep -s 3
+	function get-itemproperty2 {
+  # get-childitem skips top level key, use get-item for that
+  # set-alias gp2 get-itemproperty2
+  param([parameter(ValueFromPipeline)]$key)
+  process {
+    $key.getvaluenames() | foreach-object {
+      $value = $_
+      [pscustomobject] @{
+        Path = $Key -replace 'HKEY_CURRENT_USER',
+          'HKCU:' -replace 'HKEY_LOCAL_MACHINE','HKLM:'
+        Name = $Value
+        Value = $Key.GetValue($Value)
+        Type = $Key.GetValueKind($Value)
+      }
+    }
+  }
 }
 
-# Unpin all Taskbar icons - Note: This function has no counterpart. You have to pin the icons back manually.
-Function UnpinTaskbarIcons {
-	Write-Output "Unpinning all Taskbar icons..."
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Taskband" -Name "Favorites" -Type Binary -Value ([byte[]](255))
-	Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Taskband" -Name "FavoritesResolve" -ErrorAction SilentlyContinue
+$YourInputStart = "02,00,00,00,e6,d9,21,ac,f8,e0,d6,01,00,00,00,00,43,42,01,00,c2,14,01,cb,32,0a,03,05,ce,ab,d3,e9,02,24,da,f4,03,44,c3,8a,01,66,82,e5,8b,b1,ae,fd,fd,bb,3c,00,05,a0,8f,fc,c1,03,24,8a,d0,03,44,80,99,01,66,b0,b5,99,dc,cd,b0,97,de,4d,00,05,86,91,cc,93,05,24,aa,a3,01,44,c3,84,01,66,9f,f7,9d,b1,87,cb,d1,ac,d4,01,00,c2,3c,01,c5,5a,01,00"
+$hexifiedStart = $YourInputStart.Split(',') | % { "0x$_"}
+ls -r "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\" | get-itemproperty2 | where { $_ -like '*windows.data.unifiedtile.startglobalproperties*' } | set-itemproperty -value (([byte[]]$hexifiedStart))
+Stop-Process -name explorer | Out-Null
+	$ErrorActionPreference = $errpref #restore previous preference
 }
 
+##########
+# DaddyMadu Quality Of Life Tweaks
+##########
+# Enable Quality Of Life Tweaks
+Function QOL {
+       	Write-Output "Enabling DaddyMadu Quality of Life Tweaks..."
+	$errpref = $ErrorActionPreference #save actual preference
+        $ErrorActionPreference = "silentlycontinue"
+	New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" -ErrorAction SilentlyContinue | Out-Null
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" -Name "ScoobeSystemSettingEnabled" -Type DWord -Value 0 | Out-Null -ErrorAction SilentlyContinue #disable annoying Get even more out of Windows
+	Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility" -Name "DynamicScrollbars" -Type DWord -Value 0 #disable Hide Scroll bars
+	Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "SmoothScroll" -Type DWord -Value 0 #disable smooth scrolling 
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "NoInstrumentation" -Type DWord -Value 1 #disable microsoft usertracking
+	Remove-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Name "TaskbarNoMultimon" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer" -Name "TaskbarNoMultimon" -ErrorAction SilentlyContinue
+	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "MMTaskbarMode" -Type DWord -Value 2 #Show taskbar buttons only on taskbar where window is open
+	$ErrorActionPreference = $errpref #restore previous preference
+}
 
+##########
+# Gaming Tweaks Functions
+##########
+
+#Disable Fullscreen Optimizations
+Function FullscreenOptimizationFIX {
+	Write-Output "Disabling Full ScreenOptimization..."
+	Set-ItemProperty -Path "HKCU:\System\GameConfigStore" -Name "GameDVR_FSEBehaviorMode" -Type DWord -Value 2
+	Set-ItemProperty -Path "HKCU:\System\GameConfigStore" -Name "GameDVR_HonorUserFSEBehaviorMode" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\System\GameConfigStore" -Name "GameDVR_FSEBehavior" -Type DWord -Value 2
+	Set-ItemProperty -Path "HKCU:\System\GameConfigStore" -Name "GameDVR_DXGIHonorFSEWindowsCompatible" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\System\GameConfigStore" -Name "GameDVR_EFSEFeatureFlags" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\System\GameConfigStore" -Name "GameDVR_DSEBehavior" -Type DWord -Value 2
+	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR" -Name "AppCaptureEnabled" -Type DWord -Value 0
+}
+
+#Game Optimizations Priority Tweaks -Type String -Value "Deny"
+Function GameOptimizationFIX {
+	Write-Output "Apply Gaming Optimization Fixs..."
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" -Name "GPU Priority" -Type DWord -Value 8
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" -Name "Priority" -Type DWord -Value 6
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" -Name "Scheduling Category" -Type String -Value "High"
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" -Name "SFIO Priority" -Type String -Value "High"
+	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\PriorityControl" -Name "IRQ8Priority" -Type DWord -Value 1
+}
+
+#Forcing Raw Mouse Input
+Function RawMouseInput {
+    Write-Output "Forcing RAW Mouse Input and Disabling Enhance Pointer Precision..."
+    Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseSpeed" -Type String -Value "0"
+	Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseThreshold1" -Type String -Value "0"
+	Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseThreshold2" -Type String -Value "0"
+	Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseSensitivity" -Type String -Value "10"
+	Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseHoverTime" -Type String -Value "0"
+	Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseTrails" -Type String -Value "0"
+}
+
+#Detecting Windows Scale Layout Automatically and applying mouse fix according to it!
+Function DetectnApplyMouseFIX {
+Add-Type @'
+  using System; 
+  using System.Runtime.InteropServices;
+  using System.Drawing;
+
+  public class DPI {  
+    [DllImport("gdi32.dll")]
+    static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
+
+    public enum DeviceCap {
+      VERTRES = 10,
+      DESKTOPVERTRES = 117
+    } 
+
+    public static float scaling() {
+      Graphics g = Graphics.FromHwnd(IntPtr.Zero);
+      IntPtr desktop = g.GetHdc();
+      int LogicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCap.VERTRES);
+      int PhysicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCap.DESKTOPVERTRES);
+
+      return (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
+    }
+  }
+'@ -ReferencedAssemblies 'System.Drawing.dll'
+
+$checkscreenscale = [Math]::round([DPI]::scaling(), 2) * 100
+if($checkscreenscale -eq "100") {
+Write-Output "Windows screen scale is Detected as 100%, Applying Mouse Fix for it..."
+$YourInputX = "00,00,00,00,00,00,00,00,C0,CC,0C,00,00,00,00,00,80,99,19,00,00,00,00,00,40,66,26,00,00,00,00,00,00,33,33,00,00,00,00,00"
+$YourInputY = "00,00,00,00,00,00,00,00,00,00,38,00,00,00,00,00,00,00,70,00,00,00,00,00,00,00,A8,00,00,00,00,00,00,00,E0,00,00,00,00,00"
+$RegPath   = 'HKCU:\Control Panel\Mouse'
+$hexifiedX = $YourInputX.Split(',') | % { "0x$_"}
+$hexifiedY = $YourInputY.Split(',') | % { "0x$_"}
+Set-ItemProperty -Path "$RegPath" -Name "SmoothMouseXCurve" -Type Binary -Value (([byte[]]$hexifiedX))
+Set-ItemProperty -Path "$RegPath" -Name "SmoothMouseYCurve" -Type Binary -Value (([byte[]]$hexifiedY))
+} elseif($checkscreenscale -eq "125") {
+Write-Output "Windows screen scale is Detected as 125%, Applying Mouse Fix for it..."
+$YourInputX = "00,00,00,00,00,00,00,00,00,00,10,00,00,00,00,00,00,00,20,00,00,00,00,00,00,00,30,00,00,00,00,00,00,00,40,00,00,00,00,00"
+$YourInputY = "00,00,00,00,00,00,00,00,00,00,38,00,00,00,00,00,00,00,70,00,00,00,00,00,00,00,A8,00,00,00,00,00,00,00,E0,00,00,00,00,00"
+$RegPath   = 'HKCU:\Control Panel\Mouse'
+$hexifiedX = $YourInputX.Split(',') | % { "0x$_"}
+$hexifiedY = $YourInputY.Split(',') | % { "0x$_"}
+Set-ItemProperty -Path "$RegPath" -Name "SmoothMouseXCurve" -Type Binary -Value (([byte[]]$hexifiedX))
+Set-ItemProperty -Path "$RegPath" -Name "SmoothMouseYCurve" -Type Binary -Value (([byte[]]$hexifiedY))
+} elseif($checkscreenscale -eq "150") {
+Write-Output "Windows screen scale is Detected as 150%, Applying Mouse Fix for it..."
+$YourInputX = "00,00,00,00,00,00,00,00,30,33,13,00,00,00,00,00,60,66,26,00,00,00,00,00,90,99,39,00,00,00,00,00,C0,CC,4C,00,00,00,00,00"
+$YourInputY = "00,00,00,00,00,00,00,00,00,00,38,00,00,00,00,00,00,00,70,00,00,00,00,00,00,00,A8,00,00,00,00,00,00,00,E0,00,00,00,00,00"
+$RegPath   = 'HKCU:\Control Panel\Mouse'
+$hexifiedX = $YourInputX.Split(',') | % { "0x$_"}
+$hexifiedY = $YourInputY.Split(',') | % { "0x$_"}
+Set-ItemProperty -Path "$RegPath" -Name "SmoothMouseXCurve" -Type Binary -Value (([byte[]]$hexifiedX))
+Set-ItemProperty -Path "$RegPath" -Name "SmoothMouseYCurve" -Type Binary -Value (([byte[]]$hexifiedY))
+} elseif($checkscreenscale -eq "175") {
+Write-Output "Windows screen scale is Detected as 175%, Applying Mouse Fix for it..."
+$YourInputX = "00,00,00,00,00,00,00,00,60,66,16,00,00,00,00,00,C0,CC,2C,00,00,00,00,00,20,33,43,00,00,00,00,00,80,99,59,00,00,00,00,00"
+$YourInputY = "00,00,00,00,00,00,00,00,00,00,38,00,00,00,00,00,00,00,70,00,00,00,00,00,00,00,A8,00,00,00,00,00,00,00,E0,00,00,00,00,00"
+$RegPath   = 'HKCU:\Control Panel\Mouse'
+$hexifiedX = $YourInputX.Split(',') | % { "0x$_"}
+$hexifiedY = $YourInputY.Split(',') | % { "0x$_"}
+Set-ItemProperty -Path "$RegPath" -Name "SmoothMouseXCurve" -Type Binary -Value (([byte[]]$hexifiedX))
+Set-ItemProperty -Path "$RegPath" -Name "SmoothMouseYCurve" -Type Binary -Value (([byte[]]$hexifiedY))
+} elseif($checkscreenscale -eq "200") {
+Write-Output "Windows screen scale is Detected as 200%, Applying Mouse Fix for it..."
+$YourInputX = "00,00,00,00,00,00,00,00,90,99,19,00,00,00,00,00,20,33,33,00,00,00,00,00,B0,CC,4C,00,00,00,00,00,40,66,66,00,00,00,00,00"
+$YourInputY = "00,00,00,00,00,00,00,00,00,00,38,00,00,00,00,00,00,00,70,00,00,00,00,00,00,00,A8,00,00,00,00,00,00,00,E0,00,00,00,00,00"
+$RegPath   = 'HKCU:\Control Panel\Mouse'
+$hexifiedX = $YourInputX.Split(',') | % { "0x$_"}
+$hexifiedY = $YourInputY.Split(',') | % { "0x$_"}
+Set-ItemProperty -Path "$RegPath" -Name "SmoothMouseXCurve" -Type Binary -Value (([byte[]]$hexifiedX))
+Set-ItemProperty -Path "$RegPath" -Name "SmoothMouseYCurve" -Type Binary -Value (([byte[]]$hexifiedY))
+} elseif($checkscreenscale -eq "225") {
+Write-Output "Windows screen scale is Detected as 225%, Applying Mouse Fix for it..."
+$YourInputX = "00,00,00,00,00,00,00,00,C0,CC,1C,00,00,00,00,00,80,99,39,00,00,00,00,00,40,66,56,00,00,00,00,00,00,33,73,00,00,00,00,00"
+$YourInputY = "00,00,00,00,00,00,00,00,00,00,38,00,00,00,00,00,00,00,70,00,00,00,00,00,00,00,A8,00,00,00,00,00,00,00,E0,00,00,00,00,00"
+$RegPath   = 'HKCU:\Control Panel\Mouse'
+$hexifiedX = $YourInputX.Split(',') | % { "0x$_"}
+$hexifiedY = $YourInputY.Split(',') | % { "0x$_"}
+Set-ItemProperty -Path "$RegPath" -Name "SmoothMouseXCurve" -Type Binary -Value (([byte[]]$hexifiedX))
+Set-ItemProperty -Path "$RegPath" -Name "SmoothMouseYCurve" -Type Binary -Value (([byte[]]$hexifiedY))
+} elseif($checkscreenscale -eq "250") {
+Write-Output "Windows screen scale is Detected as 250%, Applying Mouse Fix for it..."
+$YourInputX = "00,00,00,00,00,00,00,00,00,00,20,00,00,00,00,00,00,00,40,00,00,00,00,00,00,00,60,00,00,00,00,00,00,00,80,00,00,00,00,00"
+$YourInputY = "00,00,00,00,00,00,00,00,00,00,38,00,00,00,00,00,00,00,70,00,00,00,00,00,00,00,A8,00,00,00,00,00,00,00,E0,00,00,00,00,00"
+$RegPath   = 'HKCU:\Control Panel\Mouse'
+$hexifiedX = $YourInputX.Split(',') | % { "0x$_"}
+$hexifiedY = $YourInputY.Split(',') | % { "0x$_"}
+Set-ItemProperty -Path "$RegPath" -Name "SmoothMouseXCurve" -Type Binary -Value (([byte[]]$hexifiedX))
+Set-ItemProperty -Path "$RegPath" -Name "SmoothMouseYCurve" -Type Binary -Value (([byte[]]$hexifiedY))
+} elseif($checkscreenscale -eq "300") {
+Write-Output "Windows screen scale is Detected as 300%, Applying Mouse Fix for it..."
+$YourInputX = "00,00,00,00,00,00,00,00,60,66,26,00,00,00,00,00,C0,CC,4C,00,00,00,00,00,20,33,73,00,00,00,00,00,80,99,99,00,00,00,00,00"
+$YourInputY = "00,00,00,00,00,00,00,00,00,00,38,00,00,00,00,00,00,00,70,00,00,00,00,00,00,00,A8,00,00,00,00,00,00,00,E0,00,00,00,00,00"
+$RegPath   = 'HKCU:\Control Panel\Mouse'
+$hexifiedX = $YourInputX.Split(',') | % { "0x$_"}
+$hexifiedY = $YourInputY.Split(',') | % { "0x$_"}
+Set-ItemProperty -Path "$RegPath" -Name "SmoothMouseXCurve" -Type Binary -Value (([byte[]]$hexifiedX))
+Set-ItemProperty -Path "$RegPath" -Name "SmoothMouseYCurve" -Type Binary -Value (([byte[]]$hexifiedY))
+} elseif($checkscreenscale -eq "350") {
+Write-Output "Windows screen scale is Detected as 350%, Applying Mouse Fix for it..."
+$YourInputX = "00,00,00,00,00,00,00,00,C0,CC,2C,00,00,00,00,00,80,99,59,00,00,00,00,00,40,66,86,00,00,00,00,00,00,33,B3,00,00,00,00,00"
+$YourInputY = "00,00,00,00,00,00,00,00,00,00,38,00,00,00,00,00,00,00,70,00,00,00,00,00,00,00,A8,00,00,00,00,00,00,00,E0,00,00,00,00,00"
+$RegPath   = 'HKCU:\Control Panel\Mouse'
+$hexifiedX = $YourInputX.Split(',') | % { "0x$_"}
+$hexifiedY = $YourInputY.Split(',') | % { "0x$_"}
+Set-ItemProperty -Path "$RegPath" -Name "SmoothMouseXCurve" -Type Binary -Value (([byte[]]$hexifiedX))
+Set-ItemProperty -Path "$RegPath" -Name "SmoothMouseYCurve" -Type Binary -Value (([byte[]]$hexifiedY))
+} else {
+Write-Output "HOUSTON WE HAVE A PROBLEM! screen scale is not set to traditional value, nothing has been set!"
+}
+}
+
+### Disable HPET ###
+Function DisableHPET {
+        Write-Output "Disabling High Precision Event Timer..."
+	$errpref = $ErrorActionPreference #save actual preference
+        $ErrorActionPreference = "silentlycontinue"
+        Invoke-WebRequest -Uri "https://git.io/JkrLn" -OutFile "$Env:windir\system32\SetTimerResolutionService.exe" -ErrorAction SilentlyContinue
+        New-Service -name "SetTimerResolutionService" -BinaryPathName "$Env:windir\system32\SetTimerResolutionService.exe" -StartupType Automatic | Out-Null -ErrorAction SilentlyContinue
+        bcdedit /set x2apicpolicy Enable | Out-Null
+        bcdedit /set configaccesspolicy Default | Out-Null
+        bcdedit /set MSI Default | Out-Null
+        bcdedit /set usephysicaldestination No | Out-Null
+        bcdedit /set usefirmwarepcisettings No | Out-Null
+	bcdedit /deletevalue useplatformclock | Out-Null
+        bcdedit /set disabledynamictick yes | Out-Null
+        bcdedit /set useplatformtick Yes | Out-Null
+        bcdedit /set tscsyncpolicy Enhanced | Out-Null
+	bcdedit /timeout 10 | Out-Null
+	bcdedit /set nx optout | Out-Null
+	bcdedit /set bootux disabled | Out-Null
+	bcdedit /set quietboot yes | Out-Null
+	bcdedit /set {globalsettings} custom:16000067 true | Out-Null
+	bcdedit /set {globalsettings} custom:16000069 true | Out-Null
+	bcdedit /set {globalsettings} custom:16000068 true | Out-Null
+	wmic path Win32_PnPEntity where "name='High precision event timer'" call disable | Out-Null
+	$ErrorActionPreference = $errpref #restore previous preference
+}
+
+#Enable Windows 10 Gaming Mode
+Function EnableGameMode {
+        Write-Output "Enabling Gaming Mode..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\GameBar" -Name "AllowAutoGameMode" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\GameBar" -Name "AutoGameModeEnabled" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\GameBar" -Name "ShowStartupPanel" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\GameBar" -Name "GamePanelStartupTipIndex" -Type DWord -Value 3
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\GameBar" -Name "UseNexusForGameBarEnabled" -Type DWord -Value 0
+}
+
+#Enable Hardware-accelerated GPU scheduling
+Function EnableHAGS {
+        Write-Output "Enabling HAGS..."
+	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers" -Name "HwSchMode" -Type DWord -Value 2
+}
+
+#Add Utimate Power Plan And Activate It
+Function EnableUlimatePower {
+	Write-Output "Enabling and Activating Bitsum Highest Performance Power Plan..."
+	Invoke-WebRequest -Uri "https://git.io/JsWhn" -OutFile "$Env:windir\system32\Bitsum-Highest-Performance.pow" -ErrorAction SilentlyContinue
+	powercfg -import "$Env:windir\system32\Bitsum-Highest-Performance.pow" e6a66b66-d6df-666d-aa66-66f66666eb66 | Out-Null
+	powercfg -setactive e6a66b66-d6df-666d-aa66-66f66666eb66 | Out-Null
+}
+
+#Disable Core Parking on current PowerPlan Ultimate Performance
+Function DisableCoreParking {
+        Write-Output "Disabling Core Parking on current PowerPlan Ultimate Performance..."
+	powercfg -attributes SUB_PROCESSOR CPMINCORES -ATTRIB_HIDE | Out-Null
+	Powercfg -setacvalueindex scheme_current sub_processor CPMINCORES 100 | Out-Null
+	Powercfg -setactive scheme_current | Out-Null
+}
+
+#Disable DMA memory protection and cores isolation ("virtualization-based protection").
+Function DisableDMA {
+        Write-Output "Disabling DMA memory protection and cores isolation..."
+	$errpref = $ErrorActionPreference #save actual preference
+        $ErrorActionPreference = "silentlycontinue"
+        bcdedit /set vsmlaunchtype Off | Out-Null
+        bcdedit /set vm No | Out-Null
+        New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\FVE" | Out-Null -ErrorAction SilentlyContinue
+        Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\FVE" -Name "DisableExternalDMAUnderLock" -Type DWord -Value 0
+        New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard" | Out-Null -ErrorAction SilentlyContinue
+        Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard" -Name "EnableVirtualizationBasedSecurity" -Type DWord -Value 0
+        Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard" -Name "HVCIMATRequired" -Type DWord -Value 0
+	$ErrorActionPreference = $errpref #restore previous preference
+}
+
+#Disable Process and Kernel Mitigations
+Function DisablePKM {
+       Write-Output "Disabling Process and Kernel Mitigations..."
+       $errpref = $ErrorActionPreference #save actual preference
+       $ErrorActionPreference = "silentlycontinue"
+       ForEach($v in (Get-Command -Name "Set-ProcessMitigation").Parameters["Disable"].Attributes.ValidValues){Set-ProcessMitigation -System -Disable $v.ToString() -ErrorAction SilentlyContinue}
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\kernel" -Name "DisableExceptionChainValidation" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\kernel" -Name "KernelSEHOPEnabled" -Type DWord -Value 0
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name "EnableCfg" -Type DWord -Value 0
+       $ErrorActionPreference = $errpref #restore previous preference
+}
+
+#Disallow drivers to get paged into virtual memory.
+Function DisallowDIP {
+       Write-Output "Disabling drivers get paged into virtual memory..."
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name "DisablePagingExecutive" -Type DWord -Value 1
+}
+
+#Use big system memory caching to improve microstuttering.
+Function UseBigM {
+       Write-Output "Enabling big system memory caching to improve microstuttering..."
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name "LargeSystemCache" -Type DWord -Value 1
+}
+
+#Force contiguous memory allocation in the DirectX Graphics Kernel.
+Function ForceContiguousM {
+       Write-Output "Forcing contiguous memory allocation in the DirectX Graphics Kernel..."
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers" -Name "DpiMapIommuContiguous" -Type DWord -Value 1
+}
+
+#Tell Windows to stop tolerating high DPC/ISR latencies.
+Function StophighDPC {
+       Write-Output "Forcing Windows to stop tolerating high DPC/ISR latencies..."
+       $errpref = $ErrorActionPreference #save actual preference
+       $ErrorActionPreference = "silentlycontinue"
+       New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Power" | Out-Null -ErrorAction SilentlyContinue
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Power" -Name "ExitLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Power" -Name "ExitLatencyCheckEnabled" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Power" -Name "Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Power" -Name "LatencyToleranceDefault" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Power" -Name "LatencyToleranceFSVP" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Power" -Name "LatencyTolerancePerfOverride" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Power" -Name "LatencyToleranceScreenOffIR" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Power" -Name "LatencyToleranceVSyncEnabled" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Power" -Name "RtlCapabilityCheckLatency" -Type DWord -Value 1
+       New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" | Out-Null -ErrorAction SilentlyContinue
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "DefaultD3TransitionLatencyActivelyUsed" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "DefaultD3TransitionLatencyIdleLongTime" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "DefaultD3TransitionLatencyIdleMonitorOff" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "DefaultD3TransitionLatencyIdleNoContext" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "DefaultD3TransitionLatencyIdleShortTime" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "DefaultD3TransitionLatencyIdleVeryLongTime" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "DefaultLatencyToleranceIdle0" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "DefaultLatencyToleranceIdle0MonitorOff" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "DefaultLatencyToleranceIdle1" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "DefaultLatencyToleranceIdle1MonitorOff" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "DefaultLatencyToleranceMemory" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "DefaultLatencyToleranceNoContext" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "DefaultLatencyToleranceNoContextMonitorOff" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "DefaultLatencyToleranceOther" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "DefaultLatencyToleranceTimerPeriod" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "DefaultMemoryRefreshLatencyToleranceActivelyUsed" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "DefaultMemoryRefreshLatencyToleranceMonitorOff" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "DefaultMemoryRefreshLatencyToleranceNoContext" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "MaxIAverageGraphicsLatencyInOneBucket" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "MiracastPerfTrackGraphicsLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "MonitorLatencyTolerance" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "MonitorRefreshLatencyTolerance" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power" -Name "TransitionLatency" -Type DWord -Value 1
+       $ErrorActionPreference = $errpref #restore previous preference
+}
+
+#Decrease mouse and keyboard buffer sizes.
+Function DecreaseMKBuffer {
+       Write-Output "Decreasing mouse and keyboard buffer sizes..."
+       $errpref = $ErrorActionPreference #save actual preference
+       $ErrorActionPreference = "silentlycontinue"
+       New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\mouclass\Parameters" | Out-Null -ErrorAction SilentlyContinue
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\mouclass\Parameters" -Name "MouseDataQueueSize" -Type DWord -Value 0x00000010
+       New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\kbdclass\Parameters" | Out-Null -ErrorAction SilentlyContinue
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\kbdclass\Parameters" -Name "KeyboardDataQueueSize" -Type DWord -Value 0x00000010
+       $ErrorActionPreference = $errpref #restore previous preference
+}
+
+#Applying Nvidia Tweaks if GTX/RTX Card Detected!
+Function NvidiaTweaks {
+       $CheckGPU = wmic path win32_VideoController get name
+       if(($CheckGPU -like "*GTX*") -or ($CheckGPU -like "*RTX*")) {
+       Write-Output "NVIDIA GTX/RTX Card Detected! Applying Nvidia Power Tweaks..."
+       Invoke-WebRequest -Uri "https://git.io/JLP93" -OutFile "$Env:windir\system32\BaseProfile.nip" -ErrorAction SilentlyContinue
+       Invoke-WebRequest -Uri "https://git.io/JLP9n" -OutFile "$Env:windir\system32\nvidiaProfileInspector.exe" -ErrorAction SilentlyContinue
+       Push-Location
+       set-location "$Env:windir\system32\"
+       nvidiaProfileInspector.exe /s -load "BaseProfile.nip"
+       Pop-Location
+       } else {
+       Write-Output "Nvidia GTX/RTX Card Not Detected! Skipping..."
+       } 
+       $errpref = $ErrorActionPreference #save actual preference
+       $ErrorActionPreference = "silentlycontinue"	   
+       $CheckGPURegistryKey0 = (Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000").DriverDesc
+	   $CheckGPURegistryKey1 = (Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001").DriverDesc
+	   $CheckGPURegistryKey2 = (Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002").DriverDesc
+	   $CheckGPURegistryKey3 = (Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003").DriverDesc
+	   $ErrorActionPreference = $errpref #restore previous preference
+       if(($CheckGPURegistryKey0 -like "*GTX*") -or ($CheckGPURegistryKey0 -like "*RTX*")) {
+	   Write-Output "Nvidia GTX/RTX Card Registry Path 0000 Detected! Applying Nvidia Latency Tweaks..."
+	   Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "D3PCLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "F1TransitionLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "LOWLATENCY" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "Node3DLowLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "PciLatencyTimerControl" -Type DWord -Value "0x00000020"
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "RMDeepL1EntryLatencyUsec" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "RmGspcMaxFtuS" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "RmGspcMinFtuS" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "RmGspcPerioduS" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "RMLpwrEiIdleThresholdUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "RMLpwrGrIdleThresholdUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "RMLpwrGrRgIdleThresholdUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "RMLpwrMsIdleThresholdUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "VRDirectFlipDPCDelayUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "VRDirectFlipTimingMarginUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "VRDirectJITFlipMsHybridFlipDelayUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "vrrCursorMarginUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "vrrDeflickerMarginUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "vrrDeflickerMaxUs" -Type DWord -Value 1
+	   } elseif(($CheckGPURegistryKey1 -like "*GTX*") -or ($CheckGPURegistryKey1 -like "*RTX*")) {
+	   Write-Output "Nvidia GTX/RTX Card Registry Path 0001 Detected! Applying Nvidia Latency Tweaks..."
+	   Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "D3PCLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "F1TransitionLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "LOWLATENCY" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "Node3DLowLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "PciLatencyTimerControl" -Type DWord -Value "0x00000020"
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "RMDeepL1EntryLatencyUsec" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "RmGspcMaxFtuS" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "RmGspcMinFtuS" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "RmGspcPerioduS" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "RMLpwrEiIdleThresholdUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "RMLpwrGrIdleThresholdUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "RMLpwrGrRgIdleThresholdUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "RMLpwrMsIdleThresholdUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "VRDirectFlipDPCDelayUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "VRDirectFlipTimingMarginUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "VRDirectJITFlipMsHybridFlipDelayUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "vrrCursorMarginUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "vrrDeflickerMarginUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "vrrDeflickerMaxUs" -Type DWord -Value 1
+	   } elseif(($CheckGPURegistryKey2 -like "*GTX*") -or ($CheckGPURegistryKey2 -like "*RTX*")) {
+	   Write-Output "Nvidia GTX/RTX Card Registry Path 0002 Detected! Applying Nvidia Latency Tweaks..."
+	   Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "D3PCLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "F1TransitionLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "LOWLATENCY" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "Node3DLowLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "PciLatencyTimerControl" -Type DWord -Value "0x00000020"
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "RMDeepL1EntryLatencyUsec" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "RmGspcMaxFtuS" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "RmGspcMinFtuS" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "RmGspcPerioduS" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "RMLpwrEiIdleThresholdUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "RMLpwrGrIdleThresholdUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "RMLpwrGrRgIdleThresholdUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "RMLpwrMsIdleThresholdUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "VRDirectFlipDPCDelayUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "VRDirectFlipTimingMarginUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "VRDirectJITFlipMsHybridFlipDelayUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "vrrCursorMarginUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "vrrDeflickerMarginUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "vrrDeflickerMaxUs" -Type DWord -Value 1
+	   } elseif(($CheckGPURegistryKey3 -like "*GTX*") -or ($CheckGPURegistryKey3 -like "*RTX*")) {
+	   Write-Output "Nvidia GTX/RTX Card Registry Path 0003 Detected! Applying Nvidia Latency Tweaks..."
+	   Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "D3PCLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "F1TransitionLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "LOWLATENCY" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "Node3DLowLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "PciLatencyTimerControl" -Type DWord -Value "0x00000020"
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "RMDeepL1EntryLatencyUsec" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "RmGspcMaxFtuS" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "RmGspcMinFtuS" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "RmGspcPerioduS" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "RMLpwrEiIdleThresholdUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "RMLpwrGrIdleThresholdUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "RMLpwrGrRgIdleThresholdUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "RMLpwrMsIdleThresholdUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "VRDirectFlipDPCDelayUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "VRDirectFlipTimingMarginUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "VRDirectJITFlipMsHybridFlipDelayUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "vrrCursorMarginUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "vrrDeflickerMarginUs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "vrrDeflickerMaxUs" -Type DWord -Value 1
+	   } else {
+	   Write-Output "No NVIDIA GTX/RTX Card Registry entry Found! Skipping..."
+	   }
+}
+
+#Applying AMD Tweaks If Detected!
+Function AMDGPUTweaks {
+	   $errpref = $ErrorActionPreference #save actual preference
+       $ErrorActionPreference = "silentlycontinue"
+	   $CheckGPURegistryKey0 = (Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000").DriverDesc
+	   $CheckGPURegistryKey1 = (Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001").DriverDesc
+	   $CheckGPURegistryKey2 = (Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002").DriverDesc
+	   $CheckGPURegistryKey3 = (Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003").DriverDesc
+	   $ErrorActionPreference = $errpref #restore previous preference
+	   if($CheckGPURegistryKey0 -like "*amd*") {
+	   Write-Output "AMD GPU Registry Path 0000 Detected! Applying AMD Latency Tweaks..."
+	   Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "LTRSnoopL1Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "LTRSnoopL0Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "LTRNoSnoopL1Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "LTRMaxNoSnoopLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "KMD_RpmComputeLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "DalUrgentLatencyNs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "memClockSwitchLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "PP_RTPMComputeF1Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "PP_DGBMMMaxTransitionLatencyUvd" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "PP_DGBPMMaxTransitionLatencyGfx" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "DalNBLatencyForUnderFlow" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "DalDramClockChangeLatencyNs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "BGM_LTRSnoopL1Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "BGM_LTRSnoopL0Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "BGM_LTRNoSnoopL1Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "BGM_LTRNoSnoopL0Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "BGM_LTRMaxSnoopLatencyValue" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" -Name "BGM_LTRMaxNoSnoopLatencyValue" -Type DWord -Value 1
+	   } elseif($CheckGPURegistryKey1 -like "*amd*") {
+	   Write-Output "AMD GPU Registry Path 0001 Detected! Applying AMD Latency Tweaks..."
+	   Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "LTRSnoopL1Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "LTRSnoopL0Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "LTRNoSnoopL1Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "LTRMaxNoSnoopLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "KMD_RpmComputeLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "DalUrgentLatencyNs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "memClockSwitchLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "PP_RTPMComputeF1Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "PP_DGBMMMaxTransitionLatencyUvd" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "PP_DGBPMMaxTransitionLatencyGfx" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "DalNBLatencyForUnderFlow" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "DalDramClockChangeLatencyNs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "BGM_LTRSnoopL1Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "BGM_LTRSnoopL0Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "BGM_LTRNoSnoopL1Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "BGM_LTRNoSnoopL0Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "BGM_LTRMaxSnoopLatencyValue" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0001" -Name "BGM_LTRMaxNoSnoopLatencyValue" -Type DWord -Value 1
+	   } elseif($CheckGPURegistryKey2 -like "*amd*") {
+	   Write-Output "AMD GPU Registry Path 0002 Detected! Applying AMD Latency Tweaks..."
+	   Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "LTRSnoopL1Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "LTRSnoopL0Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "LTRNoSnoopL1Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "LTRMaxNoSnoopLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "KMD_RpmComputeLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "DalUrgentLatencyNs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "memClockSwitchLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "PP_RTPMComputeF1Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "PP_DGBMMMaxTransitionLatencyUvd" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "PP_DGBPMMaxTransitionLatencyGfx" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "DalNBLatencyForUnderFlow" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "DalDramClockChangeLatencyNs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "BGM_LTRSnoopL1Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "BGM_LTRSnoopL0Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "BGM_LTRNoSnoopL1Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "BGM_LTRNoSnoopL0Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "BGM_LTRMaxSnoopLatencyValue" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0002" -Name "BGM_LTRMaxNoSnoopLatencyValue" -Type DWord -Value 1
+	   } elseif($CheckGPURegistryKey3 -like "*amd*") {
+	   Write-Output "AMD GPU Registry Path 0003 Detected! Applying AMD Latency Tweaks..."
+	   Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "LTRSnoopL1Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "LTRSnoopL0Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "LTRNoSnoopL1Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "LTRMaxNoSnoopLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "KMD_RpmComputeLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "DalUrgentLatencyNs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "memClockSwitchLatency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "PP_RTPMComputeF1Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "PP_DGBMMMaxTransitionLatencyUvd" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "PP_DGBPMMaxTransitionLatencyGfx" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "DalNBLatencyForUnderFlow" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "DalDramClockChangeLatencyNs" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "BGM_LTRSnoopL1Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "BGM_LTRSnoopL0Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "BGM_LTRNoSnoopL1Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "BGM_LTRNoSnoopL0Latency" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "BGM_LTRMaxSnoopLatencyValue" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0003" -Name "BGM_LTRMaxNoSnoopLatencyValue" -Type DWord -Value 1
+	   } else {
+	   Write-Output "No AMD GPU Registry entry Found! Skipping..."
+	   }
+}
+
+#Optimizing Network and applying Tweaks for no throttle and maximum speed!
+Function NetworkOptimizations {
+       Write-Output "Optimizing Network and applying Tweaks for no throttle and maximum speed!..."
+       $errpref = $ErrorActionPreference #save actual preference
+       $ErrorActionPreference = "silentlycontinue"
+       New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Psched" -ErrorAction SilentlyContinue | Out-Null
+       New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\QoS" -ErrorAction SilentlyContinue | Out-Null
+       New-Item -Path "HKLM:\SOFTWARE\Microsoft\MSMQ\Parameters" -ErrorAction SilentlyContinue | Out-Null
+       Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Internet Explorer\MAIN\FeatureControl\FEATURE_MAXCONNECTIONSPER1_0SERVER" -Name "explorer.exe" -Type DWord -Value 10
+       Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Internet Explorer\MAIN\FeatureControl\FEATURE_MAXCONNECTIONSPERSERVER" -Name "explorer.exe" -Type DWord -Value 10
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\ServiceProvider" -Name "LocalPriority" -Type DWord -Value 4
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\ServiceProvider" -Name "HostsPriority" -Type DWord -Value 5
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\ServiceProvider" -Name "DnsPriority" -Type DWord -Value 6
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\ServiceProvider" -Name "NetbtPriority" -Type DWord -Value 7
+       Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Psched" -Name "NonBestEffortlimit" -Type DWord -Value 0
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\QoS" -Name "Do not use NLA" -Type String -Value "1"
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" -Name "Size" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" -Name "IRPStackSize" -Type DWord -Value 20
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "MaxUserPort" -Type DWord -Value 65534
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "TcpTimedWaitDelay" -Type DWord -Value 30
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "DefaultTTL" -Type DWord -Value 64
+       Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\MSMQ\Parameters" -Name "TCPNoDelay" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\ControlSet001\Control\Lsa" -Name "LmCompatibilityLevel" -Type DWord -Value 1
+       Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters" -Name "EnableAutoDoh" -Type DWord -Value 2
+       Set-NetTCPSetting -SettingName internet -EcnCapability disabled | Out-Null
+       Set-NetOffloadGlobalSetting -Chimney disabled | Out-Null
+       Set-NetTCPSetting -SettingName internet -Timestamps disabled | Out-Null
+       Set-NetTCPSetting -SettingName internet -MaxSynRetransmissions 2 | Out-Null
+       Set-NetTCPSetting -SettingName internet -NonSackRttResiliency disabled | Out-Null
+       Set-NetTCPSetting -SettingName internet -InitialRto 2000 | Out-Null
+       Set-NetTCPSetting -SettingName internet -MinRto 300 | Out-Null
+       Set-NetTCPSetting -SettingName Internet -AutoTuningLevelLocal normal | Out-Null
+       Set-NetTCPSetting -SettingName internet -ScalingHeuristics disabled | Out-Null
+       netsh int tcp set supplemental internet congestionprovider=ctcp | Out-Null
+       Set-NetOffloadGlobalSetting -ReceiveSegmentCoalescing enabled | Out-Null
+       Set-NetOffloadGlobalSetting -ReceiveSideScaling enabled | Out-Null
+       Disable-NetAdapterLso -Name * | Out-Null
+       Disable-NetAdapterChecksumOffload -Name * | Out-Null
+       Set-NetAdapterAdvancedProperty -Name * -DisplayName "Energy-Efficient Ethernet" -DisplayValue "Disabled" -ErrorAction SilentlyContinue
+       Set-NetAdapterAdvancedProperty -Name * -DisplayName "Energy Efficient Ethernet" -DisplayValue "Disabled" -ErrorAction SilentlyContinue
+       Set-NetAdapterAdvancedProperty -Name * -DisplayName "Energy Efficient Ethernet" -DisplayValue "Off" -ErrorAction SilentlyContinue
+       Set-NetAdapterAdvancedProperty -Name * -DisplayName "Ultra Low Power Mode" -DisplayValue "Disabled" -ErrorAction SilentlyContinue
+       Set-NetAdapterAdvancedProperty -Name * -DisplayName "System Idle Power Saver" -DisplayValue "Disabled" -ErrorAction SilentlyContinue
+       Set-NetAdapterAdvancedProperty -Name * -DisplayName "Green Ethernet" -DisplayValue "Disabled" -ErrorAction SilentlyContinue
+       Set-NetAdapterAdvancedProperty -Name * -DisplayName "Power Saving Mode" -DisplayValue "Disabled" -ErrorAction SilentlyContinue
+       Set-NetAdapterAdvancedProperty -Name * -DisplayName "Gigabit Lite" -DisplayValue "Disabled" -ErrorAction SilentlyContinue
+       Set-NetAdapterAdvancedProperty -Name * -DisplayName "EEE" -DisplayValue "Disabled" -ErrorAction SilentlyContinue
+       Set-NetAdapterAdvancedProperty -Name * -DisplayName "Advanced EEE" -DisplayValue "Disabled" -ErrorAction SilentlyContinue
+       Set-NetAdapterAdvancedProperty -Name * -DisplayName "ARP Offload" -DisplayValue "Disabled" -ErrorAction SilentlyContinue
+       Set-NetAdapterAdvancedProperty -Name * -DisplayName "NS Offload" -DisplayValue "Disabled" -ErrorAction SilentlyContinue
+       Set-NetAdapterAdvancedProperty -Name * -DisplayName "Idle Power Saving" -DisplayValue "Disabled" -ErrorAction SilentlyContinue
+       Set-NetAdapterAdvancedProperty -Name * -DisplayName "Flow Control" -DisplayValue "Disabled" -ErrorAction SilentlyContinue
+       Set-NetAdapterAdvancedProperty -Name * -DisplayName "Interrupt Moderation" -DisplayValue "Disabled" -ErrorAction SilentlyContinue
+       Set-NetAdapterAdvancedProperty -Name * -DisplayName "Reduce Speed On Power Down" -DisplayValue "Disabled" -ErrorAction SilentlyContinue
+       Set-NetAdapterAdvancedProperty -Name * -DisplayName "Interrupt Moderation Rate" -DisplayValue "Off" -ErrorAction SilentlyContinue
+       $ErrorActionPreference = $errpref #restore previous preference
+       if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
+{
+    $adapters = Get-NetAdapter -Physical | Get-NetAdapterPowerManagement | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne "Unsupported"}
+    foreach ($adapter in $adapters)
+    {
+        $adapter.AllowComputerToTurnOffDevice = "Disabled"
+        $adapter | Set-NetAdapterPowerManagement
+    }
+}
+       Start-Sleep -s 5
+}
+
+# Disable Nagle's Algorithm
+Function DisableNagle {
+$errpref = $ErrorActionPreference #save actual preference
+$ErrorActionPreference = "silentlycontinue"
+$NetworkIDS = @(
+(Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\*").PSChildName
+)
+    foreach ($NetworkID in $NetworkIDS) {
+	Write-Output "Disabling Nagles Algorithm..."
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$NetworkID" -Name "TcpAckFrequency" -Type DWord -Value 1
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$NetworkID" -Name "TCPNoDelay" -Type DWord -Value 1
+}
+$ErrorActionPreference = $errpref #restore previous preference
+}
+
+#Remove Edit with 3D Paint
+Function RemoveEdit3D {
+       Write-Output "Removing Edit with Paint 3D from context menu..."
+       Remove-ItemProperty -Path "HKCR:\SystemFileAssociations\.3mf\Shell\" -Name "3D Edit" -ErrorAction SilentlyContinue
+       Remove-ItemProperty -Path "HKCR:\SystemFileAssociations\.bmp\Shell\" -Name "3D Edit" -ErrorAction SilentlyContinue
+       Remove-ItemProperty -Path "HKCR:\SystemFileAssociations\.fbx\Shell\" -Name "3D Edit" -ErrorAction SilentlyContinue
+       Remove-ItemProperty -Path "HKCR:\SystemFileAssociations\.gif\Shell\" -Name "3D Edit" -ErrorAction SilentlyContinue
+       Remove-ItemProperty -Path "HKCR:\SystemFileAssociations\.jfif\Shell\" -Name "3D Edit" -ErrorAction SilentlyContinue
+       Remove-ItemProperty -Path "HKCR:\SystemFileAssociations\.jpe\Shell\" -Name "3D Edit" -ErrorAction SilentlyContinue
+       Remove-ItemProperty -Path "HKCR:\SystemFileAssociations\.jpeg\Shell\" -Name "3D Edit" -ErrorAction SilentlyContinue
+       Remove-ItemProperty -Path "HKCR:\SystemFileAssociations\.jpg\Shell\" -Name "3D Edit" -ErrorAction SilentlyContinue
+       Remove-ItemProperty -Path "HKCR:\SystemFileAssociations\.png\Shell\" -Name "3D Edit" -ErrorAction SilentlyContinue
+       Remove-ItemProperty -Path "HKCR:\SystemFileAssociations\.tif\Shell\" -Name "3D Edit" -ErrorAction SilentlyContinue
+       Remove-ItemProperty -Path "HKCR:\SystemFileAssociations\.tiff\Shell\" -Name "3D Edit" -ErrorAction SilentlyContinue
+}
+
+#fix issue with games shortcut that created by games lunchers turned white!
+Function FixURLext {
+    Write-Host "Fixing White Games Shortcuts created by game launchers...."
+    choco install -y setuserfta | Out-Null
+    Start-Sleep -s 5
+    Push-Location
+    set-location "$env:ProgramData\chocolatey\lib\setuserfta\tools\SetUserFTA\"
+    SetUserFTA.exe del .url | Out-Null
+    SetUserFTA.exe .url, InternetShortcut | Out-Null
+    Pop-Location
+    choco uninstall -y setuserfta | Out-Null
+}
+    
+#DaddyMadu Ultimate CLeaner
+Function UltimateCleaner {
+    Write-Host "Running DaddyMadu Ultimate Cleaner => Temp folders & Flush DNS + Reset IP...."
+cmd /c 'netsh winsock reset 2>nul' >$null
+cmd /c 'netsh int ip reset 2>nul' >$null
+cmd /c 'ipconfig /release 2>nul' >$null
+cmd /c 'ipconfig /renew 2>nul' >$null
+cmd /c 'ipconfig /flushdns 2>nul' >$null
+cmd /c 'echo Flush DNS + IP Reset Completed Successfully!'
+cmd /c 'echo Clearing Temp folders....'
+cmd /c 'del /f /s /q %systemdrive%\*.tmp 2>nul' >$null
+cmd /c 'del /f /s /q %systemdrive%\*._mp 2>nul' >$null
+cmd /c 'del /f /s /q %systemdrive%\*.log 2>nul' >$null
+cmd /c 'del /f /s /q %systemdrive%\*.gid 2>nul' >$null
+cmd /c 'del /f /s /q %systemdrive%\*.chk 2>nul' >$null
+cmd /c 'del /f /s /q %systemdrive%\*.old 2>nul' >$null
+cmd /c 'del /f /s /q %systemdrive%\recycled\*.* 2>nul' >$null
+cmd /c 'del /f /s /q %windir%\*.bak 2>nul' >$null
+cmd /c 'del /f /s /q %windir%\prefetch\*.* 2>nul' >$null
+cmd /c 'del /f /q %userprofile%\cookies\*.* 2>nul' >$null
+cmd /c 'del /f /q %userprofile%\recent\*.* 2>nul' >$null
+cmd /c 'del /f /s /q %userprofile%\Local Settings\Temporary Internet Files\*.* 2>nul' >$null
+$errpref = $ErrorActionPreference #save actual preference
+$ErrorActionPreference = "silentlycontinue"
+Get-ChildItem -Path "$env:temp" -Exclude "dmtmp" | foreach ($_) {
+       "CLEANING :" + $_.fullname
+       Remove-Item $_.fullname -Force -Recurse
+       "CLEANED... :" + $_.fullname
+   }
+$ErrorActionPreference = $errpref #restore previous preference
+cmd /c 'del /f /s /q %userprofile%\recent\*.* 2>nul' >$null
+cmd /c 'del /f /s /q %windir%\Temp\*.* 2>nul' >$null
+cmd /c 'echo Temp folders Cleared Successfully!'
+}
+
+#Notifying user to reboot!
+Function Finished {
+        cmd /c 'REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\OEMInformation" /v "Manufacturer" /t REG_SZ /d "This PC is Optimized by DaddyMadu" /f 2>nul' >$null
+        cmd /c 'REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\OEMInformation" /v "SupportURL" /t REG_SZ /d "http://daddymadu.gg" /f 2>nul' >$null
+	Start-Sleep -s 5
+        Write-Output "Done! Please Reboot Your PC! Don't forget to follow me on Social Media."
+        Start "http://daddymadu.gg"
+}
 
 ##########
 # Auxiliary Functions
@@ -3032,7 +3389,7 @@ Function UnpinTaskbarIcons {
 
 # Relaunch the script with administrator privileges
 Function RequireAdmin {
-	If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator")) {
+	If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
 		Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`" $PSCommandArgs" -WorkingDirectory $pwd -Verb RunAs
 		Exit
 	}
@@ -3072,75 +3429,103 @@ Function Stop-EdgePDF {
     
     #Stops edge from taking over as the default .PDF viewer    
     Write-Output "Stopping Edge from taking over as the default .PDF viewer"
-    $NoPDF = "HKCR:\.pdf"
-    $NoProgids = "HKCR:\.pdf\OpenWithProgids"
-    $NoWithList = "HKCR:\.pdf\OpenWithList" 
-    If (!(Get-ItemProperty $NoPDF  NoOpenWith)) {
-        New-ItemProperty $NoPDF NoOpenWith 
-    }        
-    If (!(Get-ItemProperty $NoPDF  NoStaticDefaultVerb)) {
-        New-ItemProperty $NoPDF  NoStaticDefaultVerb 
-    }        
-    If (!(Get-ItemProperty $NoProgids  NoOpenWith)) {
-        New-ItemProperty $NoProgids  NoOpenWith 
-    }        
-    If (!(Get-ItemProperty $NoProgids  NoStaticDefaultVerb)) {
-        New-ItemProperty $NoProgids  NoStaticDefaultVerb 
-    }        
-    If (!(Get-ItemProperty $NoWithList  NoOpenWith)) {
-        New-ItemProperty $NoWithList  NoOpenWith
-    }        
-    If (!(Get-ItemProperty $NoWithList  NoStaticDefaultVerb)) {
-        New-ItemProperty $NoWithList  NoStaticDefaultVerb 
-    }
-            
-    #Appends an underscore '_' to the Registry key for Edge
-    $Edge = "HKCR:\AppXd4nrz8ff68srnhf9t5a8sbjyar1cr723_"
-    If (Test-Path $Edge) {
-        Set-Item $Edge AppXd4nrz8ff68srnhf9t5a8sbjyar1cr723_ 
-    }
+# Identify the edge application class 
+$Packages = "HKCU:SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\Repository\Packages" 
+$edge = Get-ChildItem $Packages -Recurse -include "MicrosoftEdge" 
+ 
+# Specify the paths to the file and URL associations 
+$FileAssocKey = Join-Path $edge.PSPath Capabilities\FileAssociations 
+$URLAssocKey = Join-Path $edge.PSPath Capabilities\URLAssociations 
+ 
+# get the software classes for the file and URL types that Edge will associate 
+$FileTypes = Get-Item $FileAssocKey 
+$URLTypes = Get-Item $URLAssocKey 
+ 
+$FileAssoc = Get-ItemProperty $FileAssocKey 
+$URLAssoc = Get-ItemProperty $URLAssocKey 
+ 
+$Associations = @() 
+$Filetypes.Property | foreach {$Associations += $FileAssoc.$_} 
+$URLTypes.Property | foreach {$Associations += $URLAssoc.$_} 
+ 
+# add registry values in each software class to stop edge from associating as the default 
+foreach ($Association in $Associations) 
+     { 
+     $Class = Join-Path HKCU:SOFTWARE\Classes $Association 
+     #if (Test-Path $class) 
+     #   {write-host $Association} 
+     # Get-Item $Class 
+     Set-ItemProperty $Class -Name NoOpenWith -Value "" 
+     Set-ItemProperty $Class -Name NoStaticDefaultVerb -Value "" 
+     } 
 }
 
+#Create Restore Point
 Function CreateRestorePoint {
   Write-Output "Creating Restore Point incase something bad happens"
-  Enable-ComputerRestore -Drive "C:\"
-  Checkpoint-Computer -Description "RestorePoint1" -RestorePointType "MODIFY_SETTINGS"
+  Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name "SystemRestorePointCreationFrequency" -Value 0
+  cmd /c 'vssadmin resize shadowstorage /on="%SystemDrive%" /For="%SystemDrive%" /MaxSize=5GB 2>nul' >$null
+  Enable-ComputerRestore -Drive "$env:SystemDrive\"
+  Checkpoint-Computer -Description "BeforeDaddyMaduScript" -RestorePointType "MODIFY_SETTINGS"
 }
 
+# In case you have removed them for good, you can try to restore the files using installation medium as follows
+# New-Item C:\Mnt -Type Directory | Out-Null
+# dism /Mount-Image /ImageFile:D:\sources\install.wim /index:1 /ReadOnly /MountDir:C:\Mnt
+# robocopy /S /SEC /R:0 "C:\Mnt\Program Files\WindowsApps" "C:\Program Files\WindowsApps"
+# dism /Unmount-Image /Discard /MountDir:C:\Mnt
+# Remove-Item -Path C:\Mnt -Recurse
+
 Function DebloatAll {
-
+cls
     $Bloatware = @(
-
-        #Unnecessary Windows 10 AppX Apps
-        "Microsoft.BingNews"
-        "Microsoft.GetHelp"
-        "Microsoft.Getstarted"
-        "Microsoft.Messaging"
-        "Microsoft.Microsoft3DViewer"
-        "Microsoft.MicrosoftSolitaireCollection"
-        "Microsoft.NetworkSpeedTest"
-        "Microsoft.News"
-        "Microsoft.Office.Lens"
-        "Microsoft.Office.Sway"
-        "Microsoft.OneConnect"
-        "Microsoft.People"
-        "Microsoft.Print3D"
-        "Microsoft.SkypeApp"
-        "Microsoft.StorePurchaseApp"
-        "Microsoft.Whiteboard"
-        "Microsoft.WindowsAlarms"
-        "microsoft.windowscommunicationsapps"
-        "Microsoft.WindowsFeedbackHub"
-        "Microsoft.WindowsMaps"
-        "Microsoft.WindowsSoundRecorder"
-        "Microsoft.ZuneMusic"
-        "Microsoft.ZuneVideo"
-
+    #Unnecessary Windows 10 AppX Apps
+    "*3DBuilder*"
+    "*AppConnector*"
+    "*BingFinance*"
+    "*BingNews*"
+    "*BingSports*"
+    "*BingTranslator*"
+    "*BingWeather*"
+    "*GetHelp*"
+    "*Getstarted*"
+    "*Messaging*"
+    "*Microsoft3DViewer*"
+    "*MicrosoftSolitaireCollection*"
+    "*MicrosoftPowerBIForWindows*"
+    "*MicrosoftStickyNotes*"
+    "*NetworkSpeedTest*"
+    "*OneNote*"
+    "*Lens*"
+    "*Sway*"
+    "*OneConnect*"
+    "*People*"
+    "*Print3D*"
+    "*RemoteDesktop*"
+    "*SkypeApp*"
+    "*Wallet*"
+    "*Whiteboard*"
+    "*WindowsAlarms*"
+    "*WindowsFeedbackHub*"
+    "*WindowsMaps*"
+    "*WindowsPhone*"
+    "*WindowsSoundRecorder*"
+    "*MicrosoftOfficeHub*"
+    "*MixedReality.Portal*"
+    "*ScreenSketch*"
+    "*MicrosoftOfficeHub*"
+    "*Microsoft.MSPaint*"
+    "Microsoft.549981C3F5F10"
+    "*Advertising.Xaml*"
+    "*SolitaireCollection*"
+    "*YourPhone*"
+		
         #Sponsored Windows 10 AppX Apps
         #Add sponsored/featured apps to remove in the "*AppName*" format
+		
         "*EclipseManager*"
         "*ActiproSoftwareLLC*"
-        "*AdobeSystemsIncorporated.AdobePhotoshopExpress*"
+        "*AdobePhotoshopExpress*"
         "*Duolingo-LearnLanguagesforFree*"
         "*PandoraMediaInc*"
         "*CandyCrush*"
@@ -3149,25 +3534,41 @@ Function DebloatAll {
         "*Flipboard*"
         "*Twitter*"
         "*Facebook*"
-        "*Spotify*"
         "*Royal Revolt*"
         "*Sway*"
         "*Speed Test*"
-        "*Dolby*"
-             
-        #Optional: Typically not removed but you can if you need to for some reason
-        #"*Microsoft.Advertising.Xaml_10.1712.5.0_x64__8wekyb3d8bbwe*"
-        #"*Microsoft.Advertising.Xaml_10.1712.5.0_x86__8wekyb3d8bbwe*"
-        #"*Microsoft.BingWeather*"
-        #"*Microsoft.MSPaint*"
-        #"*Microsoft.MicrosoftStickyNotes*"
-        #"*Microsoft.Windows.Photos*"
-        #"*Microsoft.WindowsCalculator*"
-        #"*Microsoft.WindowsStore*"
+        "*Viber*"
+        "*ACGMediaPlayer*"
+        "*Netflix*"
+        "*OneCalendar*"
+        "*LinkedInforWindows*"
+        "*HiddenCityMysteryofShadows*"
+        "*Hulu*"
+        "*HiddenCity*"
+        "*AdobePhotoshopExpress*"
+	"*RoyalRevolt2*"
+	"*AutodeskSketchBook*"
+	"*DisneyMagicKingdoms*"
+	"*MarchofEmpires*"
+	"*Plex*"
+	"*FarmVille2CountryEscape*"
+	"*CyberLinkMediaSuiteEssentials*"
+	"*DrawboardPDF*"
+	"*Asphalt8Airborne*"
+	"*Keeper*"
+	"*SpotifyMusic*"
+	"*WinZipUniversal*"
+	"*XING*"           
+        "*Advertising.Xaml*"
+        "*Advertising.Xaml*"
+    	"*Roblox*"
     )
     foreach ($Bloat in $Bloatware) {
-        Get-AppxPackage -Name $Bloat| Remove-AppxPackage
-        Get-AppxProvisionedPackage -Online | Where-Object DisplayName -like $Bloat | Remove-AppxProvisionedPackage -Online
+	$errpref = $ErrorActionPreference #save actual preference
+    $ErrorActionPreference = "silentlycontinue"
+        Get-AppxPackage -AllUsers -Name $Bloat| Remove-AppxPackage | Out-Null -ErrorAction SilentlyContinue
+        Get-AppxProvisionedPackage -Online | Where-Object DisplayName -like $Bloat | Remove-AppxProvisionedPackage -Online | Out-Null -ErrorAction SilentlyContinue
+	$ErrorActionPreference = $errpref #restore previous preference
         Write-Output "Trying to remove $Bloat."
     }
 }

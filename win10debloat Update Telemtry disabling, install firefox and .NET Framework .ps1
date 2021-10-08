@@ -4,13 +4,17 @@
 # Primary Author Source: https://github.com/Disassembler0/Win10-Initial-Setup-Script
 # Tweaked Source: https://gist.github.com/alirobe/7f3b34ad89a159e6daa1/
 #
+#    If you're a power user looking to tweak your machinea, or doing larger roll-out.. 
+#    Use the @Disassembler0 script instead. It'll probably be more up-to-date than mine:
+#    https://github.com/Disassembler0/Win10-Initial-Setup-Script
+# 
 #    Note from author: Never run scripts without reading them & understanding what they do.
 #
 #	Addition: One command to rule them all, One command to find it, and One command to Run it! 
 #
-#     > powershell -nop -c "iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/0lzi/win10script/master/win10debloat.ps1')"
+#     > powershell -nop -c "iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/zpete/win10script/master/win10debloat.ps1')"
 #
-#	Chris Titus Tech Additions:
+#	Chris Titus Additions:
 #
 #	- Dark Mode
 #	- One Command to launch and run
@@ -18,34 +22,19 @@
 #	- O&O Shutup10 CFG and Run
 #	- Added Install Programs
 #	- Added Debloat Microsoft Store Apps
-#	- Added Confirm Menu for Adobe and Brave Browser
-#	- Changed Default Apps to Notepad++, Brave, Irfanview, and more using XML Import feature
 #
 ##########
-$host.ui.RawUI.WindowTitle = "Win 10 Personal Debloat"
-cmd /c 'title [Win 10 Personal Debloat]'
-Write-Host 'Welcome to Win 10 Personal Debloat';
-Write-Host "Please DISABLE your ANTIVIRUS to prevent any issues and PRESS any KEY to Continue!" -ForegroundColor Red -BackgroundColor Black
-$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
-New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
-New-PSDrive -Name HKU -PSProvider Registry -Root HKEY_USERS | Out-Null
-cls
 # Default preset
 $tweaks = @(
 	### Require administrator privileges ###
 	"RequireAdmin",
-	#"CreateRestorePoint",
-	
-	### External Program Additions
-	"SecurityUpdatesOnly",
-	"InstallProgs", #REQUIRED FOR OTHER PROGRAM INSTALLS!
+
+	### External Program Setup
+	"InstallTitusProgs", #REQUIRED FOR OTHER PROGRAM INSTALLS!	
 	"Install7Zip",
-	"InstallVLC",
-	"InstallBrave",
-    "InstallOpenShell",
-    "InstallDiscord",
-    "InstallVSCode",
-	# "ChangeDefaultApps", # Removed due to issues with steam and resetting default apps
+	"InstallNotepadplusplus",
+	"InstallMediaPlayerClassic",
+	"InstallPeteStuff",
 
 	### Windows Apps
 	"DebloatAll",
@@ -68,7 +57,6 @@ $tweaks = @(
 	"SetP2PUpdateLocal",          # "SetP2PUpdateInternet",
 	"DisableDiagTrack",             # "EnableDiagTrack",
 	"DisableWAPPush",               # "EnableWAPPush",
-    "DisableNewsFeed",
 
 	### Security Tweaks ###
 	"SetUACLow",                  # "SetUACHigh",
@@ -81,76 +69,20 @@ $tweaks = @(
 	"SetUnknownNetworksPrivate",  # "SetUnknownNetworksPublic",
 	"DisableNetDevicesAutoInst",  # "EnableNetDevicesAutoInst",
 	"DisableCtrldFolderAccess",	# "EnableCtrldFolderAccess",
-	"EnableFirewall",
-	"EnableDefender",
-	"EnableDefenderCloud",
-	"EnableF8BootMenu",             # "DisableF8BootMenu",
+	# "DisableFirewall",            # "EnableFirewall",
+	"DisableDefender",            # "EnableDefender",
+	"DisableDefenderCloud",       # "EnableDefenderCloud",
+	"DisableF8BootMenu",		 #"EnableF8BootMenu",
 	#"SetDEPOptOut",                 # "SetDEPOptIn",
 	# "EnableCIMemoryIntegrity",    # "DisableCIMemoryIntegrity",
 	#"DisableScriptHost",            # "EnableScriptHost",
 	#"EnableDotNetStrongCrypto",     # "DisableDotNetStrongCrypto",
 	"DisableMeltdownCompatFlag", # "EnableMeltdownCompatFlag"    
 
-    ### Useless Services ###
-    "DisableALG",  #Application Layer Gateway Service
-    "DisableAJRouter", #AllJoyn Router Service
-    "DisableXblAuthManager", #Xbox Live Auth Manager
-    "DisableXblGameSave", #Xbox Live Game Save
-    "DisableXboxNetApiSvc", #Xbox Live NetwoWindows Search
-    "DisableWSearch", #Windows Search
-    "Disablelfsvc", #Geolocation Service
-    "DisableRemoteRegistry", #Remote Registry
-    "DisableWpcMonSvc", #Parental Control
-    "DisableSEMgrSvc", #Payments and NFC/SE Manager
-    "DisableSCardSvr", #Smartcard
-    "DisableNetlogon", #Netlogon
-    "DisableCscService", #Offline Files
-    "Disableicssvc", #Windows Mobile Hotspot Service
-    "Disablewisvc", #Windows Insider Service
-    "DisableRetailDemo", #Retail Demo Service
-    "DisableWalletService", #WalletService
-    "DisableFax", #Fax
-    "DisableWbioSrvc", #Windows Biometric Service
-    "Disableiphlpsvc", #IP Helper
-    "Disablewcncsvc", #Windows Connect Now
-    "Disablefhsvc", #File History Service
-    "DisablePhoneSvc", #Phone Service
-    "Disableseclogon", #Secondary Logon
-    "DisableFrameServer", #Windows Camera Frame Server
-    "Disablestisvc", #Windows Image Acquisition
-    "DisablePcaSvc", #Program Compatibility Assistant Service
-    "DisableDPS", #Diagnostic Policy Service
-    "DisableMapsBroker", #Download Maps Manager
-    "Disablebthserv", #Bluetooth Support Service
-    "DisableBDESVC", #Bitlocker
-    "DisableBthAvctpSvc", #AVCTP Service
-    "DisableDiagTrack", #Connected User Experience and Telemetry
-    "DisableCertPropSvc", #Certificate Propagation
-    "DisableWdiServiceHost", #Diagnostic Service Host
-    "Disablelmhosts", #TCP/IP NetBIOS Helper
-    "DisableWdiSystemHost", #Diagnostic System Host
-    "DisableTrkWks", #Distributed Link Tracking Client
-    "DisableWerSvc", #Windows Error Reporting Service
-    "DisableTabletInputService", #Touch Keyboard and Handwriting Panel Service
-    "DisableEntAppSvc", #Enterprise App Management Service
-    "DisableSpooler", #Print Spooler
-    "DisableBcastDVRUserService", #GameDVR and Broadcast
-    "DisableWMPNetworkSvc", #Windows Media Player Network Sharing Service
-    "Disablediagnosticshub.standardcollector.service", #Microsoft Diagnostics Hub Standard Collector Service
-    "DisableDmEnrollmentSvc", #Device Management Enrollment Service
-    "DisablePNRPAutoReg", #PNRP Machine Name Publication Service
-    "Disablewlidsvc", #Microsoft Account Sign-in Assistant
-    "DisableAXInstSV", #ActiveX Installer
-    "Disabletzautoupdate", #Auto Time Zone Updater
-    "DisableSysMain", #Sysmain
-    "DisableSensorService", #Sensor Service
-    "DisableRemoteAccess", #Routing and Remote Service
-
-
 	### Service Tweaks ###
-	"EnableUpdateMSRT",
-	"EnableUpdateDriver",
-	"EnableUpdateRestart",
+	"DisableUpdateMSRT",          # "EnableUpdateMSRT",
+	"DisableUpdateDriver",        # "EnableUpdateDriver",
+	"DisableUpdateRestart",         # "EnableUpdateRestart",
 	"DisableHomeGroups",          # "EnableHomeGroups",
 	"DisableSharedExperiences",     # "EnableSharedExperiences",
 	"DisableRemoteAssistance",      # "EnableRemoteAssistance",
@@ -160,34 +92,29 @@ $tweaks = @(
 	"DisableStorageSense",        # "EnableStorageSense",
 	"DisableDefragmentation",     # "EnableDefragmentation",
 	"DisableSuperfetch",          # "EnableSuperfetch",
-	"EnableIndexing",
+	"DisableIndexing",            # "EnableIndexing",
 	"SetBIOSTimeUTC",             # "SetBIOSTimeLocal",
 	"DisableHibernation",		# "EnableHibernation",          # 
 	"EnableSleepButton",		# "DisableSleepButton",         
 	"DisableSleepTimeout",        # "EnableSleepTimeout",
 	# "DisableFastStartup",         # "EnableFastStartup",
 
-
-    ### Windows Tweaks ###
-    "RemoveMeet",
-
-
 	### UI Tweaks ###
-	"EnableActionCenter",          # "DisableActionCenter",
-	"EnableLockScreen",				# "DisableLockScreen",
-	"EnableLockScreenRS1",			# "DisableLockScreenRS1",
+	"DisableActionCenter",          # "EnableActionCenter",
+	"DisableLockScreen",            # "EnableLockScreen",
+	"DisableLockScreenRS1",       # "EnableLockScreenRS1",
 	# "HideNetworkFromLockScreen",    # "ShowNetworkOnLockScreen",
 	# "HideShutdownFromLockScreen",   # "ShowShutdownOnLockScreen",
 	"DisableStickyKeys",            # "EnableStickyKeys",
 	"ShowTaskManagerDetails"        # "HideTaskManagerDetails",
 	"ShowFileOperationsDetails",    # "HideFileOperationsDetails",
 	"DisableFileDeleteConfirm",	# "EnableFileDeleteConfirm",    
-	"HideTaskbarSearch",
-	#"ShowTaskbarSearchIcon",      # "ShowTaskbarSearchBox",
+	#"HideTaskbarSearch",
+	"ShowTaskbarSearchIcon",      # "ShowTaskbarSearchBox",
 	"HideTaskView",                 # "ShowTaskView",
 	# "ShowSmallTaskbarIcons",        # "ShowLargeTaskbarIcons",
 	# "SetTaskbarCombineWhenFull",    # "SetTaskbarCombineNever",     # "SetTaskbarCombineAlways",
-	"HideTaskbarPeopleIcon",        # "ShowTaskbarPeopleIcon",
+	# "HideTaskbarPeopleIcon",        # "ShowTaskbarPeopleIcon",
 	"ShowTrayIcons",                # "HideTrayIcons",
 	"DisableSearchAppInStore",      # "EnableSearchAppInStore",
 	"DisableNewAppPrompt",          # "EnableNewAppPrompt",
@@ -200,9 +127,9 @@ $tweaks = @(
 
 	### Explorer UI Tweaks ###
 	"ShowKnownExtensions",          # "HideKnownExtensions",
-	"ShowHiddenFiles",              # "HideHiddenFiles",
+	# "ShowHiddenFiles",              # "HideHiddenFiles",
 	"HideSyncNotifications"         # "ShowSyncNotifications",
-	"HideRecentShortcuts",          # "ShowRecentShortcuts",
+	# "HideRecentShortcuts",          # "ShowRecentShortcuts",
 	"SetExplorerThisPC",            # "SetExplorerQuickAccess",
 	"HideThisPCFromDesktop",	# "ShowThisPCOnDesktop",
 	# "ShowUserFolderOnDesktop",    # "HideUserFolderFromDesktop",
@@ -220,28 +147,27 @@ $tweaks = @(
 	"HideVideosFromExplorer",     # "ShowVideosInExplorer",
 	"Hide3DObjectsFromThisPC",      # "Show3DObjectsInThisPC",
 	"Hide3DObjectsFromExplorer",  # "Show3DObjectsInExplorer",
-	"EnableThumbnails",         # "DisableThumbnails",
-	"EnableThumbsDB",           # "DisableThumbsDB",
-    "EnableDarkMode",				# "DisableDarkMode",
+	# "DisableThumbnails",          # "EnableThumbnails",
+	# "DisableThumbsDB",              # "EnableThumbsDB",
 
 	### Application Tweaks ###
-    "DisableOneDrive",              # "EnableOneDrive",
+	"DisableOneDrive",              # "EnableOneDrive",
 	"UninstallOneDrive",            # "InstallOneDrive",
 	"UninstallMsftBloat",           # "InstallMsftBloat",
 	"UninstallThirdPartyBloat",     # "InstallThirdPartyBloat",
-	 "UninstallWindowsStore",      # "InstallWindowsStore",
-     "DisableXboxFeatures",          # "EnableXboxFeatures",
+	# "UninstallWindowsStore",      # "InstallWindowsStore",
+	# "DisableXboxFeatures",          # "EnableXboxFeatures",
 	"DisableAdobeFlash",            # "EnableAdobeFlash",
 	"InstallMediaPlayer", 		# "UninstallMediaPlayer",
 	"UninstallInternetExplorer",  # "InstallInternetExplorer",
 	"UninstallWorkFolders",       # "InstallWorkFolders",
 	"InstallLinuxSubsystem",      # "UninstallLinuxSubsystem",
-	 "InstallHyperV",              # "UninstallHyperV",
+	# "InstallHyperV",              # "UninstallHyperV",
 	"SetPhotoViewerAssociation",    # "UnsetPhotoViewerAssociation",
 	"AddPhotoViewerOpenWith",       # "RemovePhotoViewerOpenWith",
-	"InstallPDFPrinter"		# "UninstallPDFPrinter",
-	 "UninstallXPSPrinter",          # "InstallXPSPrinter",
-	 "RemoveFaxPrinter",             # "AddFaxPrinter",
+	"InstallPDFPrinter",		# "UninstallPDFPrinter",
+	# "UninstallXPSPrinter",          # "InstallXPSPrinter",
+	# "RemoveFaxPrinter",             # "AddFaxPrinter",
 
 	### Server Specific Tweaks ###
 	# "HideServerManagerOnLogin",   # "ShowServerManagerOnLogin",
@@ -252,62 +178,19 @@ $tweaks = @(
 	# "EnableAudio",                # "DisableAudio",
 
 	### Unpinning ###
-	"UnpinStartMenuTiles"
-	#"UnpinTaskbarIcons"
+	"UnpinStartMenuTiles",
+	#"UnpinTaskbarIcons",
 
 	### Auxiliary Functions ###
+	"WaitForKey"
+	#"Restart"
 )
 
 #########
-# Recommended Customizations
+# Recommended Titus Programs
 #########
 
-function Show-Choco-Menu {
-    param(
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
-        [string]$Title,
-    
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
-        [string]$ChocoInstall
-    )
-   
- do
- {
-    Clear-Host
-    Write-Host "================ $Title ================"
-    Write-Host "Y: Press 'Y' to do this."
-    Write-Host "2: Press 'N' to skip this."
-	Write-Host "Q: Press 'Q' to stop the entire script."
-    $selection = Read-Host "Please make a selection"
-    switch ($selection)
-    {
-    'y' { choco install $ChocoInstall -y }
-    'n' { Break }
-    'q' { Exit  }
-    }
- }
- until ($selection -match "y" -or $selection -match "n" -or $selection -match "q")
-}
-
-Function SecurityUpdatesOnly {
-	Write-Output "Improving Windows Update to delay Feature updates and only install Security Updates"
-	### Fix Windows Update to delay feature updates and only update at certain times
-	$UpdatesPath = "HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings"
-	If (!(Get-ItemProperty $UpdatesPath  BranchReadinessLevel)) { New-ItemProperty -Path $UpdatesPath -Name "BranchReadinessLevel" -Type DWord -Value 20 }
-	Set-ItemProperty -Path $UpdatesPath -Name "BranchReadinessLevel" -Type DWord -Value 20
-	If (!(Get-ItemProperty $UpdatesPath  DeferFeatureUpdatesPeriodInDays)) { New-ItemProperty -Path $UpdatesPath -Name "DeferFeatureUpdatesPeriodInDays" -Type DWord -Value 365	}
-	Set-ItemProperty -Path $UpdatesPath -Name "DeferFeatureUpdatesPeriodInDays" -Type DWord -Value 365
-	If (!(Get-ItemProperty $UpdatesPath  DeferQualityUpdatesPeriodInDays)) { New-ItemProperty -Path $UpdatesPath -Name "DeferQualityUpdatesPeriodInDays" -Type DWord -Value 4 }
-	Set-ItemProperty -Path $UpdatesPath -Name "DeferQualityUpdatesPeriodInDays" -Type DWord -Value 4
-	If (!(Get-ItemProperty $UpdatesPath  ActiveHoursEnd)) { New-ItemProperty -Path $UpdatesPath -Name "ActiveHoursEnd" -Type DWord -Value 2	}
-	Set-ItemProperty -Path $UpdatesPath -Name "ActiveHoursEnd" -Type DWord -Value 2
-	If (!(Get-ItemProperty $UpdatesPath  DeferQualityUpdatesPeriodInDays)) { New-ItemProperty -Path $UpdatesPath -Name "ActiveHoursStart" -Type DWord -Value 8 }
-	Set-ItemProperty -Path $UpdatesPath -Name "ActiveHoursStart" -Type DWord -Value 8
-}
-
-Function InstallProgs {
+Function InstallTitusProgs {
 	Write-Output "Installing Chocolatey"
 	Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 	choco install chocolatey-core.extension -y
@@ -318,53 +201,43 @@ Function InstallProgs {
 	./OOSU10.exe ooshutup10.cfg /quiet
 }
 
-
-Function InstallBrave {
-	do
- {
-    Clear-Host
-    Write-Host "================ Do You Want to Install Brave Browser? ================"
-    Write-Host "Y: Press 'Y' to do this."
-    Write-Host "2: Press 'N' to skip this."
-	Write-Host "Q: Press 'Q' to stop the entire script."
-    $selection = Read-Host "Please make a selection"
-    switch ($selection)
-    {
-    'y' { 
-		Invoke-WebRequest -Uri "https://laptop-updates.brave.com/download/CHR253" -OutFile $env:USERPROFILE\Downloads\brave.exe
-		~/Downloads/brave.exe
-	}
-    'n' { Break }
-    'q' { Exit  }
-    }
- }
- until ($selection -match "y" -or $selection -match "n" -or $selection -match "q")
-	
+Function InstallJava {
+	Write-Output "Installing Java"
+	choco install jre8 -y
 }
+
 Function Install7Zip {
-	Show-Choco-Menu -Title "Do you want to install 7-Zip?" -ChocoInstall "7zip"
+	Write-Output "Installing 7-Zip"
+	choco install 7zip -y
 }
 
-Function InstallVLC {
-	Show-Choco-Menu -Title "Do you want to install VLC?" -ChocoInstall "vlc"
+Function InstallNotepadplusplus {
+	Write-Output "Installing Notepad++"
+	choco install notepadplusplus -y
 }
 
-Function InstallOpenShell {
-	Show-Choco-Menu -Title "Do you want to install Open-Shell" -ChocoInstall "open-shell --pre"
+Function InstallMediaPlayerClassic {
+	Write-Output "Installing Media Player Classic (VLC Alternative)"
+	choco install mpc-hc -y
 }
 
-Function InstallDiscord {
-	Show-Choco-Menu -Title "Do you want to install Discord" -ChocoInstall "discord"
-}
-
-Function InstallVSCode {
-	Show-Choco-Menu -Title "Do you want to install VS Code" -ChocoInstall "vscode"
-}
-
-Function ChangeDefaultApps {
-	Write-Output "Setting Default Programs - Notepad++ Brave VLC IrFanView"
-	Start-BitsTransfer -Source "https://raw.githubusercontent.com/ChrisTitusTech/win10script/master/MyDefaultAppAssociations.xml" -Destination $HOME\Desktop\MyDefaultAppAssociations.xml
-	dism /online /Import-DefaultAppAssociations:"%UserProfile%\Desktop\MyDefaultAppAssociations.xml"
+Function InstallPeteStuff {
+	Write-Output "Installing Petes tools"
+	choco install jetbrains-rider -y
+	choco install jetbrainstoolbox -y
+	choco install aimp -y
+	choco install winrar -y
+	choco install git -y
+	choco install tortoisegit -y
+	choco install sublimetext3 -y
+	choco install sublimemerge -y
+	choco install microsoft-windows-terminal -y
+	choco install listary -y
+	choco install vscode -y
+	choco install foobar2000 -y
+	choco install sumatrapdf -y
+	choco install dotnet4.7.2 -y
+	choco install firefox -y	
 }
 
 ##########
@@ -380,14 +253,46 @@ Function DisableTelemetry {
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 0
+	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\PreviewBuilds")) {
+		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\PreviewBuilds" -Force | Out-Null
+	}
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\PreviewBuilds" -Name "AllowBuildPreview" -Type DWord -Value 0
+	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Software Protection Platform")) {
+		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Software Protection Platform" -Force | Out-Null
+	}
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Software Protection Platform" -Name "NoGenTicket" -Type DWord -Value 1
+	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\SQMClient\Windows")) {
+		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\SQMClient\Windows" -Force | Out-Null
+	}
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\SQMClient\Windows" -Name "CEIPEnable" -Type DWord -Value 0
+	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppCompat")) {
+		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppCompat" -Force | Out-Null
+	}
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppCompat" -Name "AITEnable" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppCompat" -Name "DisableInventory" -Type DWord -Value 1
+	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\AppV\CEIP")) {
+		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\AppV\CEIP" -Force | Out-Null
+	}
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\AppV\CEIP" -Name "CEIPEnable" -Type DWord -Value 0
+	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\TabletPC")) {
+		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\TabletPC" -Force | Out-Null
+	}
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\TabletPC" -Name "PreventHandwritingDataSharing" -Type DWord -Value 1
+	If (!(Test-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\TextInput")) {
+		New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\TextInput" -Force | Out-Null
+	}
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\TextInput" -Name "AllowLinguisticDataCollection" -Type DWord -Value 0
 	Disable-ScheduledTask -TaskName "Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser" | Out-Null
 	Disable-ScheduledTask -TaskName "Microsoft\Windows\Application Experience\ProgramDataUpdater" | Out-Null
 	Disable-ScheduledTask -TaskName "Microsoft\Windows\Autochk\Proxy" | Out-Null
 	Disable-ScheduledTask -TaskName "Microsoft\Windows\Customer Experience Improvement Program\Consolidator" | Out-Null
 	Disable-ScheduledTask -TaskName "Microsoft\Windows\Customer Experience Improvement Program\UsbCeip" | Out-Null
 	Disable-ScheduledTask -TaskName "Microsoft\Windows\DiskDiagnostic\Microsoft-Windows-DiskDiagnosticDataCollector" | Out-Null
+	# Office 2016 / 2019
+	Disable-ScheduledTask -TaskName "Microsoft\Office\Office ClickToRun Service Monitor" -ErrorAction SilentlyContinue | Out-Null
+	Disable-ScheduledTask -TaskName "Microsoft\Office\OfficeTelemetryAgentFallBack2016" -ErrorAction SilentlyContinue | Out-Null
+	Disable-ScheduledTask -TaskName "Microsoft\Office\OfficeTelemetryAgentLogOn2016" -ErrorAction SilentlyContinue | Out-Null
 }
-
 # Enable Telemetry
 Function EnableTelemetry {
 	Write-Output "Enabling Telemetry..."
@@ -403,20 +308,30 @@ Function EnableTelemetry {
 }
 
 # Disable Wi-Fi Sense
-Function DisableWiFiSense {
-	Write-Output "Disabling Wi-Fi Sense..."
-	If (!(Test-Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\default\WiFi\AllowWiFiHotSpotReporting")) {
-		New-Item -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\default\WiFi\AllowWiFiHotSpotReporting" -Force | Out-Null
-	}
-	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\default\WiFi\AllowWiFiHotSpotReporting" -Name "Value" -Type DWord -Value 0
-	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\default\WiFi\AllowAutoConnectToWiFiSenseHotspots" -Name "Value" -Type DWord -Value 0
-	If (!(Test-Path "HKLM:\SOFTWARE\Microsoft\WcmSvc\wifinetworkmanager\config")) {
-		New-Item -Path "HKLM:\SOFTWARE\Microsoft\WcmSvc\wifinetworkmanager\config" -Force | Out-Null
-	}
-	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\WcmSvc\wifinetworkmanager\config" -Name "AutoConnectAllowedOEM" -Type Dword -Value 0
-	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\WcmSvc\wifinetworkmanager\config" -Name "WiFISenseAllowed" -Type Dword -Value 0
+Function EnableTelemetry {
+	Write-Output "Enabling Telemetry..."
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 3
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 3
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\PreviewBuilds" -Name "AllowBuildPreview" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Software Protection Platform" -Name "NoGenTicket" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\SQMClient\Windows" -Name "CEIPEnable" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppCompat" -Name "AITEnable" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppCompat" -Name "DisableInventory" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\AppV\CEIP" -Name "CEIPEnable" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\TabletPC" -Name "PreventHandwritingDataSharing" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\TextInput" -Name "AllowLinguisticDataCollection" -ErrorAction SilentlyContinue
+	Enable-ScheduledTask -TaskName "Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser" | Out-Null
+	Enable-ScheduledTask -TaskName "Microsoft\Windows\Application Experience\ProgramDataUpdater" | Out-Null
+	Enable-ScheduledTask -TaskName "Microsoft\Windows\Autochk\Proxy" | Out-Null
+	Enable-ScheduledTask -TaskName "Microsoft\Windows\Customer Experience Improvement Program\Consolidator" | Out-Null
+	Enable-ScheduledTask -TaskName "Microsoft\Windows\Customer Experience Improvement Program\UsbCeip" | Out-Null
+	Enable-ScheduledTask -TaskName "Microsoft\Windows\DiskDiagnostic\Microsoft-Windows-DiskDiagnosticDataCollector" | Out-Null
+	# Office 2016 / 2019
+	Enable-ScheduledTask -TaskName "Microsoft\Office\Office ClickToRun Service Monitor" -ErrorAction SilentlyContinue | Out-Null
+	Enable-ScheduledTask -TaskName "Microsoft\Office\OfficeTelemetryAgentFallBack2016" -ErrorAction SilentlyContinue | Out-Null
+	Enable-ScheduledTask -TaskName "Microsoft\Office\OfficeTelemetryAgentLogOn2016" -ErrorAction SilentlyContinue | Out-Null
 }
-
 # Enable Wi-Fi Sense
 Function EnableWiFiSense {
 	Write-Output "Enabling Wi-Fi Sense..."
@@ -449,8 +364,8 @@ Function EnableSmartScreen {
 # Disable Web Search in Start Menu
 Function DisableWebSearch {
 	Write-Output "Disabling Bing Search in Start Menu..."
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" -Name "BingSearchEnabled" -Type DWord -Value 0
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" -Name "CortanaConsent" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name "BingSearchEnabled" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name "CortanaConsent" -Type DWord -Value 0
 	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search")) {
 		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Force | Out-Null
 	}
@@ -468,36 +383,57 @@ Function EnableWebSearch {
 # Disable Application suggestions and automatic installation
 Function DisableAppSuggestions {
 	Write-Output "Disabling Application suggestions..."
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "ContentDeliveryAllowed" -Type DWord -Value 0
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "OemPreInstalledAppsEnabled" -Type DWord -Value 0
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "PreInstalledAppsEnabled" -Type DWord -Value 0
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "PreInstalledAppsEverEnabled" -Type DWord -Value 0
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SilentInstalledAppsEnabled" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "ContentDeliveryAllowed" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "OemPreInstalledAppsEnabled" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "PreInstalledAppsEnabled" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "PreInstalledAppsEverEnabled" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SilentInstalledAppsEnabled" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-310093Enabled" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-314559Enabled" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338387Enabled" -Type DWord -Value 0
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338388Enabled" -Type DWord -Value 0
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338389Enabled" -Type DWord -Value 0
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353698Enabled" -Type DWord -Value 0
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SystemPaneSuggestionsEnabled" -Type DWord -Value 0
-	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent")) {
-		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Force | Out-Null
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338388Enabled" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338389Enabled" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338393Enabled" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353694Enabled" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353696Enabled" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353698Enabled" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SystemPaneSuggestionsEnabled" -Type DWord -Value 0
+	If (!(Test-Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement")) {
+		New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" -Force | Out-Null
 	}
-	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Name "DisableWindowsConsumerFeatures" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" -Name "ScoobeSystemSettingEnabled" -Type DWord -Value 0
+	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsInkWorkspace")) {
+		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsInkWorkspace" -Force | Out-Null
+	}
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsInkWorkspace" -Name "AllowSuggestedAppsInWindowsInkWorkspace" -Type DWord -Value 0
+	# Empty placeholder tile collection in registry cache and restart Start Menu process to reload the cache
+	If ([System.Environment]::OSVersion.Version.Build -ge 17134) {
+		$key = Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*windows.data.placeholdertilecollection\Current"
+		Set-ItemProperty -Path $key.PSPath -Name "Data" -Type Binary -Value $key.Data[0..15]
+		Stop-Process -Name "ShellExperienceHost" -Force -ErrorAction SilentlyContinue
+	}
 }
 
 # Enable Application suggestions and automatic installation
 Function EnableAppSuggestions {
 	Write-Output "Enabling Application suggestions..."
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "ContentDeliveryAllowed" -Type DWord -Value 1
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "OemPreInstalledAppsEnabled" -Type DWord -Value 1
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "PreInstalledAppsEnabled" -Type DWord -Value 1
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "PreInstalledAppsEverEnabled" -Type DWord -Value 1
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SilentInstalledAppsEnabled" -Type DWord -Value 1
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338388Enabled" -Type DWord -Value 1
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338389Enabled" -Type DWord -Value 1
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SystemPaneSuggestionsEnabled" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "ContentDeliveryAllowed" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "OemPreInstalledAppsEnabled" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "PreInstalledAppsEnabled" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "PreInstalledAppsEverEnabled" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SilentInstalledAppsEnabled" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338388Enabled" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338389Enabled" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353694Enabled" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353696Enabled" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SystemPaneSuggestionsEnabled" -Type DWord -Value 1
+	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-310093Enabled" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-314559Enabled" -ErrorAction SilentlyContinue
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338387Enabled" -ErrorAction SilentlyContinue
-	Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353698Enabled" -ErrorAction SilentlyContinue
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Name "DisableWindowsConsumerFeatures" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338393Enabled" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353698Enabled" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" -Name "ScoobeSystemSettingEnabled" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsInkWorkspace" -Name "AllowSuggestedAppsInWindowsInkWorkspace" -ErrorAction SilentlyContinue
 }
 
 # Disable Activity History feed in Task View - Note: The checkbox "Let Windows collect my activities from this PC" remains checked even when the function is disabled
@@ -571,10 +507,10 @@ Function EnableMapUpdates {
 # Disable Feedback
 Function DisableFeedback {
 	Write-Output "Disabling Feedback..."
-	If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Siuf\Rules")) {
-		New-Item -Path "HKCU:\SOFTWARE\Microsoft\Siuf\Rules" -Force | Out-Null
+	If (!(Test-Path "HKCU:\Software\Microsoft\Siuf\Rules")) {
+		New-Item -Path "HKCU:\Software\Microsoft\Siuf\Rules" -Force | Out-Null
 	}
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Siuf\Rules" -Name "NumberOfSIUFInPeriod" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Siuf\Rules" -Name "NumberOfSIUFInPeriod" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "DoNotShowFeedbackNotifications" -Type DWord -Value 1
 	Disable-ScheduledTask -TaskName "Microsoft\Windows\Feedback\Siuf\DmClient" -ErrorAction SilentlyContinue | Out-Null
 	Disable-ScheduledTask -TaskName "Microsoft\Windows\Feedback\Siuf\DmClientOnScenarioDownload" -ErrorAction SilentlyContinue | Out-Null
@@ -622,36 +558,41 @@ Function EnableAdvertisingID {
 # Disable Cortana
 Function DisableCortana {
 	Write-Output "Disabling Cortana..."
-	If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Personalization\Settings")) {
-		New-Item -Path "HKCU:\SOFTWARE\Microsoft\Personalization\Settings" -Force | Out-Null
+	If (!(Test-Path "HKCU:\Software\Microsoft\Personalization\Settings")) {
+		New-Item -Path "HKCU:\Software\Microsoft\Personalization\Settings" -Force | Out-Null
 	}
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Personalization\Settings" -Name "AcceptedPrivacyPolicy" -Type DWord -Value 0
-	If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\InputPersonalization")) {
-		New-Item -Path "HKCU:\SOFTWARE\Microsoft\InputPersonalization" -Force | Out-Null
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Personalization\Settings" -Name "AcceptedPrivacyPolicy" -Type DWord -Value 0
+	If (!(Test-Path "HKCU:\Software\Microsoft\InputPersonalization\TrainedDataStore")) {
+		New-Item -Path "HKCU:\Software\Microsoft\InputPersonalization\TrainedDataStore" -Force | Out-Null
 	}
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\InputPersonalization" -Name "RestrictImplicitTextCollection" -Type DWord -Value 1
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\InputPersonalization" -Name "RestrictImplicitInkCollection" -Type DWord -Value 1
-	If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\InputPersonalization\TrainedDataStore")) {
-		New-Item -Path "HKCU:\SOFTWARE\Microsoft\InputPersonalization\TrainedDataStore" -Force | Out-Null
-	}
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\InputPersonalization\TrainedDataStore" -Name "HarvestContacts" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\InputPersonalization" -Name "RestrictImplicitTextCollection" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\InputPersonalization" -Name "RestrictImplicitInkCollection" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\InputPersonalization\TrainedDataStore" -Name "HarvestContacts" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowCortanaButton" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\default\Experience\AllowCortana" -Name "Value" -Type DWord -Value 0
 	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search")) {
 		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Force | Out-Null
 	}
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name "AllowCortana" -Type DWord -Value 0
+	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\InputPersonalization")) {
+		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\InputPersonalization" -Force | Out-Null
+	}
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\InputPersonalization" -Name "AllowInputPersonalization" -Type DWord -Value 0
+	Get-AppxPackage "Microsoft.549981C3F5F10" | Remove-AppxPackage
 }
 
 # Enable Cortana
 Function EnableCortana {
 	Write-Output "Enabling Cortana..."
-	Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Personalization\Settings" -Name "AcceptedPrivacyPolicy" -ErrorAction SilentlyContinue
-	If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\InputPersonalization\TrainedDataStore")) {
-		New-Item -Path "HKCU:\SOFTWARE\Microsoft\InputPersonalization\TrainedDataStore" -Force | Out-Null
-	}
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\InputPersonalization" -Name "RestrictImplicitTextCollection" -Type DWord -Value 0
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\InputPersonalization" -Name "RestrictImplicitInkCollection" -Type DWord -Value 0
-	Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\InputPersonalization\TrainedDataStore" -Name "HarvestContacts" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Personalization\Settings" -Name "AcceptedPrivacyPolicy" -ErrorAction SilentlyContinue
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\InputPersonalization" -Name "RestrictImplicitTextCollection" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\InputPersonalization" -Name "RestrictImplicitInkCollection" -Type DWord -Value 0
+	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\InputPersonalization\TrainedDataStore" -Name "HarvestContacts" -ErrorAction SilentlyContinue
+	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowCortanaButton" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\default\Experience\AllowCortana" -Name "Value" -Type DWord -Value 1
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name "AllowCortana" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\InputPersonalization" -Name "AllowInputPersonalization" -ErrorAction SilentlyContinue
+	Get-AppxPackage -AllUsers "Microsoft.549981C3F5F10" | ForEach-Object {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 }
 
 # Disable Error reporting
@@ -712,15 +653,6 @@ Function EnableWAPPush {
 	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\dmwappushservice" -Name "DelayedAutoStart" -Type DWord -Value 1
 }
 
-# Disable New Windows 10 21h1 News Feed
-Function DisableNewsFeed {
-    Write-Output "Disabling Windows 10 News and Interests Feed..."
-If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds")) {
-    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" -Force | Out-Null
-}
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" -Name "EnableFeeds" -Type DWord -Value 0
-Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Feeds" -Name "ShellFeedsTaskbarViewMode" -Type DWord -Value 2
-}
 
 
 ##########
@@ -1000,434 +932,6 @@ Function DisableMeltdownCompatFlag {
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\QualityCompat" -Name "cadca5fe-87d3-4b96-b7fb-a231484277cc" -ErrorAction SilentlyContinue
 }
 
-
-##########
-# Useless Services
-##########
-
-# Stop and disable Application Layer Gateway Service
-Function Disable{
-	Write-Output"Disabling... ApplicationLayerGatewayService"
-	Stop-Service"ALG"-WarningActionSilentlyContinue
-	Set-Service"ALG"-StartupTypeDisabled
-
-}
-
-# Stop and disable AllJoyn Router Service
-Function DisableAJRouter{
-	Write-Output"Disabling... AllJoyn Router Service"
-	Stop-Service"AJRouter"-WarningActionSilentlyContinue
-	Set-Service"AJRouter"-StartupTypeDisabled
-
-}
-
-# Stop and disable Xbox Live Auth Manager
-Function DisableXblAuthManager{
-	Write-Output"Disabling... Xbox Live Auth Manager"
-	Stop-Service"XblAuthManager"-WarningActionSilentlyContinue
-	Set-Service"XblAuthManager"-StartupTypeDisabled
-
-}
-
-# Stop and disable Xbox Live Game Save
-Function DisableXblGameSave{
-	Write-Output"Disabling... Xbox Live Game Save"
-	Stop-Service"XblGameSave"-WarningActionSilentlyContinue
-	Set-Service"XblGameSave"-StartupTypeDisabled
-
-}
-
-# Stop and disable Xbox Live NetwoWindows Search
-Function DisableXboxNetApiSvc{
-	Write-Output"Disabling... Xbox Live NetwoWindows Search"
-	Stop-Service"XboxNetApiSvc"-WarningActionSilentlyContinue
-	Set-Service"XboxNetApiSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Search
-Function DisableWSearch{
-	Write-Output"Disabling... Windows Search"
-	Stop-Service"WSearch"-WarningActionSilentlyContinue
-	Set-Service"WSearch"-StartupTypeDisabled
-
-}
-
-# Stop and disable Geolocation Service
-Function Disablefhsvc{
-	Write-Output"Disabling... Geolocation Service"
-	Stop-Service"fhsvc"-WarningActionSilentlyContinue
-	Set-Service"fhsvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Remote Registry
-Function DisableRemoteRegistry{
-	Write-Output"Disabling... Remote Registry"
-	Stop-Service"RemoteRegistry"-WarningActionSilentlyContinue
-	Set-Service"RemoteRegistry"-StartupTypeDisabled
-
-}
-
-# Stop and disable Parental Control
-Function DisableWpcMonSvc{
-	Write-Output"Disabling... Parental Control"
-	Stop-Service"WpcMonSvc"-WarningActionSilentlyContinue
-	Set-Service"WpcMonSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Payments and NFC/SE Manager
-Function DisableSEMgrSvc{
-	Write-Output"Disabling... Payments and NFC/SE Manager"
-	Stop-Service"SEMgrSvc"-WarningActionSilentlyContinue
-	Set-Service"SEMgrSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Smartcard
-Function DisableSCardSvr{
-	Write-Output"Disabling... Smartcard"
-	Stop-Service"SCardSvr"-WarningActionSilentlyContinue
-	Set-Service"SCardSvr"-StartupTypeDisabled
-
-}
-
-# Stop and disable Netlogon
-Function DisableNetlogon{
-	Write-Output"Disabling... Netlogon"
-	Stop-Service"Netlogon"-WarningActionSilentlyContinue
-	Set-Service"Netlogon"-StartupTypeDisabled
-
-}
-
-# Stop and disable Offline Files
-Function DisableCscService{
-	Write-Output"Disabling... Offline Files"
-	Stop-Service"CscService"-WarningActionSilentlyContinue
-	Set-Service"CscService"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Mobile Hotspot Service
-Function Disableicssvc{
-	Write-Output"Disabling... Windows Mobile Hotspot Service"
-	Stop-Service"icssvc"-WarningActionSilentlyContinue
-	Set-Service"icssvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Insider Service
-Function Disablewisvc{
-	Write-Output"Disabling... Windows Insider Service"
-	Stop-Service"wisvc"-WarningActionSilentlyContinue
-	Set-Service"wisvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Retail Demo Service
-Function DisableRetailDemo{
-	Write-Output"Disabling... Retail Demo Service"
-	Stop-Service"RetailDemo"-WarningActionSilentlyContinue
-	Set-Service"RetailDemo"-StartupTypeDisabled
-
-}
-
-# Stop and disable WalletService
-Function DisableWalletService{
-	Write-Output"Disabling... WalletService"
-	Stop-Service"WalletService"-WarningActionSilentlyContinue
-	Set-Service"WalletService"-StartupTypeDisabled
-
-}
-
-# Stop and disable Fax
-Function DisableFax{
-	Write-Output"Disabling... Fax"
-	Stop-Service"Fax"-WarningActionSilentlyContinue
-	Set-Service"Fax"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Biometric Service
-Function DisableWbioSrvc{
-	Write-Output"Disabling... Windows Biometric Service"
-	Stop-Service"WbioSrvc"-WarningActionSilentlyContinue
-	Set-Service"WbioSrvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable IP Helper
-Function Disableiphlpsvc{
-	Write-Output"Disabling... IP Helper"
-	Stop-Service"iphlpsvc"-WarningActionSilentlyContinue
-	Set-Service"iphlpsvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Connect Now
-Function Disablewcncsvc{
-	Write-Output"Disabling... Windows Connect Now"
-	Stop-Service"wcncsvc"-WarningActionSilentlyContinue
-	Set-Service"wcncsvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable File History Service
-Function Disablefhsvc{
-	Write-Output"Disabling... File History Service"
-	Stop-Service"fhsvc"-WarningActionSilentlyContinue
-	Set-Service"fhsvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Phone Service
-Function DisablePhoneSvc{
-	Write-Output"Disabling... Phone Service"
-	Stop-Service"PhoneSvc"-WarningActionSilentlyContinue
-	Set-Service"PhoneSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Secondary Logon
-Function Disableseclogon{
-	Write-Output"Disabling... Secondary Logon"
-	Stop-Service"seclogon"-WarningActionSilentlyContinue
-	Set-Service"seclogon"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Camera Frame Server
-Function DisableFrameServer{
-	Write-Output"Disabling... Windows Camera Frame Server"
-	Stop-Service"FrameServer"-WarningActionSilentlyContinue
-	Set-Service"FrameServer"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Image Acquisition
-Function Disablestisvc{
-	Write-Output"Disabling... Windows Image Acquisition"
-	Stop-Service"stisvc"-WarningActionSilentlyContinue
-	Set-Service"stisvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Program Compatibility Assistant Service
-Function DisablePcaSvc{
-	Write-Output"Disabling... Program Compatibility Assistant Service"
-	Stop-Service"PcaSvc"-WarningActionSilentlyContinue
-	Set-Service"PcaSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Diagnostic Policy Service
-Function DisableDPS{
-	Write-Output"Disabling... Diagnostic Policy Service"
-	Stop-Service"DPS"-WarningActionSilentlyContinue
-	Set-Service"DPS"-StartupTypeDisabled
-
-}
-
-# Stop and disable Download Maps Manager
-Function DisableMapsBroker{
-	Write-Output"Disabling... Download Maps Manager"
-	Stop-Service"MapsBroker"-WarningActionSilentlyContinue
-	Set-Service"MapsBroker"-StartupTypeDisabled
-
-}
-
-# Stop and disable Bluetooth Support Service
-Function Disablebthserv{
-	Write-Output"Disabling... Bluetooth Support Service"
-	Stop-Service"bthserv"-WarningActionSilentlyContinue
-	Set-Service"bthserv"-StartupTypeDisabled
-
-}
-
-# Stop and disable Bitlocker
-Function DisableBDESVC{
-	Write-Output"Disabling... Bitlocker"
-	Stop-Service"BDESVC"-WarningActionSilentlyContinue
-	Set-Service"BDESVC"-StartupTypeDisabled
-
-}
-
-# Stop and disable AVCTP Service
-Function DisableBthAvctpSvc{
-	Write-Output"Disabling... AVCTP Service"
-	Stop-Service"BthAvctpSvc"-WarningActionSilentlyContinue
-	Set-Service"BthAvctpSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Connected User Experience and Telemetry
-Function DisableDiagTrack{
-	Write-Output"Disabling... Connected User Experience and Telemetry"
-	Stop-Service"DiagTrack"-WarningActionSilentlyContinue
-	Set-Service"DiagTrack"-StartupTypeDisabled
-
-}
-
-# Stop and disable Certificate Propagation
-Function DisableCertPropSvc{
-	Write-Output"Disabling... Certificate Propagation"
-	Stop-Service"CertPropSvc"-WarningActionSilentlyContinue
-	Set-Service"CertPropSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Diagnostic Service Host
-Function DisableWdiServiceHost{
-	Write-Output"Disabling... Diagnostic Service Host"
-	Stop-Service"WdiServiceHost"-WarningActionSilentlyContinue
-	Set-Service"WdiServiceHost"-StartupTypeDisabled
-
-}
-
-# Stop and disable TCP/IP NetBIOS Helper
-Function Disablelmhosts{
-	Write-Output"Disabling... TCP/IP NetBIOS Helper"
-	Stop-Service"lmhosts"-WarningActionSilentlyContinue
-	Set-Service"lmhosts"-StartupTypeDisabled
-
-}
-
-# Stop and disable Diagnostic System Host
-Function DisableWdiSystemHost{
-	Write-Output"Disabling... Diagnostic System Host"
-	Stop-Service"WdiSystemHost"-WarningActionSilentlyContinue
-	Set-Service"WdiSystemHost"-StartupTypeDisabled
-
-}
-
-# Stop and disable Distributed Link Tracking Client
-Function DisableTrkWks{
-	Write-Output"Disabling... Distributed Link Tracking Client"
-	Stop-Service"TrkWks"-WarningActionSilentlyContinue
-	Set-Service"TrkWks"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Error Reporting Service
-Function DisableWerSvc{
-	Write-Output"Disabling... Windows Error Reporting Service"
-	Stop-Service"WerSvc"-WarningActionSilentlyContinue
-	Set-Service"WerSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Touch Keyboard and Handwriting Panel Service
-Function DisableTabletInputService{
-	Write-Output"Disabling... Touch Keyboard and Handwriting Panel Service"
-	Stop-Service"TabletInputService"-WarningActionSilentlyContinue
-	Set-Service"TabletInputService"-StartupTypeDisabled
-
-}
-
-# Stop and disable Enterprise App Management Service
-Function DisableEntAppSvc{
-	Write-Output"Disabling... Enterprise App Management Service"
-	Stop-Service"EntAppSvc"-WarningActionSilentlyContinue
-	Set-Service"EntAppSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Print Spooler
-Function DisableSpooler{
-	Write-Output"Disabling... Print Spooler"
-	Stop-Service"Spooler"-WarningActionSilentlyContinue
-	Set-Service"Spooler"-StartupTypeDisabled
-
-}
-
-# Stop and disable GameDVR and Broadcast
-Function DisableBcastDVRUserService{
-	Write-Output"Disabling... GameDVR and Broadcast"
-	Stop-Service"BcastDVRUserService"-WarningActionSilentlyContinue
-	Set-Service"BcastDVRUserService"-StartupTypeDisabled
-
-}
-
-# Stop and disable Windows Media Player Network Sharing Service
-Function DisableWMPNetworkSvc{
-	Write-Output"Disabling... Windows Media Player Network Sharing Service"
-	Stop-Service"WMPNetworkSvc"-WarningActionSilentlyContinue
-	Set-Service"WMPNetworkSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable Microsoft Diagnostics Hub Standard Collector Service
-Function Disablediagnosticshub.standardcollector.service{
-	Write-Output"Disabling... Microsoft Diagnostics Hub Standard Collector Service"
-	Stop-Service"diagnosticshub.standardcollector.service"-WarningActionSilentlyContinue
-	Set-Service"diagnosticshub.standardcollector.service"-StartupTypeDisabled
-
-}
-
-# Stop and disable Device Management Enrollment Service
-Function DisableDmEnrollmentSvc{
-	Write-Output"Disabling... Device Management Enrollment Service"
-	Stop-Service"DmEnrollmentSvc"-WarningActionSilentlyContinue
-	Set-Service"DmEnrollmentSvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable PNRP Machine Name Publication Service
-Function DisablePNRPAutoReg{
-	Write-Output"Disabling... PNRP Machine Name Publication Service"
-	Stop-Service"PNRPAutoReg"-WarningActionSilentlyContinue
-	Set-Service"PNRPAutoReg"-StartupTypeDisabled
-
-}
-
-# Stop and disable Microsoft Account Sign-in Assistant
-Function Disablewlidsvc{
-	Write-Output"Disabling... Microsoft Account Sign-in Assistant"
-	Stop-Service"wlidsvc"-WarningActionSilentlyContinue
-	Set-Service"wlidsvc"-StartupTypeDisabled
-
-}
-
-# Stop and disable ActiveX Installer
-Function DisableAXInstSV{
-	Write-Output"Disabling... ActiveX Installer"
-	Stop-Service"AXInstSV"-WarningActionSilentlyContinue
-	Set-Service"AXInstSV"-StartupTypeDisabled
-
-}
-
-# Stop and disable Auto Time Zone Updater
-Function Disabletzautoupdate{
-	Write-Output"Disabling... Auto Time Zone Updater"
-	Stop-Service"tzautoupdate"-WarningActionSilentlyContinue
-	Set-Service"tzautoupdate"-StartupTypeDisabled
-
-}
-
-# Stop and disable Sysmain
-Function DisableSysMain{
-	Write-Output"Disabling... Sysmain"
-	Stop-Service"SysMain"-WarningActionSilentlyContinue
-	Set-Service"SysMain"-StartupTypeDisabled
-
-}
-
-# Stop and disable Sensor Service
-Function DisableSensorService{
-	Write-Output"Disabling... Sensor Service"
-	Stop-Service"SensorService"-WarningActionSilentlyContinue
-	Set-Service"SensorService"-StartupTypeDisabled
-
-}
-
-# Stop and disable Routing and Remote Service
-Function DisableRemoteAccess{
-	Write-Output"Disabling... Routing and Remote Service"
-	Stop-Service"RemoteAccess"-WarningActionSilentlyContinue
-	Set-Service"RemoteAccess"-StartupTypeDisabled
-
-}
 
 
 ##########
@@ -1728,21 +1232,6 @@ Function EnableFastStartup {
 	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Power" -Name "HiberbootEnabled" -Type DWord -Value 1
 }
 
-##########
-# Windows Tweaks
-##########
-
-#Removing Microsoft MeetNow
-Function RemoveMeet {
-    Write-Output "Disabling Microsoft MeetNow..."
-$errpref = $ErrorActionPreference #save actual preference
-    $ErrorActionPreference = "silentlycontinue"
-Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "HideSCAMeetNow" -ErrorAction SilentlyContinue
-Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "HideSCAMeetNow" -ErrorAction SilentlyContinue
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "HideSCAMeetNow" -Type DWord -Value 1
-Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "HideSCAMeetNow" -Type DWord -Value 1
-$ErrorActionPreference = $errpref #restore previous preference
-}
 
 
 ##########
@@ -2536,9 +2025,12 @@ Function UninstallMsftBloat {
 	Get-AppxPackage "Microsoft.Getstarted" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.Messaging" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.Microsoft3DViewer" | Remove-AppxPackage
+	Get-AppxPackage "Microsoft.MicrosoftOfficeHub" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.MicrosoftPowerBIForWindows" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.MicrosoftSolitaireCollection" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.MicrosoftStickyNotes" | Remove-AppxPackage
+	Get-AppxPackage "Microsoft.MinecraftUWP" | Remove-AppxPackage
+	Get-AppxPackage "Microsoft.MSPaint" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.NetworkSpeedTest" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.Office.OneNote" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.Office.Sway" | Remove-AppxPackage
@@ -2546,6 +2038,7 @@ Function UninstallMsftBloat {
 	Get-AppxPackage "Microsoft.People" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.Print3D" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.RemoteDesktop" | Remove-AppxPackage
+	Get-AppxPackage "Microsoft.SkypeApp" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.Wallet" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.WindowsAlarms" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.WindowsCamera" | Remove-AppxPackage
@@ -2575,12 +2068,14 @@ Function InstallMsftBloat {
 	Get-AppxPackage -AllUsers "Microsoft.Getstarted" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "Microsoft.Messaging" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "Microsoft.Microsoft3DViewer" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
+	Get-AppxPackage -AllUsers "Microsoft.MicrosoftOfficeHub" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "Microsoft.MicrosoftPowerBIForWindows" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "Microsoft.MicrosoftSolitaireCollection" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "Microsoft.MicrosoftStickyNotes" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "Microsoft.MinecraftUWP" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "Microsoft.MSPaint" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "Microsoft.NetworkSpeedTest" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
+	Get-AppxPackage -AllUsers "Microsoft.Office.OneNote" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "Microsoft.Office.Sway" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "Microsoft.OneConnect" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "Microsoft.People" | ForEach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
@@ -3101,12 +2596,6 @@ Function Stop-EdgePDF {
     }
 }
 
-Function CreateRestorePoint {
-  Write-Output "Creating Restore Point incase something bad happens"
-  Enable-ComputerRestore -Drive "C:\"
-  Checkpoint-Computer -Description "RestorePoint1" -RestorePointType "MODIFY_SETTINGS"
-}
-
 Function DebloatAll {
 
     $Bloatware = @(
@@ -3149,7 +2638,7 @@ Function DebloatAll {
         "*Flipboard*"
         "*Twitter*"
         "*Facebook*"
-        "*Spotify*"
+        #"*Spotify*"
         "*Royal Revolt*"
         "*Sway*"
         "*Speed Test*"
