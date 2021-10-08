@@ -45,6 +45,9 @@ $tweaks = @(
     "InstallOpenShell",
     "InstallDiscord",
     "InstallVSCode",
+	#"InstallSteam",
+	#"InstallEpicGames",
+	"InstallChocoGUI",
 	# "ChangeDefaultApps", # Removed due to issues with steam and resetting default apps
 
 	### Windows Apps
@@ -359,6 +362,19 @@ Function InstallDiscord {
 
 Function InstallVSCode {
 	Show-Choco-Menu -Title "Do you want to install VS Code" -ChocoInstall "vscode"
+}
+
+Function InstallSteam {
+	Show-Choco-Menu -Title "Do you want to install Steam Client" -ChocoInstall "steam-client"
+}
+
+
+Function InstallEpicGames {
+	Show-Choco-Menu -Title "Do you want to install Epic Games Launcher" -ChocoInstall "epicgameslauncher"
+}
+
+Function InstallChocoGUI {
+	Show-Choco-Menu -Title "Do you want to install Chocolatey GUI" -ChocoInstall "chocolateygui"
 }
 
 Function ChangeDefaultApps {
