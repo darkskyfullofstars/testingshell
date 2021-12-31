@@ -1,0 +1,424 @@
+# Stop and disable Application Layer Gateway Service
+Function Disable{
+	Write-Output"Disabling... ApplicationLayerGatewayService"
+	Stop-Service"ALG"-WarningActionSilentlyContinue
+	Set-Service"ALG"-StartupTypeDisabled
+
+}
+
+# Stop and disable AllJoyn Router Service
+Function DisableAJRouter{
+	Write-Output"Disabling... AllJoyn Router Service"
+	Stop-Service"AJRouter"-WarningActionSilentlyContinue
+	Set-Service"AJRouter"-StartupTypeDisabled
+
+}
+
+# Stop and disable Xbox Live Auth Manager
+Function DisableXblAuthManager{
+	Write-Output"Disabling... Xbox Live Auth Manager"
+	Stop-Service"XblAuthManager"-WarningActionSilentlyContinue
+	Set-Service"XblAuthManager"-StartupTypeDisabled
+
+}
+
+# Stop and disable Xbox Live Game Save
+Function DisableXblGameSave{
+	Write-Output"Disabling... Xbox Live Game Save"
+	Stop-Service"XblGameSave"-WarningActionSilentlyContinue
+	Set-Service"XblGameSave"-StartupTypeDisabled
+
+}
+
+# Stop and disable Xbox Live NetwoWindows Search
+Function DisableXboxNetApiSvc{
+	Write-Output"Disabling... Xbox Live NetwoWindows Search"
+	Stop-Service"XboxNetApiSvc"-WarningActionSilentlyContinue
+	Set-Service"XboxNetApiSvc"-StartupTypeDisabled
+
+}
+
+# Stop and disable Windows Search
+Function DisableWSearch{
+	Write-Output"Disabling... Windows Search"
+	Stop-Service"WSearch"-WarningActionSilentlyContinue
+	Set-Service"WSearch"-StartupTypeDisabled
+
+}
+
+# Stop and disable Geolocation Service
+Function Disablefhsvc{
+	Write-Output"Disabling... Geolocation Service"
+	Stop-Service"fhsvc"-WarningActionSilentlyContinue
+	Set-Service"fhsvc"-StartupTypeDisabled
+
+}
+
+# Stop and disable Remote Registry
+Function DisableRemoteRegistry{
+	Write-Output"Disabling... Remote Registry"
+	Stop-Service"RemoteRegistry"-WarningActionSilentlyContinue
+	Set-Service"RemoteRegistry"-StartupTypeDisabled
+
+}
+
+# Stop and disable Parental Control
+Function DisableWpcMonSvc{
+	Write-Output"Disabling... Parental Control"
+	Stop-Service"WpcMonSvc"-WarningActionSilentlyContinue
+	Set-Service"WpcMonSvc"-StartupTypeDisabled
+
+}
+
+# Stop and disable Payments and NFC/SE Manager
+Function DisableSEMgrSvc{
+	Write-Output"Disabling... Payments and NFC/SE Manager"
+	Stop-Service"SEMgrSvc"-WarningActionSilentlyContinue
+	Set-Service"SEMgrSvc"-StartupTypeDisabled
+
+}
+
+# Stop and disable Smartcard
+Function DisableSCardSvr{
+	Write-Output"Disabling... Smartcard"
+	Stop-Service"SCardSvr"-WarningActionSilentlyContinue
+	Set-Service"SCardSvr"-StartupTypeDisabled
+
+}
+
+# Stop and disable Netlogon
+Function DisableNetlogon{
+	Write-Output"Disabling... Netlogon"
+	Stop-Service"Netlogon"-WarningActionSilentlyContinue
+	Set-Service"Netlogon"-StartupTypeDisabled
+
+}
+
+# Stop and disable Offline Files
+Function DisableCscService{
+	Write-Output"Disabling... Offline Files"
+	Stop-Service"CscService"-WarningActionSilentlyContinue
+	Set-Service"CscService"-StartupTypeDisabled
+
+}
+
+# Stop and disable Windows Mobile Hotspot Service
+Function Disableicssvc{
+	Write-Output"Disabling... Windows Mobile Hotspot Service"
+	Stop-Service"icssvc"-WarningActionSilentlyContinue
+	Set-Service"icssvc"-StartupTypeDisabled
+
+}
+
+# Stop and disable Windows Insider Service
+Function Disablewisvc{
+	Write-Output"Disabling... Windows Insider Service"
+	Stop-Service"wisvc"-WarningActionSilentlyContinue
+	Set-Service"wisvc"-StartupTypeDisabled
+
+}
+
+# Stop and disable Retail Demo Service
+Function DisableRetailDemo{
+	Write-Output"Disabling... Retail Demo Service"
+	Stop-Service"RetailDemo"-WarningActionSilentlyContinue
+	Set-Service"RetailDemo"-StartupTypeDisabled
+
+}
+
+# Stop and disable WalletService
+Function DisableWalletService{
+	Write-Output"Disabling... WalletService"
+	Stop-Service"WalletService"-WarningActionSilentlyContinue
+	Set-Service"WalletService"-StartupTypeDisabled
+
+}
+
+# Stop and disable Fax
+Function DisableFax{
+	Write-Output"Disabling... Fax"
+	Stop-Service"Fax"-WarningActionSilentlyContinue
+	Set-Service"Fax"-StartupTypeDisabled
+
+}
+
+# Stop and disable Windows Biometric Service
+Function DisableWbioSrvc{
+	Write-Output"Disabling... Windows Biometric Service"
+	Stop-Service"WbioSrvc"-WarningActionSilentlyContinue
+	Set-Service"WbioSrvc"-StartupTypeDisabled
+
+}
+
+# Stop and disable IP Helper
+Function Disableiphlpsvc{
+	Write-Output"Disabling... IP Helper"
+	Stop-Service"iphlpsvc"-WarningActionSilentlyContinue
+	Set-Service"iphlpsvc"-StartupTypeDisabled
+
+}
+
+# Stop and disable Windows Connect Now
+Function Disablewcncsvc{
+	Write-Output"Disabling... Windows Connect Now"
+	Stop-Service"wcncsvc"-WarningActionSilentlyContinue
+	Set-Service"wcncsvc"-StartupTypeDisabled
+
+}
+
+# Stop and disable File History Service
+Function Disablefhsvc{
+	Write-Output"Disabling... File History Service"
+	Stop-Service"fhsvc"-WarningActionSilentlyContinue
+	Set-Service"fhsvc"-StartupTypeDisabled
+
+}
+
+# Stop and disable Phone Service
+Function DisablePhoneSvc{
+	Write-Output"Disabling... Phone Service"
+	Stop-Service"PhoneSvc"-WarningActionSilentlyContinue
+	Set-Service"PhoneSvc"-StartupTypeDisabled
+
+}
+
+# Stop and disable Secondary Logon
+Function Disableseclogon{
+	Write-Output"Disabling... Secondary Logon"
+	Stop-Service"seclogon"-WarningActionSilentlyContinue
+	Set-Service"seclogon"-StartupTypeDisabled
+
+}
+
+# Stop and disable Windows Camera Frame Server
+Function DisableFrameServer{
+	Write-Output"Disabling... Windows Camera Frame Server"
+	Stop-Service"FrameServer"-WarningActionSilentlyContinue
+	Set-Service"FrameServer"-StartupTypeDisabled
+
+}
+
+# Stop and disable Windows Image Acquisition
+Function Disablestisvc{
+	Write-Output"Disabling... Windows Image Acquisition"
+	Stop-Service"stisvc"-WarningActionSilentlyContinue
+	Set-Service"stisvc"-StartupTypeDisabled
+
+}
+
+# Stop and disable Program Compatibility Assistant Service
+Function DisablePcaSvc{
+	Write-Output"Disabling... Program Compatibility Assistant Service"
+	Stop-Service"PcaSvc"-WarningActionSilentlyContinue
+	Set-Service"PcaSvc"-StartupTypeDisabled
+
+}
+
+# Stop and disable Diagnostic Policy Service
+Function DisableDPS{
+	Write-Output"Disabling... Diagnostic Policy Service"
+	Stop-Service"DPS"-WarningActionSilentlyContinue
+	Set-Service"DPS"-StartupTypeDisabled
+
+}
+
+# Stop and disable Download Maps Manager
+Function DisableMapsBroker{
+	Write-Output"Disabling... Download Maps Manager"
+	Stop-Service"MapsBroker"-WarningActionSilentlyContinue
+	Set-Service"MapsBroker"-StartupTypeDisabled
+
+}
+
+# Stop and disable Bluetooth Support Service
+Function Disablebthserv{
+	Write-Output"Disabling... Bluetooth Support Service"
+	Stop-Service"bthserv"-WarningActionSilentlyContinue
+	Set-Service"bthserv"-StartupTypeDisabled
+
+}
+
+# Stop and disable Bitlocker
+Function DisableBDESVC{
+	Write-Output"Disabling... Bitlocker"
+	Stop-Service"BDESVC"-WarningActionSilentlyContinue
+	Set-Service"BDESVC"-StartupTypeDisabled
+
+}
+
+# Stop and disable AVCTP Service
+Function DisableBthAvctpSvc{
+	Write-Output"Disabling... AVCTP Service"
+	Stop-Service"BthAvctpSvc"-WarningActionSilentlyContinue
+	Set-Service"BthAvctpSvc"-StartupTypeDisabled
+
+}
+
+# Stop and disable Connected User Experience and Telemetry
+Function DisableDiagTrack{
+	Write-Output"Disabling... Connected User Experience and Telemetry"
+	Stop-Service"DiagTrack"-WarningActionSilentlyContinue
+	Set-Service"DiagTrack"-StartupTypeDisabled
+
+}
+
+# Stop and disable Certificate Propagation
+Function DisableCertPropSvc{
+	Write-Output"Disabling... Certificate Propagation"
+	Stop-Service"CertPropSvc"-WarningActionSilentlyContinue
+	Set-Service"CertPropSvc"-StartupTypeDisabled
+
+}
+
+# Stop and disable Diagnostic Service Host
+Function DisableWdiServiceHost{
+	Write-Output"Disabling... Diagnostic Service Host"
+	Stop-Service"WdiServiceHost"-WarningActionSilentlyContinue
+	Set-Service"WdiServiceHost"-StartupTypeDisabled
+
+}
+
+# Stop and disable TCP/IP NetBIOS Helper
+Function Disablelmhosts{
+	Write-Output"Disabling... TCP/IP NetBIOS Helper"
+	Stop-Service"lmhosts"-WarningActionSilentlyContinue
+	Set-Service"lmhosts"-StartupTypeDisabled
+
+}
+
+# Stop and disable Diagnostic System Host
+Function DisableWdiSystemHost{
+	Write-Output"Disabling... Diagnostic System Host"
+	Stop-Service"WdiSystemHost"-WarningActionSilentlyContinue
+	Set-Service"WdiSystemHost"-StartupTypeDisabled
+
+}
+
+# Stop and disable Distributed Link Tracking Client
+Function DisableTrkWks{
+	Write-Output"Disabling... Distributed Link Tracking Client"
+	Stop-Service"TrkWks"-WarningActionSilentlyContinue
+	Set-Service"TrkWks"-StartupTypeDisabled
+
+}
+
+# Stop and disable Windows Error Reporting Service
+Function DisableWerSvc{
+	Write-Output"Disabling... Windows Error Reporting Service"
+	Stop-Service"WerSvc"-WarningActionSilentlyContinue
+	Set-Service"WerSvc"-StartupTypeDisabled
+
+}
+
+# Stop and disable Touch Keyboard and Handwriting Panel Service
+Function DisableTabletInputService{
+	Write-Output"Disabling... Touch Keyboard and Handwriting Panel Service"
+	Stop-Service"TabletInputService"-WarningActionSilentlyContinue
+	Set-Service"TabletInputService"-StartupTypeDisabled
+
+}
+
+# Stop and disable Enterprise App Management Service
+Function DisableEntAppSvc{
+	Write-Output"Disabling... Enterprise App Management Service"
+	Stop-Service"EntAppSvc"-WarningActionSilentlyContinue
+	Set-Service"EntAppSvc"-StartupTypeDisabled
+
+}
+
+# Stop and disable Print Spooler
+Function DisableSpooler{
+	Write-Output"Disabling... Print Spooler"
+	Stop-Service"Spooler"-WarningActionSilentlyContinue
+	Set-Service"Spooler"-StartupTypeDisabled
+
+}
+
+# Stop and disable GameDVR and Broadcast
+Function DisableBcastDVRUserService{
+	Write-Output"Disabling... GameDVR and Broadcast"
+	Stop-Service"BcastDVRUserService"-WarningActionSilentlyContinue
+	Set-Service"BcastDVRUserService"-StartupTypeDisabled
+
+}
+
+# Stop and disable Windows Media Player Network Sharing Service
+Function DisableWMPNetworkSvc{
+	Write-Output"Disabling... Windows Media Player Network Sharing Service"
+	Stop-Service"WMPNetworkSvc"-WarningActionSilentlyContinue
+	Set-Service"WMPNetworkSvc"-StartupTypeDisabled
+
+}
+
+# Stop and disable Microsoft Diagnostics Hub Standard Collector Service
+Function Disablediagnosticshub.standardcollector.service{
+	Write-Output"Disabling... Microsoft Diagnostics Hub Standard Collector Service"
+	Stop-Service"diagnosticshub.standardcollector.service"-WarningActionSilentlyContinue
+	Set-Service"diagnosticshub.standardcollector.service"-StartupTypeDisabled
+
+}
+
+# Stop and disable Device Management Enrollment Service
+Function DisableDmEnrollmentSvc{
+	Write-Output"Disabling... Device Management Enrollment Service"
+	Stop-Service"DmEnrollmentSvc"-WarningActionSilentlyContinue
+	Set-Service"DmEnrollmentSvc"-StartupTypeDisabled
+
+}
+
+# Stop and disable PNRP Machine Name Publication Service
+Function DisablePNRPAutoReg{
+	Write-Output"Disabling... PNRP Machine Name Publication Service"
+	Stop-Service"PNRPAutoReg"-WarningActionSilentlyContinue
+	Set-Service"PNRPAutoReg"-StartupTypeDisabled
+
+}
+
+# Stop and disable Microsoft Account Sign-in Assistant
+Function Disablewlidsvc{
+	Write-Output"Disabling... Microsoft Account Sign-in Assistant"
+	Stop-Service"wlidsvc"-WarningActionSilentlyContinue
+	Set-Service"wlidsvc"-StartupTypeDisabled
+
+}
+
+# Stop and disable ActiveX Installer
+Function DisableAXInstSV{
+	Write-Output"Disabling... ActiveX Installer"
+	Stop-Service"AXInstSV"-WarningActionSilentlyContinue
+	Set-Service"AXInstSV"-StartupTypeDisabled
+
+}
+
+# Stop and disable Auto Time Zone Updater
+Function Disabletzautoupdate{
+	Write-Output"Disabling... Auto Time Zone Updater"
+	Stop-Service"tzautoupdate"-WarningActionSilentlyContinue
+	Set-Service"tzautoupdate"-StartupTypeDisabled
+
+}
+
+# Stop and disable Sysmain
+Function DisableSysMain{
+	Write-Output"Disabling... Sysmain"
+	Stop-Service"SysMain"-WarningActionSilentlyContinue
+	Set-Service"SysMain"-StartupTypeDisabled
+
+}
+
+# Stop and disable Sensor Service
+Function DisableSensorService{
+	Write-Output"Disabling... Sensor Service"
+	Stop-Service"SensorService"-WarningActionSilentlyContinue
+	Set-Service"SensorService"-StartupTypeDisabled
+
+}
+
+# Stop and disable Routing and Remote Service
+Function DisableRemoteAccess{
+	Write-Output"Disabling... Routing and Remote Service"
+	Stop-Service"RemoteAccess"-WarningActionSilentlyContinue
+	Set-Service"RemoteAccess"-StartupTypeDisabled
+
+}
+
