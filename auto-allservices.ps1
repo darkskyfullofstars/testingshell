@@ -240,6 +240,6 @@ $services = @(
 )
 
 foreach ($service in $services) {
-    Write-Output "Trying to disable $service"
-    Get-Service -Name $service | Set-Service -StartupType Disabled
+    Write-Output "Trying to set to auto $service"
+    Get-Service -Name $service | Set-Service -StartupType Automatic
 }
